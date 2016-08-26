@@ -1,80 +1,98 @@
-﻿using UnityEngine;
+﻿/*
+Created By: David Zhang
+Description: Universal class that defines the behavior of button presses for both players.
+Requirements: A player GameObject.
+*/
+
+using UnityEngine;
 using System.Collections;
 
-public class Controls : MonoBehaviour {
+public class Controls : MonoBehaviour
+{
 
-    public int id;
+    public int Id;
 
     public delegate void leftA(GameObject player);
     public delegate void centerA(GameObject player);
     public delegate void rightA(GameObject player);
 
-    leftA leftAction;
-    centerA centerAction;
-    rightA rightAction;
+    leftA LeftAction;
+    centerA CenterAction;
+    rightA RightAction;
 
-    private bool leftButtonDown;
-    private bool leftButtonHeld;
-    private bool leftButtonUp;
+    private bool LeftButtonDown;
+    private bool LeftButtonHeld;
+    private bool LeftButtonUp;
 
-    private bool centerButtonDown;
-    private bool centerButtonHeld;
-    private bool centerButtonUp;
+    private bool CenterButtonDown;
+    private bool CenterButtonHeld;
+    private bool CenterButtonUp;
 
-    private bool rightButtonDown;
-    private bool rightButtonHeld;
-    private bool rightButtonUp;
+    private bool RightButtonDown;
+    private bool RightButtonHeld;
+    private bool RightButtonUp;
 
-    string leftButton;
-    string centerButton;
-    string rightButton;
+    string LeftButton;
+    string CenterButton;
+    string RightButton;
 
 	// Use this for initialization
 	void Start ()
     {
-        leftButton = "Left Button " + id;
-        centerButton = "Center Button " + id;
-        rightButton = "Right Button " + id;
+        LeftButton = "Left Button " + Id;
+        CenterButton = "Center Button " + Id;
+        RightButton = "Right Button " + Id;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+    //TO DO: Handle single tap key presses.
+    /// <summary>
+    /// Checks if the player is pressing the key and holding it and calls the function
+    /// for the particular action. Only supports one key press and hold at a time.
+    /// </summary>
+	void Update ()
+    {
 
-        leftButtonDown = Input.GetButtonDown(leftButton);
-        leftButtonHeld = Input.GetButton(leftButton);
-        leftButtonUp = Input.GetButtonDown(leftButton);
+        LeftButtonDown = Input.GetButtonDown(LeftButton);
+        LeftButtonHeld = Input.GetButton(LeftButton);
+        LeftButtonUp = Input.GetButtonDown(LeftButton);
 
-        centerButtonDown = Input.GetButtonDown(centerButton);
-        centerButtonHeld = Input.GetButton(centerButton);
-        centerButtonUp = Input.GetButtonUp(centerButton);
+        CenterButtonDown = Input.GetButtonDown(CenterButton);
+        CenterButtonHeld = Input.GetButton(CenterButton);
+        CenterButtonUp = Input.GetButtonUp(CenterButton);
 
-        rightButtonDown = Input.GetButtonDown(rightButton);
-        rightButtonHeld = Input.GetButton(rightButton);
-        rightButtonUp = Input.GetButtonUp(rightButton);
+        RightButtonDown = Input.GetButtonDown(RightButton);
+        RightButtonHeld = Input.GetButton(RightButton);
+        RightButtonUp = Input.GetButtonUp(RightButton);
 
 
-        if (leftButtonHeld)
+        if (LeftButtonHeld)
         {
-            leftAction(this.gameObject);
+            LeftAction(this.gameObject);
         }
-        else if (rightButtonHeld)
+        else if (RightButtonHeld)
         {
-            rightAction(this.gameObject);
+            RightAction(this.gameObject);
         }
-        else if (centerButtonHeld)
+        else if (CenterButtonHeld)
         {
-            centerAction(this.gameObject);
+            CenterAction(this.gameObject);
         }
 
     }
 
-    public void setControls(leftA actionLeft, centerA actionCenter, rightA actionRight)
+    /// <summary>
+    /// Sets the delegates of each control schema to a particular function. Used to change the logic
+    /// of each key press in the game.
+    /// </summary>
+    /// <param name="action_left"></param>
+    /// <param name="action_center"></param>
+    /// <param name="action_right"></param>
+    public void SetControls(leftA action_left, centerA action_center, rightA action_right)
     {
-        leftAction = actionLeft;
-        centerAction = actionCenter;
-        rightAction = actionRight;
+        LeftAction = action_left;
+        CenterAction = action_center;
+        RightAction = action_right;
     }
 
     //Probably put some menu functions here?
-
 }

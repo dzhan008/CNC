@@ -1,49 +1,79 @@
-﻿using UnityEngine;
+﻿/*
+Created By: David Zhang
+Description: This is the base class for all minigames. Contains functions needed to make a basic minigame.
+Requirements: This must be attached to the prefab of where your minigame should be.
+*/
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public abstract class Minigame : MonoBehaviour {
+public abstract class Minigame : MonoBehaviour
+{
 
-    protected float timeLeft = 0;
-    protected float timeLimit;
-    protected bool timerOn;
-    protected bool finished = false;
+    protected float TimeLeft = 0;
+    protected float TimeLimit;
+    protected bool TimerOn;
+    protected bool Finished = false;
 
     //Used to display the timer, if needed.
-    public Text timer;
+    public Text Timer;
 
-    //This is a simple timer that will subtract the time left each second.
-    public int countDown()
+    /// <summary>
+    /// This is a simple timer that will subtract the time left each second.
+    /// If set to one, it'll count down like an actual clock.
+    /// </summary>
+    /// <returns></returns>
+    public int CountDown(float rate)
     {
-            timeLeft -= Time.deltaTime;
-            timer.text = "Time: " + (int)timeLeft;
-            if (timeLeft < 0)
+            TimeLeft -= Time.deltaTime * rate;
+            Timer.text = "Time: " + (int)TimeLeft;
+            if (TimeLeft < 0)
             {
                 return -1;
             }
             return 0;
 
     }
-
-    //Set the time remaining.
-    public void setTime(int newTime)
+    /// <summary>
+    /// Sets the time remaining.
+    /// </summary>
+    /// <param name="new_time"></param>
+    public void SetTime(int new_time)
     {
-        timeLeft = newTime;
+        TimeLeft = new_time;
     }
 
-    //Sets the controls for the minigame.
-    public void setControls(GameObject player)
+    /// <summary>
+    /// Sets the controls for the minigame.
+    /// </summary>
+    /// <param name="player"></param>
+    public void SetControls(GameObject player)
     {
-        player.GetComponent<Controls>().setControls(leftAction, centerAction, rightAction);
+        player.GetComponent<Controls>().SetControls(LeftAction, CenterAction, RightAction);
     }
 
-    public abstract void leftAction(GameObject player);
+    /// <summary>
+    /// The logic for a left key press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void LeftAction(GameObject player);
 
-    public abstract void centerAction(GameObject player);
+    /// <summary>
+    /// The logic for a center key press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void CenterAction(GameObject player);
 
-    public abstract void rightAction(GameObject player);
+    /// <summary>
+    /// The logic for a right key press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void RightAction(GameObject player);
 
-    //Call this when the minigame is finished
+    /// <summary>
+    /// Handles events for when the minigame ends.
+    /// </summary>
     public abstract void GameEnd();
 
 }

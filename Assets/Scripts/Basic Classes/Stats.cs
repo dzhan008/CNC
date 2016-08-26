@@ -1,88 +1,107 @@
-﻿using UnityEngine;
+﻿/*
+Created By: David Zhang
+Description: Contains necessary variables that store the player's stats in game.
+Requirements: Player GameObject
+*/
+
+using UnityEngine;
 using System.Collections;
 
-public class Stats : MonoBehaviour {
+public class Stats : MonoBehaviour
+{
 
-    public int id;
-    public Roles role;
-    private string roleName;
+    public int Id;
+    public Roles CurrentRole;
+    private string RoleName;
 
     //Basic stats
-    private int str = 0;
-    private int dex = 0;
-    private int intel = 0;
-
-    private int _miniGameScore = 0;
-    public int miniGameScore
+    private int Str = 0;
+    private int Dex = 0;
+    private int Intel = 0;
+        
+    private int _MiniGameScore = 0;
+    public int MiniGameScore
     {
         get
         {
-            return _miniGameScore;
+            return _MiniGameScore;
         }
         set
         {
-            _miniGameScore = value;
+            _MiniGameScore = value;
         }
     }
 
-    private int _score = 0;
-    public int score
+    private int _Score = 0;
+    public int Score
     {
         get
         {
-            return _score;
+            return _Score;
         }
         set
         {
-            _score = value;
+            _Score = value;
         }
     }
 
 	// Use this for initialization
 	void Start () {
-        setStats(role);
+        SetStats(CurrentRole);
 	}
 
-    public void setStats(int s, int d, int i)
+    public void SetStats(int s, int d, int i)
     {
-        str = s;
-        dex = d;
-        intel = i;
+        Str = s;
+        Dex = d;
+        Intel = i;
     }
 
-    //Set the class of the player via presets from a Roles object
-    public void setStats(Roles role)
+    /// <summary>
+    /// Set the class of the player via presets from a Roles object.
+    /// </summary>
+    /// <param name="role"></param>
+    public void SetStats(Roles role)
     {
-        roleName = role.roleName;
-        str = role.strength;
-        dex = role.dexterity;
-        intel = role.intelligence;
-    }
-        
-    //Increments the player's mini game score by a set amount
-    public void incrementMiniGameScore(int newScore)
-    {
-        miniGameScore += newScore;
+        RoleName = role.RoleName;
+        Str = role.Strength;
+        Dex = role.Dexterity;
+        Intel = role.Intelligence;
     }
 
-    //Sets the minigame score of the player.
-    public void setMiniGameScore(int newScore)
+    /// <summary>
+    /// Increments the player's mini game score by a set amount.
+    /// </summary>
+    /// <param name="new_score"></param>
+    public void IncrementMiniGameScore(int new_score)
     {
-        miniGameScore = newScore;
+        MiniGameScore += new_score;
     }
 
-    //Sets the overall score of the player.
-    public void setScore(int newScore)
+    /// <summary>
+    /// Sets the minigame score of the player.
+    /// </summary>
+    /// <param name="new_score"></param>
+    public void SetMiniGameScore(int new_score)
     {
-        score = newScore;
-        resetMiniGameScore();
+        MiniGameScore = new_score;
     }
 
-    //Reset function for whenever a minigame is finished.
-    public void resetMiniGameScore()
+    /// <summary>
+    /// Sets the overall score of the player.
+    /// </summary>
+    /// <param name="new_score"></param>
+    public void SetScore(int new_score)
     {
-        miniGameScore = 0;
+        Score = new_score;
+        ResetMiniGameScore();
     }
 
-
+    /// <summary>
+    /// Reset function for whenever a minigame is finished.
+    /// </summary>
+    public void ResetMiniGameScore()
+    {
+        MiniGameScore = 0;
+    }
 }
