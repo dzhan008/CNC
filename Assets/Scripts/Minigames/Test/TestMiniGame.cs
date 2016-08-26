@@ -19,7 +19,6 @@ public class TestMiniGame : Minigame {
         setControls(playerTwo);
     }
 
-
 	// Update logic minigame
     void Update()
     {

@@ -6,6 +6,7 @@ public class Stats : MonoBehaviour {
     public int id;
     public Roles role;
     private string roleName;
+
     //Basic stats
     private int str = 0;
     private int dex = 0;
