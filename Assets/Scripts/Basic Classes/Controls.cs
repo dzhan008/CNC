@@ -9,29 +9,13 @@ using System.Collections;
 
 public class Controls : MonoBehaviour
 {
+    Key UpKey;
+    Key LeftKey;
+    Key CenterKey;
+    Key RightKey;
 
-    public int Id;
 
-    public delegate void leftA(GameObject player);
-    public delegate void centerA(GameObject player);
-    public delegate void rightA(GameObject player);
-
-    leftA LeftAction;
-    centerA CenterAction;
-    rightA RightAction;
-
-    private bool LeftButtonDown;
-    private bool LeftButtonHeld;
-    private bool LeftButtonUp;
-
-    private bool CenterButtonDown;
-    private bool CenterButtonHeld;
-    private bool CenterButtonUp;
-
-    private bool RightButtonDown;
-    private bool RightButtonHeld;
-    private bool RightButtonUp;
-
+    string UpButton;
     string LeftButton;
     string CenterButton;
     string RightButton;
@@ -39,9 +23,17 @@ public class Controls : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        LeftButton = "Left Button " + Id;
-        CenterButton = "Center Button " + Id;
-        RightButton = "Right Button " + Id;
+        int id = this.GetComponent<Stats>().Id;
+
+        UpButton = "Up Button " + id;
+        LeftButton = "Left Button " + id;
+        CenterButton = "Center Button " + id;
+        RightButton = "Right Button " + id;
+
+        UpKey = new Key(UpButton, this.gameObject);
+        LeftKey = new Key(LeftButton, this.gameObject);
+        CenterKey = new Key(CenterButton, this.gameObject);
+        RightKey = new Key(RightButton, this.gameObject);
 	}
 	
     //TO DO: Handle single tap key presses.
@@ -51,47 +43,59 @@ public class Controls : MonoBehaviour
     /// </summary>
 	void Update ()
     {
-
-        LeftButtonDown = Input.GetButtonDown(LeftButton);
-        LeftButtonHeld = Input.GetButton(LeftButton);
-        LeftButtonUp = Input.GetButtonDown(LeftButton);
-
-        CenterButtonDown = Input.GetButtonDown(CenterButton);
-        CenterButtonHeld = Input.GetButton(CenterButton);
-        CenterButtonUp = Input.GetButtonUp(CenterButton);
-
-        RightButtonDown = Input.GetButtonDown(RightButton);
-        RightButtonHeld = Input.GetButton(RightButton);
-        RightButtonUp = Input.GetButtonUp(RightButton);
-
-
-        if (LeftButtonHeld)
-        {
-            LeftAction(this.gameObject);
-        }
-        else if (RightButtonHeld)
-        {
-            RightAction(this.gameObject);
-        }
-        else if (CenterButtonHeld)
-        {
-            CenterAction(this.gameObject);
-        }
+        UpKey.UpdateKeys();
+        LeftKey.UpdateKeys();
+        CenterKey.UpdateKeys();
+        RightKey.UpdateKeys();
 
     }
 
     /// <summary>
     /// Sets the delegates of each control schema to a particular function. Used to change the logic
-    /// of each key press in the game.
+    /// of each key tap press in the game.
     /// </summary>
     /// <param name="action_left"></param>
     /// <param name="action_center"></param>
     /// <param name="action_right"></param>
-    public void SetControls(leftA action_left, centerA action_center, rightA action_right)
+    public void SetTapControls(Key.TapA action_up, Key.TapA action_left, Key.TapA action_center, Key.TapA action_right)
     {
-        LeftAction = action_left;
-        CenterAction = action_center;
-        RightAction = action_right;
+        UpKey.SetTapControl(action_up);
+        LeftKey.SetTapControl(action_left);
+        CenterKey.SetTapControl(action_center);
+        RightKey.SetTapControl(action_right);
+
+    }
+
+    /// <summary>
+    /// Sets the delegates of each control schema to a particular function. Used to change the logic
+    /// of each key held press in the game.
+    /// </summary>
+    /// <param name="action_left"></param>
+    /// <param name="action_center"></param>
+    /// <param name="action_right"></param>
+    public void SetHeldControls(Key.HeldA action_up, Key.HeldA action_left, Key.HeldA action_center, Key.HeldA action_right)
+    {
+        UpKey.SetHeldControl(action_up);
+        LeftKey.SetHeldControl(action_left);
+        CenterKey.SetHeldControl(action_center);
+        RightKey.SetHeldControl(action_right);
+        
+    }
+
+    /// <summary>
+    /// Sets the delegates of each control schema to a particular function. Used to change the logic
+    /// of each key release in the game. 
+    /// </summary>
+    /// <param name="action_up"></param>
+    /// <param name="action_left"></param>
+    /// <param name="action_center"></param>
+    /// <param name="action_right"></param>
+    public void SetReleaseControls(Key.RelA action_up, Key.RelA action_left, Key.RelA action_center, Key.RelA action_right)
+    {
+        UpKey.SetReleaseControl(action_up);
+        LeftKey.SetReleaseControl(action_left);
+        CenterKey.SetReleaseControl(action_center);
+        RightKey.SetReleaseControl(action_right);
     }
 
     //Probably put some menu functions here?

@@ -50,26 +50,83 @@ public abstract class Minigame : MonoBehaviour
     /// <param name="player"></param>
     public void SetControls(GameObject player)
     {
-        player.GetComponent<Controls>().SetControls(LeftAction, CenterAction, RightAction);
+        player.GetComponent<Controls>().SetTapControls(UpTapAction, LeftTapAction, CenterTapAction, RightTapAction);
+        player.GetComponent<Controls>().SetHeldControls(UpHeldAction, LeftHeldAction, CenterHeldAction, RightHeldAction);
+        player.GetComponent<Controls>().SetReleaseControls(UpRelAction, LeftRelAction, CenterRelAction, RightRelAction);
     }
+
+    /// <summary>
+    /// The logic for a up key press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void UpTapAction(GameObject player);
 
     /// <summary>
     /// The logic for a left key press.
     /// </summary>
     /// <param name="player"></param>
-    public abstract void LeftAction(GameObject player);
+    public abstract void LeftTapAction(GameObject player);
 
     /// <summary>
     /// The logic for a center key press.
     /// </summary>
     /// <param name="player"></param>
-    public abstract void CenterAction(GameObject player);
+    public abstract void CenterTapAction(GameObject player);
 
     /// <summary>
     /// The logic for a right key press.
     /// </summary>
     /// <param name="player"></param>
-    public abstract void RightAction(GameObject player);
+    public abstract void RightTapAction(GameObject player);
+
+    /// <summary>
+    /// The logic for a up key held press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void UpHeldAction(GameObject player);
+
+    /// <summary>
+    /// The logic for a left key held press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void LeftHeldAction(GameObject player);
+
+    /// <summary>
+    /// The logic for a center key held press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void CenterHeldAction(GameObject player);
+
+    /// <summary>
+    /// The logic for a right key held press.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void RightHeldAction(GameObject player);
+
+    
+    /// <summary>
+    /// The logic for releasing the up key.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void UpRelAction(GameObject player);
+
+    /// <summary>
+    /// The logic for releasing the left key.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void LeftRelAction(GameObject player);
+
+    /// <summary>
+    /// The logic for releasing the center key.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void CenterRelAction(GameObject player);
+
+    /// <summary>
+    /// The logic for releasing the right key.
+    /// </summary>
+    /// <param name="player"></param>
+    public abstract void RightRelAction(GameObject player);
 
     /// <summary>
     /// Handles events for when the minigame ends.

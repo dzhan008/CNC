@@ -15,9 +15,44 @@ public class Stats : MonoBehaviour
     private string RoleName;
 
     //Basic stats
-    private int Str = 0;
-    private int Dex = 0;
-    private int Intel = 0;
+    private int _Str = 0;
+    public int Str
+    {
+        get
+        {
+            return _Str;
+        }
+        set
+        {
+            _Str = value;
+        }
+    }
+
+    private int _Dex = 0;
+    public int Dex
+    {
+        get
+        {
+            return _Dex;
+        }
+        set
+        {
+            _Dex = value;
+        }
+    }
+
+    private int _Intel = 0;
+    public int Intel
+    {
+        get
+        {
+            return _Intel;
+        }
+        set
+        {
+            _Intel = value;
+        }
+    }
         
     private int _MiniGameScore = 0;
     public int MiniGameScore
@@ -46,7 +81,8 @@ public class Stats : MonoBehaviour
     }
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         SetStats(CurrentRole);
 	}
 

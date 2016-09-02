@@ -13,8 +13,21 @@ public class GameManager : Singleton<GameManager>
     public GameObject PlayerOne;
     public GameObject PlayerTwo;
 
-    List<GameObject> MiniGames; //List of prefabs to be loaded
-    GameObject CurrentMiniGame;
+    public Dictionary<int, KeyValuePair<GameObject, Stats>> Players;
+
+    private List<GameObject> MiniGames; //List of prefabs to be loaded
+    private GameObject CurrentMiniGame;
+
+    void Awake()
+    {
+        Players = new Dictionary<int, KeyValuePair<GameObject, Stats> >();
+        GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
+
+        for(int i = 0; i < tempPlayers.Length; i++)
+        {
+            Players.Add(tempPlayers[i].GetComponent<Stats>().Id, new KeyValuePair<GameObject, Stats>(tempPlayers[i], tempPlayers[i].GetComponent<Stats>()));
+        }
+    }
 
     /// <summary>
     /// Initializes the GameManager, loading in all the minigames randomly and starting the first minigame.

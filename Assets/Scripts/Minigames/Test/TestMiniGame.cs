@@ -10,17 +10,26 @@ using System;
 
 public class TestMiniGame : Minigame {
 
-	// Use this for initialization
-	void Start ()
+    GameObject PlayerOne;
+    GameObject PlayerTwo;
+
+    Stats PlayerOneStats;
+    Stats PlayerTwoStats;
+
+    // Use this for initialization
+    void Start ()
     {
+        PlayerOne = GameManager.Instance.Players[1].Key;
+        PlayerTwo = GameManager.Instance.Players[2].Key;
+
+        PlayerOneStats = GameManager.Instance.Players[1].Value;
+        PlayerTwoStats = GameManager.Instance.Players[2].Value;
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls
-        GameObject PlayerOne = GameManager.Instance.PlayerOne;
-        GameObject PlayerTwo = GameManager.Instance.PlayerTwo;
-
         PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
         PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
+
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
@@ -39,29 +48,74 @@ public class TestMiniGame : Minigame {
         }
     }
 
-    public override void LeftAction(GameObject player)
+    public override void UpTapAction(GameObject player)
     {
-        player.transform.Translate(-0.5f, 0f, 0f);
+        Debug.Log("Tapped the up key!");
     }
 
-    public override void CenterAction(GameObject player)
+    public override void LeftTapAction(GameObject player)
+    {
+        Debug.Log("Tapped the left key!");
+    }
+
+    public override void CenterTapAction(GameObject player)
+    {
+        Debug.Log("Tapped the center key!");
+    }
+
+    public override void RightTapAction(GameObject player)
+    {
+        Debug.Log("Tapped the right key!");
+    }
+
+    public override void UpHeldAction(GameObject player)
     {
         player.transform.Translate(0f, 0.5f, 0f);
     }
 
-    public override void RightAction(GameObject player)
+    public override void LeftHeldAction(GameObject player)
+    {
+        player.transform.Translate(-0.5f, 0f, 0f);
+    }
+
+    public override void CenterHeldAction(GameObject player)
+    {
+        player.transform.Translate(0f, -0.5f, 0f);
+    }
+
+    public override void RightHeldAction(GameObject player)
     {
         player.transform.Translate(0.5f, 0f, 0f);
+    }
+
+    public override void UpRelAction(GameObject player)
+    {
+        Debug.Log("Released the up key!");
+    }
+
+    public override void LeftRelAction(GameObject player)
+    {
+        Debug.Log("Released the left key!");
+    }
+
+    public override void CenterRelAction(GameObject player)
+    {
+        Debug.Log("Released the center key!");
+    }
+
+    public override void RightRelAction(GameObject player)
+    {
+        Debug.Log("Released the right key!");
     }
 
     public override void GameEnd()
     {
         //Checks if the score of the first player is greater than the other player.
-        if(GameManager.Instance.PlayerOne.GetComponent<Stats>().MiniGameScore > GameManager.Instance.PlayerTwo.GetComponent<Stats>().MiniGameScore)
+        if(PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
         {
             Debug.Log("Player One wins!");
         }
-        else if (GameManager.Instance.PlayerOne.GetComponent<Stats>().MiniGameScore < GameManager.Instance.PlayerTwo.GetComponent<Stats>().MiniGameScore)
+        else if (PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
         {
             Debug.Log("Player Two wins!");
         }
