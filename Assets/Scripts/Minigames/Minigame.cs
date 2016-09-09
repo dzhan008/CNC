@@ -6,18 +6,14 @@ Requirements: This must be attached to the prefab of where your minigame should 
 
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public abstract class Minigame : MonoBehaviour
 {
 
     protected float TimeLeft = 0;
     protected float TimeLimit;
-    protected bool TimerOn;
+    protected bool TimerOn = false;
     protected bool Finished = false;
-
-    //Used to display the timer, if needed.
-    public Text Timer;
 
     /// <summary>
     /// This is a simple timer that will subtract the time left each second.
@@ -27,7 +23,6 @@ public abstract class Minigame : MonoBehaviour
     public int CountDown(float rate)
     {
             TimeLeft -= Time.deltaTime * rate;
-            Timer.text = "Time: " + (int)TimeLeft;
             if (TimeLeft < 0)
             {
                 return -1;
