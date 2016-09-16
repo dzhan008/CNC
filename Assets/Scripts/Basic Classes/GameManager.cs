@@ -8,6 +8,15 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum States
+{
+    MainMenu,
+    InGame,
+    Results,
+    EndGame,
+    Debug
+}
+
 public class GameManager : Singleton<GameManager>
 {
     public Dictionary<int, KeyValuePair<GameObject, Stats>> Players;
@@ -38,7 +47,7 @@ public class GameManager : Singleton<GameManager>
         MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
         MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
 
-        GameObject new_game = (GameObject)Instantiate(MiniGames[0]);
+        GameObject new_game = (GameObject)Instantiate(Random.Range(0, MiniGames.Count));
         CurrentMiniGame = new_game;
 	}
 	

@@ -4,7 +4,7 @@
 Temp/
 Obj/
 UnityGenerated/
-Library/
+Library/*
 Assets/Standard\ Assets/
 Assets/Editor/
 SavedData/
