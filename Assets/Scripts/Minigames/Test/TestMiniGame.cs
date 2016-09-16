@@ -7,6 +7,7 @@ Requirements: A minigame prefab.
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class TestMiniGame : Minigame {
 
@@ -16,16 +17,22 @@ public class TestMiniGame : Minigame {
     Stats PlayerOneStats;
     Stats PlayerTwoStats;
 
+    //Used to display the timer, if needed.
+    public Text Timer;
+
     // Use this for initialization
     void Start ()
     {
+        //Initialize time
+        TimerOn = true;
+        TimeLeft = 5;
+
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
 
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
-        //Initialize time
-        TimeLeft = 5;
+
         //Set player's positions/controls
         PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
         PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
@@ -38,12 +45,16 @@ public class TestMiniGame : Minigame {
 	// Update logic for this minigame
     void Update()
     {
-        if(!Finished)
+        if(!Finished && TimerOn)
         {
             if (CountDown(1) != 0)
             {
                 Finished = true;
                 GameEnd();
+            }
+            else
+            {
+                Timer.text = "Time: " + (int)TimeLeft;
             }
         }
     }

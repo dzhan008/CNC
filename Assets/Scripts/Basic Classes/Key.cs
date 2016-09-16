@@ -43,7 +43,9 @@ public class Key
 
     }
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Update call for all the key states. If a state returns true, call the function for that state.
+    /// </summary>
 	public void UpdateKeys()
     {
         ButtonDown = Input.GetButtonDown(Button);
@@ -65,16 +67,28 @@ public class Key
         }
     }
 
+    /// <summary>
+    /// Sets the function for a tap control.
+    /// </summary>
+    /// <param name="action_tap"></param>
     public void SetTapControl(TapA action_tap)
     {
         TapAction = action_tap;
     }
 
+    /// <summary>
+    /// Sets the function for a held control.
+    /// </summary>
+    /// <param name="action_held"></param>
     public void SetHeldControl(HeldA action_held)
     {
         HeldAction = action_held;
     }
 
+    /// <summary>
+    /// Sets the function for a release control.
+    /// </summary>
+    /// <param name="action_release"></param>
     public void SetReleaseControl(RelA action_release)
     {
         ReleaseAction = action_release;

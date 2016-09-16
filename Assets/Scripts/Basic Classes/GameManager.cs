@@ -10,10 +10,8 @@ using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager>
 {
-    public GameObject PlayerOne;
-    public GameObject PlayerTwo;
-
     public Dictionary<int, KeyValuePair<GameObject, Stats>> Players;
+    private List<int> PlayerIDs;
 
     private List<GameObject> MiniGames; //List of prefabs to be loaded
     private GameObject CurrentMiniGame;
@@ -21,11 +19,13 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
         Players = new Dictionary<int, KeyValuePair<GameObject, Stats> >();
+        PlayerIDs = new List<int>();
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
 
         for(int i = 0; i < tempPlayers.Length; i++)
         {
             Players.Add(tempPlayers[i].GetComponent<Stats>().Id, new KeyValuePair<GameObject, Stats>(tempPlayers[i], tempPlayers[i].GetComponent<Stats>()));
+            PlayerIDs.Add(tempPlayers[i].GetComponent<Stats>().Id);
         }
     }
 
@@ -53,9 +53,10 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void QueueNewGame()
     {
-        PlayerOne.GetComponent<Stats>().ResetMiniGameScore();
-        PlayerTwo.GetComponent<Stats>().ResetMiniGameScore();
-
+        for(int i = 0; i < PlayerIDs.Count; i++)
+        {
+                Players[PlayerIDs[i]].Value.ResetMiniGameScore();
+        }
         GameObject mini_game = CurrentMiniGame;
         MiniGames.RemoveAt(0);
         Destroy(mini_game);
