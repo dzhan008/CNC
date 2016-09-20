@@ -11,18 +11,21 @@ using UnityEngine.UI;
 
 public class TestMiniGame : Minigame {
 
-    GameObject PlayerOne;
-    GameObject PlayerTwo;
+    private GameObject PlayerOne;
+    private GameObject PlayerTwo;
 
-    Stats PlayerOneStats;
-    Stats PlayerTwoStats;
+    private Stats PlayerOneStats;
+    private Stats PlayerTwoStats;
 
     //Used to display the timer, if needed.
     public Text Timer;
 
+
+
     // Use this for initialization
     void Start ()
     {
+        Debug.Log("Minigame Initializing!");
         //Initialize time
         TimerOn = true;
         TimeLeft = 5;
@@ -36,6 +39,10 @@ public class TestMiniGame : Minigame {
         //Set player's positions/controls
         PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
         PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
+
+        Debug.Log(PlayerOneStats.Intel);
+        Debug.Log(PlayerOneStats.Str);
+        Debug.Log(PlayerOneStats.Dex);
 
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
