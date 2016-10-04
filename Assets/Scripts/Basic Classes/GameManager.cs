@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public enum States
 {
-    MainMenu,
+    MainMenu = 0,
     InGame,
     Results,
     EndGame,
@@ -19,14 +19,18 @@ public enum States
 
 public class GameManager : Singleton<GameManager>
 {
+    States GameStates;
+
     public Dictionary<int, KeyValuePair<GameObject, Stats>> Players;
     private List<int> PlayerIDs;
 
     private List<GameObject> MiniGames; //List of prefabs to be loaded
     private GameObject CurrentMiniGame;
+    private int CurrentMiniGameIndex = 0;
 
     void Awake()
     {
+
         Players = new Dictionary<int, KeyValuePair<GameObject, Stats> >();
         PlayerIDs = new List<int>();
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -36,6 +40,7 @@ public class GameManager : Singleton<GameManager>
             Players.Add(tempPlayers[i].GetComponent<Stats>().Id, new KeyValuePair<GameObject, Stats>(tempPlayers[i], tempPlayers[i].GetComponent<Stats>()));
             PlayerIDs.Add(tempPlayers[i].GetComponent<Stats>().Id);
         }
+        Debug.Log("Game Manager Initializing!");
     }
 
     /// <summary>
@@ -43,13 +48,23 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     void Start ()
     {
-        MiniGames = new List<GameObject>();
-        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
-        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+        GameStates = States.Debug;
+        if(GameStates != States.Debug)
+        {
+            MiniGames = new List<GameObject>();
+            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+            LoadMiniGame();
+        }
 
-        GameObject new_game = (GameObject)Instantiate(Random.Range(0, MiniGames.Count));
-        CurrentMiniGame = new_game;
 	}
+
+    private void LoadMiniGame()
+    {
+        CurrentMiniGameIndex = Random.Range(0, MiniGames.Count);
+        GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
+        CurrentMiniGame = new_game;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -67,8 +82,8 @@ public class GameManager : Singleton<GameManager>
                 Players[PlayerIDs[i]].Value.ResetMiniGameScore();
         }
         GameObject mini_game = CurrentMiniGame;
-        MiniGames.RemoveAt(0);
+        MiniGames.RemoveAt(CurrentMiniGameIndex);
         Destroy(mini_game);
-        CurrentMiniGame = (GameObject)Instantiate(MiniGames[0]);
+        LoadMiniGame();
     }
 }
