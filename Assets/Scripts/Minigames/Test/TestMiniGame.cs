@@ -7,28 +7,42 @@ Requirements: A minigame prefab.
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class TestMiniGame : Minigame {
 
-    GameObject PlayerOne;
-    GameObject PlayerTwo;
+    private GameObject PlayerOne;
+    private GameObject PlayerTwo;
 
-    Stats PlayerOneStats;
-    Stats PlayerTwoStats;
+    private Stats PlayerOneStats;
+    private Stats PlayerTwoStats;
+
+    //Used to display the timer, if needed.
+    public Text Timer;
+
+
 
     // Use this for initialization
     void Start ()
     {
+        Debug.Log("Minigame Initializing!");
+        //Initialize time
+        TimerOn = true;
+        TimeLeft = 5;
+
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
 
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
-        //Initialize time
-        TimeLeft = 5;
+
         //Set player's positions/controls
         PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
         PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
+
+        Debug.Log(PlayerOneStats.Intel);
+        Debug.Log(PlayerOneStats.Str);
+        Debug.Log(PlayerOneStats.Dex);
 
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
@@ -38,12 +52,16 @@ public class TestMiniGame : Minigame {
 	// Update logic for this minigame
     void Update()
     {
-        if(!Finished)
+        if(!Finished && TimerOn)
         {
             if (CountDown(1) != 0)
             {
                 Finished = true;
                 GameEnd();
+            }
+            else
+            {
+                Timer.text = "Time: " + (int)TimeLeft;
             }
         }
     }

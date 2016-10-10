@@ -43,8 +43,8 @@ public class Goal : MonoBehaviour
     /// </summary>
     void ResetPosition()
     {
-        GameManager.Instance.PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
-        GameManager.Instance.PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
+        GameManager.Instance.Players[1].Key.transform.position = new Vector3(-30f, 5f, 0f);
+        GameManager.Instance.Players[2].Key.transform.position = new Vector3(-20f, 5f, 0f);
     }
 
 }

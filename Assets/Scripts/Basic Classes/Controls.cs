@@ -21,7 +21,7 @@ public class Controls : MonoBehaviour
     string RightButton;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         int id = this.GetComponent<Stats>().Id;
 
