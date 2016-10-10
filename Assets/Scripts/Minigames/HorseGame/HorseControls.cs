@@ -8,6 +8,9 @@ public class HorseControls : Minigame {
 
     Stats PlayerOneStats;
     Stats PlayerTwoStats;
+
+    Transform PlayerOneMove;
+    Transform PlayerTwoMove;
     // Use this for initialization
     void Start () {
         PlayerOne = GameManager.Instance.Players[1].Key;
@@ -22,6 +25,7 @@ public class HorseControls : Minigame {
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
+        PlayerOneMove = PlayerOne.GetComponentInChildren < Transform >();
     }
 	
 	// Update is called once per frame
