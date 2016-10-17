@@ -80,8 +80,8 @@ public class DragonMiniGame : Minigame
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls
-        PlayerOne.transform.position = new Vector3(-30f, 6.5f, 0f);
-        PlayerTwo.transform.position = new Vector3(-20f, 2.7f, 0f);
+        PlayerOne.transform.position = new Vector3(-30f, 7.48f, 0f);
+        PlayerTwo.transform.position = new Vector3(-30f, 2.81f, 0f);
 
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
@@ -104,6 +104,7 @@ public class DragonMiniGame : Minigame
 
             }
         }
+    }
 
  public override void UpTapAction(GameObject player)
     {
@@ -183,4 +184,4 @@ public class DragonMiniGame : Minigame
         GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
     }
 }
-}
+

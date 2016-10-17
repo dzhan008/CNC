@@ -52,8 +52,8 @@ public class GameManager : Singleton<GameManager>
         if(GameStates != States.Debug)
         {
             MiniGames = new List<GameObject>();
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/DragonGame"));
+            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/DragonGame"));
             LoadMiniGame();
         }
 

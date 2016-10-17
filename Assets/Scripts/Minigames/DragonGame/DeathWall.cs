@@ -37,5 +37,5 @@ public class DeathWall : MonoBehaviour
         GameManager.Instance.Players[2].Key.transform.position = new Vector3(-20f, 5f, 0f);
     }
 }
-}
+
 
