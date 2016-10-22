@@ -27,7 +27,7 @@ public class PongOutMain : Minigame
     {
         Debug.Log("Minigame Initializing!");
         //Initialize time
-        TimerOn = true;
+        TimerOn = false;
         TimeLeft = 5;
 
         PlayerOne = GameManager.Instance.Players[1].Key;
@@ -84,7 +84,8 @@ public class PongOutMain : Minigame
 
     public override void UpHeldAction(GameObject player)
     {
-
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        rb.MovePosition(rb.position + new Vector2(0, Speed) * Time.deltaTime);
     }
 
     public override void LeftHeldAction(GameObject player)
@@ -95,7 +96,8 @@ public class PongOutMain : Minigame
 
     public override void CenterHeldAction(GameObject player)
     {
-
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        rb.MovePosition(rb.position + new Vector2(0, -Speed) * Time.deltaTime);
     }
 
     public override void RightHeldAction(GameObject player)
