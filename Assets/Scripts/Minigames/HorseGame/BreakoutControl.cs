@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HorseControls : Minigame {
+public class BreakoutControl : Minigame
+{
 
     GameObject PlayerOne;
     GameObject PlayerTwo;
@@ -20,7 +21,8 @@ public class HorseControls : Minigame {
     Vector3 Forward2;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
 
@@ -29,29 +31,20 @@ public class HorseControls : Minigame {
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls
-        
+
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
-        
+
 
     }
 
     // Update is called once per frame
-    void Update () {
-        Forward1 = PlayerOneMove.position - PlayerOne.transform.position;
-        Forward2 = PlayerTwoMove.position - PlayerTwo.transform.position;
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            RaceStart = !RaceStart;
-        }
-        if (RaceStart == true)
-        {
-            PlayerOne.GetComponent<Rigidbody2D>().AddForce(Forward1 * P1Speed);
-            PlayerTwo.GetComponent<Rigidbody2D>().AddForce(Forward2 * P2Speed);
-        }
-	
-	}
+    void Update()
+    {
+
+
+    }
     public override void UpTapAction(GameObject player)
     {
         Debug.Log("Tapped the up key!");
@@ -60,7 +53,7 @@ public class HorseControls : Minigame {
     public override void LeftTapAction(GameObject player)
     {
         //Quaternion Turn = Quaternion.Euler(0, 0, TurnAngle);
-        
+
 
         Debug.Log("Tapped the left key!");
     }
@@ -77,23 +70,25 @@ public class HorseControls : Minigame {
 
     public override void UpHeldAction(GameObject player)
     {
+        Vector2 v = new Vector2(0, 1);
+        player.GetComponent<Rigidbody2D>().AddForce(v * P1Speed);
         //player.transform.Translate(0f, 0.5f, 0f);
     }
 
     public override void LeftHeldAction(GameObject player)
     {
-        player.transform.Rotate(0, 0, TurnAngle);
         //player.transform.Translate(-0.5f, 0f, 0f);
     }
 
     public override void CenterHeldAction(GameObject player)
     {
+        Vector2 v = new Vector2(0, -1);
+        player.GetComponent<Rigidbody2D>().AddForce(v * P1Speed);
         //player.transform.Translate(0f, -0.5f, 0f);
     }
 
     public override void RightHeldAction(GameObject player)
     {
-        player.transform.Rotate(0, 0, -TurnAngle);
         //player.transform.Translate(0.5f, 0f, 0f);
     }
 
@@ -119,5 +114,17 @@ public class HorseControls : Minigame {
 
     public override void GameEnd()
     {
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if(coll.gameObject.tag  == "ball")
+        {
+            Vector2 zero = new Vector2(0, 0);
+            Vector2 EntryVector = coll.gameObject.GetComponent<Rigidbody2D>().velocity;
+            coll.gameObject.GetComponent<Rigidbody2D>().velocity = zero;
+            
+
+        }
     }
 }
