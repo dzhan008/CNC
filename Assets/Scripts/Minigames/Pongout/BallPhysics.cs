@@ -11,6 +11,9 @@ using System.Collections;
 public class BallPhysics : MonoBehaviour
 {
     [SerializeField]
+    private int BallId = 1;
+
+    [SerializeField]
     private float BallSpeed = 10f;
 
     [SerializeField]
