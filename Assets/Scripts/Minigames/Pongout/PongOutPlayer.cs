@@ -13,15 +13,15 @@ public class PongOutPlayer : MonoBehaviour {
 	
 	}
 
-    private IEnumerator ResetVelocity(GameObject other, float time, bool Hold)
+    private IEnumerator ResetVelocity(GameObject other, float time)
     {
         Vector2 Zero = new Vector2(0, 0);
         Vector2 Entry = other.GetComponent<Rigidbody2D>().velocity;
         other.GetComponent<Rigidbody2D>().velocity = Zero;
-        if (Hold == true)
-        {
-            yield return null;
-        }
+        //if (Hold == true)
+        //{
+          //  yield return null;
+       // }
         yield return new WaitForSeconds(time);
         other.GetComponent<Rigidbody2D>().velocity = Entry;
 
