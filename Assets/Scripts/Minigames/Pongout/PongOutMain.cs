@@ -84,6 +84,12 @@ public class PongOutMain : Minigame
 
     public override void UpHeldAction(GameObject player)
     {
+        if(player.GetComponent<PongOutPlayer>().holding != null )
+        {
+            Debug.Log("Holding is ture");
+            Rigidbody2D ball = player.GetComponent<Rigidbody2D>();
+            ball.MovePosition(ball.position + new Vector2(0, Speed) * Time.deltaTime);
+        }
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         rb.MovePosition(rb.position + new Vector2(0, Speed) * Time.deltaTime);
     }

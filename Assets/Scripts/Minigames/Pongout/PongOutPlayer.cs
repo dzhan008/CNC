@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PongOutPlayer : MonoBehaviour {
     public string Tag = "Ball";
+    public GameObject holding = null;
 	// Use this for initialization
 	void Start () {
 	
@@ -15,16 +16,19 @@ public class PongOutPlayer : MonoBehaviour {
 
     private IEnumerator ResetVelocity(GameObject other, float time)
     {
+        holding = other;
         Vector2 Zero = new Vector2(0, 0);
         Vector2 Entry = other.GetComponent<Rigidbody2D>().velocity;
         other.GetComponent<Rigidbody2D>().velocity = Zero;
         //if (Hold == true)
         //{
-          //  yield return null;
-       // }
+        //  yield return null;
+        // }
+        other.transform.parent = this.transform;
         yield return new WaitForSeconds(time);
+        other.transform.parent = null; 
         other.GetComponent<Rigidbody2D>().velocity = Entry;
-
+        holding = null;
     }
 
 
@@ -32,7 +36,7 @@ public class PongOutPlayer : MonoBehaviour {
     {
         if(col.gameObject.tag == Tag)
         {
-            float StoppedTime = 0.01f;
+            float StoppedTime = 2.01f;
             StartCoroutine(ResetVelocity(col.gameObject, StoppedTime));
         }
     }

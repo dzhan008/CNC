@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Pongout.unity
+- path: Assets/Scenes/pp.unity
   isLoaded: 1
   isActive: 1
