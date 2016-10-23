@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class Artifact : MonoBehaviour {
 
     float Health = 50;
     public int ArtifactId;
     float BaseDamage = 5f;
+
+    GameObject MainCanvas;
+
+
+
 	// Use this for initialization
 	void Start () {
-	
+        MainCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (Health <= 0)
         {
+            GameManager.Instance.Players[ArtifactId].Value.MiniGameScore += 10;
+            MainCanvas.GetComponent<MainCanvas>().EditText(ArtifactId);
             gameObject.SetActive(false);
         }
 	

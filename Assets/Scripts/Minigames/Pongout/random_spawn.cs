@@ -43,16 +43,16 @@ public class random_spawn : MonoBehaviour {
 	// Random Position generator.
 	Vector3 Random_Position () {
 		// Spawn a random position for x and y, z stays 0.
-		int x = UnityEngine.Random.Range (1, 11);
-		int y = UnityEngine.Random.Range (1, 3);
+		int x = UnityEngine.Random.Range (1, 15);
+		int y = UnityEngine.Random.Range (1, 5);
 		if (index != 0) {
 			for (int i = 0; i < x_positions.Length; i++) {
 				Debug.Log ("i " + i);
 				// If the position was already taken.
 				if (x == x_positions [i] && y == y_positions [i]) {
 					Debug.Log ("same" + x);
-					x = UnityEngine.Random.Range (1, 11);
-					y = UnityEngine.Random.Range (1, 3);
+					x = UnityEngine.Random.Range (1, 15);
+					y = UnityEngine.Random.Range (1, 5);
 					Debug.Log ("after" + x);
 					// Recheck
 					i = -1;

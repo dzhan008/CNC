@@ -20,16 +20,16 @@ public class PongOutMain : Minigame
     private Stats PlayerTwoStats;
 
     //Used to display the timer, if needed.
-    //public Text Timer;
-
+    public Text Timer;
+    GameObject Maincanvas;
     // Use this for initialization
     void Start()
     {
         Debug.Log("Minigame Initializing!");
         //Initialize time
-        TimerOn = false;
-        TimeLeft = 5;
-
+        TimerOn = true;
+        TimeLeft = 30;
+        Maincanvas = GameObject.FindGameObjectWithTag("MainCanvas"); 
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
 
@@ -52,16 +52,26 @@ public class PongOutMain : Minigame
         {
             if (CountDown(1) != 0)
             {
-                Finished = true;
-                GameEnd();
+                //Finished = true;
+                //GameEnd();
+                Maincanvas.transform.GetChild(2).gameObject.SetActive(true);
+                Maincanvas.transform.GetChild(3).gameObject.SetActive(true);
+                Maincanvas.GetComponent<MainCanvas>().WinMsg();
+                StartCoroutine(Wait());
+                
+                
             }
             else
             {
-                //Timer.text = "Time: " + (int)TimeLeft;
+                Timer.text = "Time: " + (int)TimeLeft;
             }
         }
     }
-
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(10);
+        Application.LoadLevel("PONGOUTTITLE");
+    }
     public override void UpTapAction(GameObject player)
     {
         //Debug.Log("Tapped the up key!");
@@ -157,6 +167,6 @@ public class PongOutMain : Minigame
         }
         GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
     }
-
+    
     
 }
