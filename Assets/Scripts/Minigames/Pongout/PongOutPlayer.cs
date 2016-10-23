@@ -27,6 +27,7 @@ public class PongOutPlayer : MonoBehaviour {
         // }
         other.transform.parent = this.transform;
         yield return new WaitForSeconds(time);
+        
         other.transform.parent = null; 
         other.GetComponent<Rigidbody2D>().velocity = Entry;
         holding = null;
@@ -34,10 +35,10 @@ public class PongOutPlayer : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("123");
+        Debug.Log("Colliding With Paddle");
         if(col.gameObject.tag == Tag )
         {
-            float StoppedTime = 2.01f;
+            float StoppedTime = this.GetComponent<Stats>().Intel /10;
             StartCoroutine(ResetVelocity(col.gameObject, StoppedTime));
         }
     }
