@@ -35,7 +35,7 @@ public class PongOutMain : Minigame
 
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
-
+        //int s =  GameManager.Instance.Players[2].Value.Str = 0;
         //Set player's positions/controls
         //PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
         //PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
@@ -84,7 +84,7 @@ public class PongOutMain : Minigame
 
     public override void UpHeldAction(GameObject player)
     {
-        player.transform.Translate(new Vector2(0, Speed) * Time.fixedDeltaTime);
+        //player.transform.Translate(new Vector2(0, Speed) * Time.fixedDeltaTime);
         //if(player.GetComponent<PongOutPlayer>().holding != null )
         //{
         //    Debug.Log("Holding is true");
@@ -96,13 +96,14 @@ public class PongOutMain : Minigame
 
     public override void LeftHeldAction(GameObject player)
     {
+        player.transform.Translate(new Vector2(-Speed, 0) * Time.fixedDeltaTime);
         //Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         //rb.MovePosition(rb.position + new Vector2(-Speed, 0) * Time.deltaTime);
     }
 
     public override void CenterHeldAction(GameObject player)
     {
-        player.transform.Translate(new Vector2(0, -Speed) * Time.fixedDeltaTime);
+        //player.transform.Translate(new Vector2(0, -Speed) * Time.fixedDeltaTime);
         //if (player.GetComponent<PongOutPlayer>().holding != null)
         //{
         //    Debug.Log("Holding is true");
@@ -114,6 +115,7 @@ public class PongOutMain : Minigame
 
     public override void RightHeldAction(GameObject player)
     {
+        player.transform.Translate(new Vector2(Speed, 0) * Time.fixedDeltaTime);
         //Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         //rb.MovePosition(rb.position + new Vector2(Speed, 0) * Time.deltaTime);
     }
@@ -156,5 +158,5 @@ public class PongOutMain : Minigame
         GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
     }
 
-
+    
 }
