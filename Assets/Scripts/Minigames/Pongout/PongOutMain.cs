@@ -64,72 +64,78 @@ public class PongOutMain : Minigame
 
     public override void UpTapAction(GameObject player)
     {
-        Debug.Log("Tapped the up key!");
+        //Debug.Log("Tapped the up key!");
     }
 
     public override void LeftTapAction(GameObject player)
     {
-        Debug.Log("Tapped the left key!");
+        //Debug.Log("Tapped the left key!");
     }
 
     public override void CenterTapAction(GameObject player)
     {
-        Debug.Log("Tapped the center key!");
+        //Debug.Log("Tapped the center key!");
     }
 
     public override void RightTapAction(GameObject player)
     {
-        Debug.Log("Tapped the right key!");
+        //Debug.Log("Tapped the right key!");
     }
 
     public override void UpHeldAction(GameObject player)
     {
-        if(player.GetComponent<PongOutPlayer>().holding != null )
-        {
-            Debug.Log("Holding is ture");
-            Rigidbody2D ball = player.GetComponent<Rigidbody2D>();
-            ball.MovePosition(ball.position + new Vector2(0, Speed) * Time.deltaTime);
-        }
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        rb.MovePosition(rb.position + new Vector2(0, Speed) * Time.deltaTime);
+        player.transform.Translate(new Vector2(0, Speed) * Time.fixedDeltaTime);
+        //if(player.GetComponent<PongOutPlayer>().holding != null )
+        //{
+        //    Debug.Log("Holding is true");
+        //    player.GetComponent<PongOutPlayer>().holding.transform.Translate(new Vector2(0, Speed) * Time.deltaTime);
+        //}
+        //Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        //rb.MovePosition(rb.position + new Vector2(0, Speed) * Time.deltaTime);
     }
 
     public override void LeftHeldAction(GameObject player)
     {
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        rb.MovePosition(rb.position + new Vector2(-Speed, 0) * Time.deltaTime);
+        //Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        //rb.MovePosition(rb.position + new Vector2(-Speed, 0) * Time.deltaTime);
     }
 
     public override void CenterHeldAction(GameObject player)
     {
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        rb.MovePosition(rb.position + new Vector2(0, -Speed) * Time.deltaTime);
+        player.transform.Translate(new Vector2(0, -Speed) * Time.fixedDeltaTime);
+        //if (player.GetComponent<PongOutPlayer>().holding != null)
+        //{
+        //    Debug.Log("Holding is true");
+        //    player.GetComponent<PongOutPlayer>().holding.transform.Translate(new Vector2(0, -Speed) * Time.deltaTime);
+        //}
+        //Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        //rb.MovePosition(rb.position + new Vector2(0, -Speed) * Time.deltaTime);
     }
 
     public override void RightHeldAction(GameObject player)
     {
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        rb.MovePosition(rb.position + new Vector2(Speed, 0) * Time.deltaTime);
+        //Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        //rb.MovePosition(rb.position + new Vector2(Speed, 0) * Time.deltaTime);
     }
 
     public override void UpRelAction(GameObject player)
     {
-        Debug.Log("Released the up key!");
+        //Debug.Log("Released the up key!");
     }
 
     public override void LeftRelAction(GameObject player)
     {
-        Debug.Log("Released the left key!");
+        //Debug.Log("Released the left key!");
     }
 
     public override void CenterRelAction(GameObject player)
     {
-        Debug.Log("Released the center key!");
+        //Debug.Log("Released the center key!");
     }
 
     public override void RightRelAction(GameObject player)
     {
-        Debug.Log("Released the right key!");
+        //Debug.Log("Released the right key!");
     }
 
     public override void GameEnd()

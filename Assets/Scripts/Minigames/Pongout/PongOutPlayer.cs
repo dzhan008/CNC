@@ -16,6 +16,7 @@ public class PongOutPlayer : MonoBehaviour {
 
     private IEnumerator ResetVelocity(GameObject other, float time)
     {
+
         holding = other;
         Vector2 Zero = new Vector2(0, 0);
         Vector2 Entry = other.GetComponent<Rigidbody2D>().velocity;
@@ -31,10 +32,10 @@ public class PongOutPlayer : MonoBehaviour {
         holding = null;
     }
 
-
     void OnCollisionEnter2D(Collision2D col)
     {
-        if(col.gameObject.tag == Tag)
+        Debug.Log("123");
+        if(col.gameObject.tag == Tag )
         {
             float StoppedTime = 2.01f;
             StartCoroutine(ResetVelocity(col.gameObject, StoppedTime));
