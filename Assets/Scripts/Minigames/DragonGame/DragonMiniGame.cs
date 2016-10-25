@@ -13,7 +13,14 @@ public class DragonMiniGame : Minigame
     Stats PlayerTwoStats;
     //Used to display the timer, if needed.
     public Text Timer;
-    /*Strength*/
+
+	[SerializeField]
+	private GameObject GroundOne;
+	[SerializeField]
+	private GameObject GroundTwo;
+
+	public float playerDrag = 5;
+    /*Contains the skills/abilities value of each player*/
     Dictionary<string, float> P1Skills = new Dictionary<string, float>();
     Dictionary<string, float> P2Skills = new Dictionary<string, float>();
 
@@ -38,8 +45,22 @@ public class DragonMiniGame : Minigame
     /// </summary>
     float jumpHeightCalc(Stats Player)
     {
-        return 1;
+        return 400;
     }
+	float baseSpeedCalc(Stats Player)
+	{
+		return 5;
+	}
+	void updateSpeed(GameObject player)
+	{
+		float speed = 0;
+		if (player == PlayerOne)
+			speed = P1Skills ["baseSpeed"];
+		else
+			speed = P2Skills ["baseSpeed"];
+		float totalSpeed = speed - playerDrag;
+		player.transform.Translate(totalSpeed, 0f, 0f);
+	}
     // Use this for initialization
     void InitSkills()
     {
@@ -53,6 +74,7 @@ public class DragonMiniGame : Minigame
         P1Skills.Add("chickenCharges", 3);
         //Dexterity P1
         P1Skills.Add("jumpHeight", jumpHeightCalc(PlayerOneStats));
+		P1Skills.Add("baseSpeed", baseSpeedCalc(PlayerOneStats));
 
         //Strength P2
         P2Skills.Add("sprintbar", 100);
@@ -64,13 +86,15 @@ public class DragonMiniGame : Minigame
         P2Skills.Add("chickenCharges", 3);
         //Dexterity P2
         P2Skills.Add("jumpHeight", jumpHeightCalc(PlayerTwoStats));
+		P2Skills.Add("baseSpeed", baseSpeedCalc(PlayerTwoStats));
+
     }
     void Start()
     {
         //Set the skill values of each player
         InitSkills();
         //Initialize time
-        TimerOn = true;
+        TimerOn = false;
         TimeLeft = 5000;
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
@@ -91,7 +115,7 @@ public class DragonMiniGame : Minigame
     // Update logic for this minigame
     void Update()
     {
-        if (!Finished)
+        if (!Finished && TimerOn)
         {
             if (CountDown(1) != 0)
             {
@@ -101,24 +125,53 @@ public class DragonMiniGame : Minigame
             else
             {
                 Timer.text = "Time: " + (int)TimeLeft;
-
             }
         }
+		updateSpeed(PlayerOne);
+		updateSpeed(PlayerTwo);
     }
 
- public override void UpTapAction(GameObject player)
+ 	public override void UpTapAction(GameObject player)
     {
         Debug.Log("Tapped the up key!");
     }
-
+		
     public override void LeftTapAction(GameObject player)
     {
-        Debug.Log("Tapped the left key!");
+		float jump_height = 0;
+		GameObject ground; 
+		if (player == PlayerOne) {
+			jump_height = P1Skills["jumpHeight"];
+			ground = GroundOne;
+
+		} else {
+			jump_height = P2Skills["jumpHeight"];
+			ground = GroundTwo;
+		}
+		
+		if (ground.GetComponent<Ground>().isColliding) {
+			
+			player.GetComponent<Rigidbody2D> ().AddForce (player.transform.up * jump_height);
+		}
+
+
     }
 
+
+	public void updateSprint (GameObject player)
+	{
+		
+	}
     public override void CenterTapAction(GameObject player)
     {
-        Debug.Log("Tapped the center key!");
+		float sprint_duration = 0;
+		if (player == PlayerOne) {
+			sprint_duration = P1Skills["sprintDuration"];
+
+		} else {
+			sprint_duration = P2Skills["sprintDuration"];
+		}
+			
     }
 
     public override void RightTapAction(GameObject player)
@@ -133,7 +186,8 @@ public class DragonMiniGame : Minigame
 
     public override void LeftHeldAction(GameObject player)
     {
-        player.transform.Translate(-0.5f, 0f, 0f);
+        //player.transform.Translate(-0.5f, 0f, 0f);
+
     }
 
     public override void CenterHeldAction(GameObject player)
