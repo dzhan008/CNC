@@ -24,6 +24,12 @@ public class DragonMiniGame : Minigame
     Dictionary<string, float> P1Skills = new Dictionary<string, float>();
     Dictionary<string, float> P2Skills = new Dictionary<string, float>();
 
+    [SerializeField]
+    private PlayerStat Sprint;
+    private void Awake()
+    {
+        Sprint.Initialize();
+    }
     /// <summary>
     /// Description: Calculates the duration of sprint
     /// </summary>
@@ -164,14 +170,8 @@ public class DragonMiniGame : Minigame
 	}
     public override void CenterTapAction(GameObject player)
     {
-		float sprint_duration = 0;
-		if (player == PlayerOne) {
-			sprint_duration = P1Skills["sprintDuration"];
-
-		} else {
-			sprint_duration = P2Skills["sprintDuration"];
-		}
-			
+        Sprint.CurrentVal -= 10;
+	
     }
 
     public override void RightTapAction(GameObject player)
