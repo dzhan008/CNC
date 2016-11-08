@@ -64,6 +64,7 @@ public class GameManager : Singleton<GameManager>
         CurrentMiniGameIndex = Random.Range(0, MiniGames.Count);
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;
+        GameStates = States.InGame;
     }
 	
 	// Update is called once per frame
@@ -77,6 +78,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void QueueNewGame()
     {
+
         for(int i = 0; i < PlayerIDs.Count; i++)
         {
                 Players[PlayerIDs[i]].Value.ResetMiniGameScore();
