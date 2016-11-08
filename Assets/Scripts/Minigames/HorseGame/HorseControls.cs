@@ -14,8 +14,10 @@ public class HorseControls : Minigame {
     public Transform PlayerTwoMove;
     public float P1Speed;
     public float P2Speed;
-    public float TurnAngle;
-
+    float torqueForce = -200f;
+    float driftFactorSticky = 0.9f;
+    float driftFactorSlippy = 1;
+    float maxStickyVelocity = 2.5f;
     Vector3 Forward1;
     Vector3 Forward2;
 
@@ -38,7 +40,7 @@ public class HorseControls : Minigame {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         Forward1 = PlayerOneMove.position - PlayerOne.transform.position;
         Forward2 = PlayerTwoMove.position - PlayerTwo.transform.position;
         if(Input.GetKeyDown(KeyCode.Space))
@@ -77,12 +79,16 @@ public class HorseControls : Minigame {
 
     public override void UpHeldAction(GameObject player)
     {
+        //player.GetComponent<Rigidbody2D>().AddForce(player.GetComponentInChildren<Transform>().localPosition -player.transform.position * P1Speed);
+        //Debug.Log(player.GetComponentInChildren<Transform>().position - player.transform.position);
         //player.transform.Translate(0f, 0.5f, 0f);
     }
 
     public override void LeftHeldAction(GameObject player)
     {
-        player.transform.Rotate(0, 0, TurnAngle);
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        float tf = Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2);
+        rb.angularVelocity =   -tf;
         //player.transform.Translate(-0.5f, 0f, 0f);
     }
 
@@ -93,7 +99,9 @@ public class HorseControls : Minigame {
 
     public override void RightHeldAction(GameObject player)
     {
-        player.transform.Rotate(0, 0, -TurnAngle);
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        float tf = Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2);
+        rb.angularVelocity = tf;
         //player.transform.Translate(0.5f, 0f, 0f);
     }
 
@@ -120,4 +128,5 @@ public class HorseControls : Minigame {
     public override void GameEnd()
     {
     }
+
 }
