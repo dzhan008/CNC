@@ -6,11 +6,13 @@ public class Bullet : MonoBehaviour {
 	// Use this for initialization
 	private GameObject DestructPoint;
 	public float speed;
+    public int damage = 50;
 	// Use this for initialization
 	void Start () 
 	{
 		DestructPoint = GameObject.Find ("BulletDestruct");
 	}
+
 
 	// Update is called once per frame
 	void Update () 

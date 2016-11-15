@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class HuntingMinigame : Minigame {
@@ -8,7 +9,11 @@ public class HuntingMinigame : Minigame {
 	private Stats Player1Stats;
 	private Stats Player2Stats;
 	private GameObject Generator;
-	private ObjectPooler Pooler;
+    private GameObject Generator1;
+    private ObjectPooler Pooler;
+    private ObjectPooler Pooler1;
+	public Text scoreP1;
+	public Text scoreP2;
 	// Use this for initialization
 	void Start () 
 	{
@@ -19,22 +24,45 @@ public class HuntingMinigame : Minigame {
 		SetControls (Player1);
 		SetControls (Player2);
 		Generator = GameObject.Find ("BulletGenerator");
-		Pooler = Generator.GetComponent <ObjectPooler> ();
-	}
+        Generator1 = GameObject.Find("BulletGenerator (1)");
+        Pooler = Generator.GetComponent <ObjectPooler> ();
+        Pooler1 = Generator1.GetComponent<ObjectPooler>();
+    }
 	
 	// Update is called once per frame
 	void Update () 
 	{
-	
+		
+	}
+
+	public void SetScoreP1 () {
+		scoreP1.text = "Score: " + GameManager.Instance.Players [1].Value.MiniGameScore.ToString ();
+	}
+
+	public void SetScoreP2 () {
+		scoreP2.text = "Score: " + GameManager.Instance.Players [2].Value.MiniGameScore.ToString ();
 	}
 
 	public override void UpTapAction(GameObject player)
 	{
 		Transform BulletGenePoint = player.transform.Find ("BulletGenPoint").transform;
-		GameObject NewBullet = Pooler.GetPooledObject ();
-		NewBullet.SetActive (true);
-		NewBullet.transform.position = BulletGenePoint.position;
-	}
+        if(player == Player1)
+        {
+            Debug.Log("pkcfdk");
+            GameObject NewBullet = Pooler.GetPooledObject();
+            NewBullet.SetActive(true);
+            NewBullet.transform.position = BulletGenePoint.position;
+        }
+        else if (player == Player2)
+        {
+            Debug.Log("player2");
+            GameObject NewBullet = Pooler1.GetPooledObject();
+            Debug.Log(NewBullet);
+            NewBullet.SetActive(true);
+            NewBullet.transform.position = BulletGenePoint.position;
+        }
+
+    }
 
 	public override void LeftTapAction(GameObject player)
 	{
@@ -58,17 +86,20 @@ public class HuntingMinigame : Minigame {
 
 	public override void LeftHeldAction(GameObject player)
 	{
-		player.transform.Translate(-0.5f, 0f, 0f);
+		player.transform.Translate(-0.1f, 0f, 0f);
+
 	}
 
 	public override void CenterHeldAction(GameObject player)
 	{
-		player.transform.Translate(0f, -0.5f, 0f);
+		//player.transform.Translate(0f, -0.5f, 0f);
+
 	}
 
 	public override void RightHeldAction(GameObject player)
 	{
-		player.transform.Translate(0.5f, 0f, 0f);
+		player.transform.Translate(0.1f, 0f, 0f);
+
 	}
 
 	public override void UpRelAction(GameObject player)
