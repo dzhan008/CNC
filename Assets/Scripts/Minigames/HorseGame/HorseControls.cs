@@ -35,9 +35,10 @@ public class HorseControls : Minigame {
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
-        
+        P1Speed = GameManager.Instance.Players[1].Value.Dex;
+        P2Speed = GameManager.Instance.Players[2].Value.Dex;
 
-    }
+}
 
     // Update is called once per frame
     void FixedUpdate () {
@@ -49,8 +50,8 @@ public class HorseControls : Minigame {
         }
         if (RaceStart == true)
         {
-            PlayerOne.GetComponent<Rigidbody2D>().AddForce(Forward1 * P1Speed);
-            PlayerTwo.GetComponent<Rigidbody2D>().AddForce(Forward2 * P2Speed);
+            //PlayerOne.GetComponent<Rigidbody2D>().AddForce(Forward1 * P1Speed);
+            //PlayerTwo.GetComponent<Rigidbody2D>().AddForce(Forward2 * P2Speed);
         }
 	
 	}
@@ -79,8 +80,8 @@ public class HorseControls : Minigame {
 
     public override void UpHeldAction(GameObject player)
     {
-        //player.GetComponent<Rigidbody2D>().AddForce(player.GetComponentInChildren<Transform>().localPosition -player.transform.position * P1Speed);
-        //Debug.Log(player.GetComponentInChildren<Transform>().position - player.transform.position);
+        player.GetComponent<Rigidbody2D>().AddForce(player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex );
+        Debug.Log(player.transform.forward);
         //player.transform.Translate(0f, 0.5f, 0f);
     }
 
