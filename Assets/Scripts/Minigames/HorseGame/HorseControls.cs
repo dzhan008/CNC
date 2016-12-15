@@ -14,7 +14,7 @@ public class HorseControls : Minigame {
     public Transform PlayerTwoMove;
     public float P1Speed;
     public float P2Speed;
-    float torqueForce = -200f;
+    public float torqueForce = -100f; //turn speed
     float driftFactorSticky = 0.9f;
     float driftFactorSlippy = 1;
     float maxStickyVelocity = 2.5f;
@@ -42,8 +42,6 @@ public class HorseControls : Minigame {
 
     // Update is called once per frame
     void FixedUpdate () {
-        Forward1 = PlayerOneMove.position - PlayerOne.transform.position;
-        Forward2 = PlayerTwoMove.position - PlayerTwo.transform.position;
         if(Input.GetKeyDown(KeyCode.Space))
         {
             RaceStart = !RaceStart;
