@@ -124,13 +124,21 @@ public class Stats : MonoBehaviour
     }
 
     /// <summary>
+    /// Increment the player's current score by an amount.
+    /// </summary>
+    /// <param name="score"></param>
+    public void AddScore(int score)
+    {
+        Score += score;
+    }
+
+    /// <summary>
     /// Sets the overall score of the player.
     /// </summary>
     /// <param name="new_score"></param>
     public void SetScore(int new_score)
     {
         Score = new_score;
-        ResetMiniGameScore();
     }
 
     /// <summary>

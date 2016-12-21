@@ -6,6 +6,7 @@ Requirements: This must be attached to the prefab of where your minigame should 
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Minigame : MonoBehaviour
 {
@@ -48,6 +49,42 @@ public abstract class Minigame : MonoBehaviour
         player.GetComponent<Controls>().SetTapControls(UpTapAction, LeftTapAction, CenterTapAction, RightTapAction);
         player.GetComponent<Controls>().SetHeldControls(UpHeldAction, LeftHeldAction, CenterHeldAction, RightHeldAction);
         player.GetComponent<Controls>().SetReleaseControls(UpRelAction, LeftRelAction, CenterRelAction, RightRelAction);
+    }
+
+    /// <summary>
+    /// Handles events for when the minigame ends.
+    /// </summary>
+    public void GameEnd()
+    {
+        int highest_score = 0;
+        int winning_ID = 1;
+        List<int> winning_IDs = new List<int>();
+        Dictionary<int, KeyValuePair<GameObject,Stats>> Players = GameManager.Instance.Players;
+        for(int i = 1; i <= Players.Count; i++)
+        {
+            if (Players[i].Value.MiniGameScore >= highest_score)
+            {
+                highest_score = Players[i].Value.MiniGameScore;
+                winning_ID = i;
+            }
+        }
+        for (int i = 1; i <= Players.Count; i++)
+        {
+            if (Players[i].Value.MiniGameScore == highest_score)
+            {
+                winning_IDs.Add(i);
+                Players[i].Value.ResetMiniGameScore();
+            }
+        }
+        for(int i = 0; i < winning_IDs.Count; i++)
+        {
+            string output = "Player ";
+            Players[winning_IDs[i]].Value.AddScore(1);
+            output += i + ", ";
+            Debug.Log(output);
+        }
+        GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
+
     }
 
     /// <summary>
@@ -122,10 +159,5 @@ public abstract class Minigame : MonoBehaviour
     /// </summary>
     /// <param name="player"></param>
     public abstract void RightRelAction(GameObject player);
-
-    /// <summary>
-    /// Handles events for when the minigame ends.
-    /// </summary>
-    public abstract void GameEnd();
 
 }

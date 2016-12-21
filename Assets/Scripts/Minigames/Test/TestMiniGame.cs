@@ -40,10 +40,6 @@ public class TestMiniGame : Minigame {
         PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
         PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
 
-        Debug.Log(PlayerOneStats.Intel);
-        Debug.Log(PlayerOneStats.Str);
-        Debug.Log(PlayerOneStats.Dex);
-
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
@@ -124,23 +120,5 @@ public class TestMiniGame : Minigame {
     public override void RightRelAction(GameObject player)
     {
         Debug.Log("Released the right key!");
-    }
-
-    public override void GameEnd()
-    {
-        //Checks if the score of the first player is greater than the other player.
-        if(PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
-        {
-            Debug.Log("Player One wins!");
-        }
-        else if (PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
-        {
-            Debug.Log("Player Two wins!");
-        }
-        else
-        {
-            Debug.Log("It is a tie!");
-        }
-        GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
     }
 }
