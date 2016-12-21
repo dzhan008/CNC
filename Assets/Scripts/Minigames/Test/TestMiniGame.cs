@@ -28,7 +28,7 @@ public class TestMiniGame : Minigame {
         Debug.Log("Minigame Initializing!");
         //Initialize time
         TimerOn = true;
-        TimeLeft = 999;
+        TimeLeft = 5;
 
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;

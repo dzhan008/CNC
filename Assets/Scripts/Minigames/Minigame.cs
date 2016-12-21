@@ -60,7 +60,7 @@ public abstract class Minigame : MonoBehaviour
         int winning_ID = 1;
         List<int> winning_IDs = new List<int>();
         Dictionary<int, KeyValuePair<GameObject,Stats>> Players = GameManager.Instance.Players;
-        for(int i = 0; i < Players.Count; i++)
+        for(int i = 1; i <= Players.Count; i++)
         {
             if (Players[i].Value.MiniGameScore >= highest_score)
             {
@@ -68,7 +68,7 @@ public abstract class Minigame : MonoBehaviour
                 winning_ID = i;
             }
         }
-        for (int i = 0; i < Players.Count; i++)
+        for (int i = 1; i <= Players.Count; i++)
         {
             if (Players[i].Value.MiniGameScore == highest_score)
             {

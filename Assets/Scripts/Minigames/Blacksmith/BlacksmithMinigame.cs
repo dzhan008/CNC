@@ -67,6 +67,7 @@ public class BlacksmithMinigame : Minigame {
             if(CountDown(1) != 0)
             {
                 Finished = true;
+                GameEnd();
             }
             else
             {
