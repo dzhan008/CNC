@@ -54,7 +54,7 @@ public class Camera2DFollow : MonoBehaviour {
         float Distance = Vector3.Distance(Player1.transform.position, Player2.transform.position);
         this.transform.position = (Player1.transform.position - Player2.transform.position) * 0.5f + Player2.transform.position - midpoint;
         //The camera will always be in the mid point between Player 1 and 2
-        Debug.Log(this.transform.position + "  " + Distance );
+        //Debug.Log(this.transform.position + "  " + Distance );
         //cam.orthographicSize = CamSize;
         transition = true;
         float x = (Distance / 2 + 0.5f);
@@ -62,7 +62,7 @@ public class Camera2DFollow : MonoBehaviour {
         {
             elapsed += Time.deltaTime / duration;
             CamSize = Mathf.SmoothStep(CamSize, 5, elapsed);
-            Debug.Log("Elaped: " + elapsed);
+            //Debug.Log("Elaped: " + elapsed);
             if (elapsed > 1.0)
             {
                 elapsed = 0;

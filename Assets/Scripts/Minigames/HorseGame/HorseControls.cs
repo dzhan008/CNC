@@ -10,6 +10,7 @@ public class HorseControls : Minigame {
     Stats PlayerTwoStats;
 
     public bool RaceStart = false;
+    public bool RaceEnd = false;
     public Transform PlayerOneMove;
     public Transform PlayerTwoMove;
     public float P1Speed;
@@ -20,7 +21,7 @@ public class HorseControls : Minigame {
     float maxStickyVelocity = 2.5f;
     Vector3 Forward1;
     Vector3 Forward2;
-
+    public float Countdown;
     // Use this for initialization
     void Start () {
         PlayerOne = GameManager.Instance.Players[1].Key;
@@ -42,16 +43,11 @@ public class HorseControls : Minigame {
 
     // Update is called once per frame
     void FixedUpdate () {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Countdown <= 0)
         {
-            RaceStart = !RaceStart;
+            RaceStart = true;
         }
-        if (RaceStart == true)
-        {
-            //PlayerOne.GetComponent<Rigidbody2D>().AddForce(Forward1 * P1Speed);
-            //PlayerTwo.GetComponent<Rigidbody2D>().AddForce(Forward2 * P2Speed);
-        }
-	
+        Countdown -= Time.deltaTime;	
 	}
     public override void UpTapAction(GameObject player)
     {
@@ -78,29 +74,41 @@ public class HorseControls : Minigame {
 
     public override void UpHeldAction(GameObject player)
     {
-        player.GetComponent<Rigidbody2D>().AddForce(player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex );
-        Debug.Log(player.transform.forward);
+        if (RaceStart && !RaceEnd)
+        {
+            player.GetComponent<Rigidbody2D>().AddForce(player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
+            //Debug.Log(player.transform.forward);
+        }
         //player.transform.Translate(0f, 0.5f, 0f);
     }
 
     public override void LeftHeldAction(GameObject player)
     {
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        float tf = Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2);
-        rb.angularVelocity =   -tf;
+        if (RaceStart && !RaceEnd)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            float tf = Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2);
+            rb.angularVelocity = -tf;
+        }
         //player.transform.Translate(-0.5f, 0f, 0f);
     }
 
     public override void CenterHeldAction(GameObject player)
     {
-        //player.transform.Translate(0f, -0.5f, 0f);
+        if (RaceStart && !RaceEnd)
+        {
+            player.GetComponent<Rigidbody2D>().AddForce(-player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
+        }
     }
 
     public override void RightHeldAction(GameObject player)
     {
-        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        float tf = Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2);
-        rb.angularVelocity = tf;
+        if (RaceStart && !RaceEnd)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            float tf = Mathf.Lerp(0, torqueForce, rb.velocity.magnitude / 2);
+            rb.angularVelocity = tf;
+        }
         //player.transform.Translate(0.5f, 0f, 0f);
     }
 
@@ -111,7 +119,12 @@ public class HorseControls : Minigame {
 
     public override void LeftRelAction(GameObject player)
     {
-        Debug.Log("Released the left key!");
+        if (RaceStart && !RaceEnd)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            rb.angularVelocity = 0;
+            Debug.Log("Released the left key!");
+        }
     }
 
     public override void CenterRelAction(GameObject player)
@@ -121,11 +134,20 @@ public class HorseControls : Minigame {
 
     public override void RightRelAction(GameObject player)
     {
-        Debug.Log("Released the right key!");
+        if (RaceStart && !RaceEnd)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            rb.angularVelocity = 0;
+            Debug.Log("Released the right key!");
+        }
     }
 
     public override void GameEnd()
     {
+        Debug.Log("Game End");
+        RaceEnd = true;
+        PlayerOne.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        PlayerTwo.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
     }
 
 }
