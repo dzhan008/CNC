@@ -10,6 +10,6 @@ public class SceneController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Ground.transform.Translate (-0.1f, 0f, 0f);
+		//Ground.transform.Translate (-0.1f, 0f, 0f);
 	}
 }

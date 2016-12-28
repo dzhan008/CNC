@@ -21,7 +21,7 @@ public class DeathWall : MonoBehaviour
         //Checks if the right player hit the right goal
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Death Wall!!!");
+            Debug.Log("Death Wall!!! Game Over");
         }
         else
         {

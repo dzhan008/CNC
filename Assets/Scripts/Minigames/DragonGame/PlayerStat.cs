@@ -1,52 +1,101 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-
+using System.Collections.Generic;
+using UnityEngine.UI;
 [Serializable]
-public class PlayerStat{
+public class PlayerStat: MonoBehaviour {
+	Dictionary<string, float> PSkills = new Dictionary<string, float>();
+	//For Bar
+    [SerializeField]
+	private BarScript SprintBar;
 
     [SerializeField]
-    private BarScript bar;
+    private float sprintMaxVal;
 
     [SerializeField]
-    private float maxVal;
+    private float sprintCurrentVal; //current value of the stat (ie health, mana, etc)
 
-    [SerializeField]
-    private float currentVal; //current value of the stat (ie health, mana, etc)
-
-    public float CurrentVal
+    public float SprintCurrentVal
     {
         get
         {
-            return currentVal;
+			return sprintCurrentVal;
         }
 
         set
         {
 
-            currentVal = Mathf.Clamp(value, 0, MaxVal); //lower v, upper M
-            bar.Value = currentVal;
+			sprintCurrentVal = Mathf.Clamp(value, 0, SprintMaxVal); //lower v, upper M
+			SprintBar.Value = sprintCurrentVal;
         }
     }
 
-    public float MaxVal
+    public float SprintMaxVal
     {
         get
         {
-            return maxVal;
+			return sprintMaxVal;
         }
 
         set
         {//set the max value of the bar
-            this.maxVal = value;
-            bar.MaxValue = maxVal;
+			this.sprintMaxVal = value;
+			SprintBar.MaxValue = sprintMaxVal;
 
         }
     }
+	//End For Bar
+	/// <summary>
+	/// Description: Calculates the duration of sprint
+	/// </summary>
+	float sprintDurationCalc(Stats Player)
+	{
+		return 1;
+	}
 
-    public void Initialize()
+	/// <summary>
+	/// Description: Calculates the cooldown of chicken charges
+	/// </summary>
+	float chickenChargeRateCalc(Stats Player)
+	{
+		return 1;
+	}
+
+	/// <summary>
+	/// Description: Calculates the bonus jump height
+	/// </summary>
+	float jumpHeightCalc(Stats Player)
+	{
+		return 400;
+	}
+	float baseSpeedCalc(Stats Player)
+	{
+		return 5;
+	}
+	//Player stats
+
+	public void Initialize(Stats player, BarScript sprintBar)
     {
-        this.MaxVal = maxVal;
-        this.CurrentVal = currentVal;
+        SprintBar = sprintBar;
+        this.SprintMaxVal = sprintMaxVal;
+        this.SprintCurrentVal = sprintCurrentVal;
+		//Strength 
+
+		PSkills.Add("sprintbar", 100);
+		PSkills.Add("sprintChargeRate", 1);
+		PSkills.Add("sprintDuration", sprintDurationCalc(player));
+		PSkills.Add("isSprint", 0);
+		//Intelligence
+		PSkills.Add("chickenBar", 100);
+		PSkills.Add("chickenChargeRate", chickenChargeRateCalc(player));
+		PSkills.Add("chickenCharges", 3);
+		//Dexterity
+		PSkills.Add("jumpHeight", jumpHeightCalc(player));
+		PSkills.Add("baseSpeed", baseSpeedCalc(player));
     }
+	public float returnDictionary(string key){
+		return PSkills [key];
+	}
+
 }
