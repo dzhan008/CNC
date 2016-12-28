@@ -191,21 +191,5 @@ public class StackOverflowedMinigame : Minigame {
 
     }
 
-    public override void GameEnd()
-    {
-        //Checks if the score of the first player is greater than the other player.
-        if(PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
-        {
-            Debug.Log("Player One wins!");
-        }
-        else if (PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
-        {
-            Debug.Log("Player Two wins!");
-        }
-        else
-        {
-            Debug.Log("It is a tie!");
-        }
-        GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
-    }
+   
 }
