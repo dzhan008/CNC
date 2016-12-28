@@ -8,97 +8,49 @@ public class DragonMiniGame : Minigame
 {
     GameObject PlayerOne;
     GameObject PlayerTwo;
+    [SerializeField]
+    private Vector3 offset;
 
+    [SerializeField]
+    Camera MainCamera;
+    public float SmoothTimeX;
+    public float SmoothTimeY;
+    public Vector2 CameraVelocity;
     Stats PlayerOneStats;
     Stats PlayerTwoStats;
+
+    [SerializeField]
+    BarScript PlayerOneSprintBar;
+    [SerializeField]
+    BarScript PlayerTwoSprintBar;
+
+    PlayerStat P1Stat;
+    PlayerStat P2Stat;
     //Used to display the timer, if needed.
     public Text Timer;
 
-	[SerializeField]
-	private GameObject GroundOne;
-	[SerializeField]
-	private GameObject GroundTwo;
-
 	public float playerDrag = 5;
     /*Contains the skills/abilities value of each player*/
-    Dictionary<string, float> P1Skills = new Dictionary<string, float>();
-    Dictionary<string, float> P2Skills = new Dictionary<string, float>();
 
-    [SerializeField]
-    private PlayerStat Sprint;
     private void Awake()
     {
-        Sprint.Initialize();
+		//PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats);
+		//PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats);
     }
-    /// <summary>
-    /// Description: Calculates the duration of sprint
-    /// </summary>
-    float sprintDurationCalc(Stats Player)
-    {
-        return 1;
-    }
-
-    /// <summary>
-    /// Description: Calculates the cooldown of chicken charges
-    /// </summary>
-    float chickenChargeRateCalc(Stats Player)
-    {
-        return 1;
-    }
-
-    /// <summary>
-    /// Description: Calculates the bonus jump height
-    /// </summary>
-    float jumpHeightCalc(Stats Player)
-    {
-        return 400;
-    }
-	float baseSpeedCalc(Stats Player)
-	{
-		return 5;
-	}
+    
 	void updateSpeed(GameObject player)
-	{
+	{/*
 		float speed = 0;
 		if (player == PlayerOne)
 			speed = P1Skills ["baseSpeed"];
 		else
 			speed = P2Skills ["baseSpeed"];
 		float totalSpeed = speed - playerDrag;
-		player.transform.Translate(totalSpeed, 0f, 0f);
+		player.transform.Translate(totalSpeed, 0f, 0f);*/
 	}
-    // Use this for initialization
-    void InitSkills()
-    {
-        //Strength P1
-        P1Skills.Add("sprintbar", 100);
-        P1Skills.Add("sprintChargeRate", 1);
-        P1Skills.Add("sprintDuration", sprintDurationCalc(PlayerOneStats));
-        //Intelligence P1
-        P1Skills.Add("chickenBar", 100);
-        P1Skills.Add("chickenChargeRate", chickenChargeRateCalc(PlayerOneStats));
-        P1Skills.Add("chickenCharges", 3);
-        //Dexterity P1
-        P1Skills.Add("jumpHeight", jumpHeightCalc(PlayerOneStats));
-		P1Skills.Add("baseSpeed", baseSpeedCalc(PlayerOneStats));
 
-        //Strength P2
-        P2Skills.Add("sprintbar", 100);
-        P2Skills.Add("sprintChargeRate", 1);
-        P2Skills.Add("sprintDuration", sprintDurationCalc(PlayerTwoStats));
-        //Intelligence P2
-        P2Skills.Add("chickenBar", 100);
-        P2Skills.Add("chickenChargeRate", chickenChargeRateCalc(PlayerTwoStats));
-        P2Skills.Add("chickenCharges", 3);
-        //Dexterity P2
-        P2Skills.Add("jumpHeight", jumpHeightCalc(PlayerTwoStats));
-		P2Skills.Add("baseSpeed", baseSpeedCalc(PlayerTwoStats));
-
-    }
     void Start()
     {
-        //Set the skill values of each player
-        InitSkills();
         //Initialize time
         TimerOn = false;
         TimeLeft = 5000;
@@ -113,14 +65,39 @@ public class DragonMiniGame : Minigame
         PlayerOne.transform.position = new Vector3(-30f, 7.48f, 0f);
         PlayerTwo.transform.position = new Vector3(-30f, 2.81f, 0f);
 
+        PlayerOne.AddComponent<PlayerStat>();
+        PlayerTwo.AddComponent<PlayerStat>();
+
+
+        PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar);
+        PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar);
+
+        //P2Stat.Initialize(PlayerTwoStats);
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
+
+        //Init the offset of camera
+        offset = MainCamera.transform.position - PlayerOne.transform.position;
     }
 
+    float MidPointFormula()
+    {
+        return (PlayerOne.transform.position.x + PlayerTwo.transform.position.x) / 2;
+    }
+    void updateCamera()
+    {
+        //find the new x position of the camera to be in the middle of two players
+        float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
+            MidPointFormula(), ref CameraVelocity.x, SmoothTimeX);
+        //Change the camera's position
+        MainCamera.transform.position = new Vector3(posX, 5f,
+            MainCamera.transform.position.z);
+    }
     // Update logic for this minigame
     void Update()
     {
+        //MainCamera.transform.Translate(0.1f, 0f, 0f);
         if (!Finished && TimerOn)
         {
             if (CountDown(1) != 0)
@@ -135,6 +112,7 @@ public class DragonMiniGame : Minigame
         }
 		updateSpeed(PlayerOne);
 		updateSpeed(PlayerTwo);
+        updateCamera();
     }
 
  	public override void UpTapAction(GameObject player)
@@ -145,22 +123,11 @@ public class DragonMiniGame : Minigame
     public override void LeftTapAction(GameObject player)
     {
 		float jump_height = 0;
-		GameObject ground; 
-		if (player == PlayerOne) {
-			jump_height = P1Skills["jumpHeight"];
-			ground = GroundOne;
-
-		} else {
-			jump_height = P2Skills["jumpHeight"];
-			ground = GroundTwo;
-		}
-		
-		if (ground.GetComponent<Ground>().isColliding) {
-			
+        jump_height = player.GetComponent<PlayerStat>().returnDictionary("jumpHeight");
+        Debug.Log(jump_height);
+		if (player.GetComponent<PlayerCollision>().CanJump) {
 			player.GetComponent<Rigidbody2D> ().AddForce (player.transform.up * jump_height);
 		}
-
-
     }
 
 
@@ -170,7 +137,7 @@ public class DragonMiniGame : Minigame
 	}
     public override void CenterTapAction(GameObject player)
     {
-        Sprint.CurrentVal -= 10;
+        player.GetComponent<PlayerStat>().SprintCurrentVal -= 10;
 	
     }
 
@@ -192,12 +159,12 @@ public class DragonMiniGame : Minigame
 
     public override void CenterHeldAction(GameObject player)
     {
-        player.transform.Translate(0f, -0.5f, 0f);
+        player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 15f * Time.deltaTime));
     }
 
     public override void RightHeldAction(GameObject player)
     {
-        player.transform.Translate(0.5f, 0f, 0f);
+        player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 8f * Time.deltaTime));
     }
 
     public override void UpRelAction(GameObject player)
