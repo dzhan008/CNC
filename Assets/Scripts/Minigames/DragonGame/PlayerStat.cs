@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 [Serializable]
 public class PlayerStat: MonoBehaviour {
-	Dictionary<string, float> PSkills = new Dictionary<string, float>();
+    public Dictionary<string, float> PSkills { get; set; }
+    //public Dictionary<string, float> skills { get; set; }
+    //Dictionary<string, float> PSkills = new Dictionary<string, float>();
+
 	//For Bar
     [SerializeField]
 	private BarScript SprintBar;
@@ -69,6 +72,7 @@ public class PlayerStat: MonoBehaviour {
 	{
 		return 400;
 	}
+
 	float baseSpeedCalc(Stats Player)
 	{
 		return 5;
@@ -80,11 +84,13 @@ public class PlayerStat: MonoBehaviour {
         SprintBar = sprintBar;
         this.SprintMaxVal = sprintMaxVal;
         this.SprintCurrentVal = sprintCurrentVal;
+        PSkills = new Dictionary<string, float>();
 		//Strength 
 
 		PSkills.Add("sprintbar", 100);
 		PSkills.Add("sprintChargeRate", 1);
 		PSkills.Add("sprintDuration", sprintDurationCalc(player));
+        PSkills.Add("sprintStartTime", 0);
 		PSkills.Add("isSprint", 0);
 		//Intelligence
 		PSkills.Add("chickenBar", 100);
@@ -94,8 +100,8 @@ public class PlayerStat: MonoBehaviour {
 		PSkills.Add("jumpHeight", jumpHeightCalc(player));
 		PSkills.Add("baseSpeed", baseSpeedCalc(player));
     }
-	public float returnDictionary(string key){
-		return PSkills [key];
-	}
+	//public float returnDictionary(string key){
+	//	return PSkills [key];
+	//}
 
 }

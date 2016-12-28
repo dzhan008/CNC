@@ -94,6 +94,13 @@ public class DragonMiniGame : Minigame
         MainCamera.transform.position = new Vector3(posX, 5f,
             MainCamera.transform.position.z);
     }
+    void updateSprint(GameObject player)
+    {
+        //float playerIsSprint = player.GetComponent<PlayerStat>().returnDictionary("isSprint");
+        //float playerSprintStart = player.GetComponent<PlayerStat>().returnDictionary("sprintStartTime");
+        //float playerSprintDuration = player.GetComponent<PlayerStat>().returnDictionary("sprintDuation");
+
+    }
     // Update logic for this minigame
     void Update()
     {
@@ -112,6 +119,8 @@ public class DragonMiniGame : Minigame
         }
 		updateSpeed(PlayerOne);
 		updateSpeed(PlayerTwo);
+        updateSprint(PlayerOne);
+        updateSprint(PlayerTwo);
         updateCamera();
     }
 
@@ -123,22 +132,19 @@ public class DragonMiniGame : Minigame
     public override void LeftTapAction(GameObject player)
     {
 		float jump_height = 0;
-        jump_height = player.GetComponent<PlayerStat>().returnDictionary("jumpHeight");
+        //jump_height = player.GetComponent<PlayerStat>().returnDictionary("jumpHeight");
+        jump_height = player.GetComponent<PlayerStat>().PSkills["jumpHeight"];
         Debug.Log(jump_height);
 		if (player.GetComponent<PlayerCollision>().CanJump) {
 			player.GetComponent<Rigidbody2D> ().AddForce (player.transform.up * jump_height);
 		}
     }
 
-
-	public void updateSprint (GameObject player)
-	{
-		
-	}
     public override void CenterTapAction(GameObject player)
     {
         player.GetComponent<PlayerStat>().SprintCurrentVal -= 10;
-	
+        //player.GetComponent<PlayerStat>().returnDictionary("isSprint");
+        player.GetComponent<PlayerStat>().PSkills["isSprint"] = 1;
     }
 
     public override void RightTapAction(GameObject player)
@@ -164,7 +170,7 @@ public class DragonMiniGame : Minigame
 
     public override void RightHeldAction(GameObject player)
     {
-        player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 8f * Time.deltaTime));
+        //player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 8f * Time.deltaTime));
     }
 
     public override void UpRelAction(GameObject player)
