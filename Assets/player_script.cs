@@ -4,19 +4,19 @@ using System.Collections;
 public class player_script : MonoBehaviour
 {
 
-    private void OnCollisionEnter2D(Collision2D c)
+    private void OnTriggerEnter2D(Collider2D c)
     {
         Debug.Log("I'm hit!");
-        Debug.Log("collide (tag) : " + c.collider.gameObject.tag);
+        Debug.Log("collide (tag) : " + c.gameObject.tag);
 
         //if the tag is book then change the tag to book touched 
-        if (c.collider.gameObject.tag == "Book")
+        if (c.gameObject.tag == "Book")
         {
             //change the book stacking script to true
             c.gameObject.GetComponent<BookStackingScript>().touched = false;
 
-            c.collider.gameObject.tag = "BookTop";
-            c.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            c.gameObject.tag = "BookTop";
+            c.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             c.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
             //Debug.Log("c.localscale: " + c.transform.localScale.x + " this.transform: " + this.transform.localScale.x + " = " + c.transform.localScale.x / this.transform.localScale.x);
 
