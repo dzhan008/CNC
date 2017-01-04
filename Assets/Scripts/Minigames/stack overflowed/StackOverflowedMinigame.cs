@@ -29,6 +29,10 @@ public class StackOverflowedMinigame : Minigame {
     private Rigidbody2D rb2d;   //------May or may not need
 
 
+    //--------Scoring-----------//
+    public GUIText scoreText;
+    public int score;
+
     //Used to display the timer, if needed.
     public Text Timer;
     private ObjectPooler bookSpawner;
@@ -71,6 +75,7 @@ public class StackOverflowedMinigame : Minigame {
         bookSpawner = this.GetComponent<ObjectPooler>();
         spawnRate = Time.time + addTime;
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
+        UpdateText();
 
         Debug.Log(PlayerOneStats.Intel);
         Debug.Log(PlayerOneStats.Str);
@@ -105,7 +110,17 @@ public class StackOverflowedMinigame : Minigame {
         }
     }
 
-    //spawn point creation function-------TODO
+    //Scoring Fucntions
+    void AddScore (int newScoreValue)
+    {
+        score += newScoreValue;
+        UpdateText();
+    }
+
+    void UpdateText() {
+        scoreText.text = "Score: " +  score;
+    }
+}
 
     //Spawns books that fall from the sky
     void spawnBook()
