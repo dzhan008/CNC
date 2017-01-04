@@ -74,10 +74,22 @@ public class HorseControls : Minigame {
 
     public override void UpHeldAction(GameObject player)
     {
+        float MaxSpeed = GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Str * 2;
+        Vector2 MaxVelocity = player.transform.right * MaxSpeed;
+        Debug.Log("Player Veloc " + MaxVelocity.magnitude);
+        Vector2 Acceleration = player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex;
+        Debug.Log("Player Accel " + Acceleration.magnitude);
         if (RaceStart && !RaceEnd)
         {
-            player.GetComponent<Rigidbody2D>().AddForce(player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
+            //player.GetComponent<Rigidbody2D>().AddForce(player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
             //Debug.Log(player.transform.forward);
+            //Debug.Log("Accelleration " + Acceleration.magnitude);
+            player.GetComponent<Rigidbody2D>().velocity += Acceleration * Time.deltaTime;
+            //Debug.Log(player.GetComponent<Rigidbody2D>().velocity.magnitude);
+            if (player.GetComponent<Rigidbody2D>().velocity.magnitude > MaxSpeed)
+            {
+                player.GetComponent<Rigidbody2D>().velocity = MaxVelocity;
+            } 
         }
         //player.transform.Translate(0f, 0.5f, 0f);
     }
@@ -95,9 +107,13 @@ public class HorseControls : Minigame {
 
     public override void CenterHeldAction(GameObject player)
     {
+        float MaxSpeed = GameManager.Instance.Players[2].Value.Dex;
+        Vector2 Acceleration = -player.transform.right;
         if (RaceStart && !RaceEnd)
         {
             player.GetComponent<Rigidbody2D>().AddForce(-player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
+            player.GetComponent<Rigidbody2D>().velocity += Acceleration * Time.fixedDeltaTime;
+            Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
         }
     }
 
