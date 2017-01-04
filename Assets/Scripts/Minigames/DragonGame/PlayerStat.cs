@@ -54,7 +54,7 @@ public class PlayerStat: MonoBehaviour {
 	/// </summary>
 	float sprintDurationCalc(Stats Player)
 	{
-		return 1;
+		return 6;
 	}
 
 	/// <summary>

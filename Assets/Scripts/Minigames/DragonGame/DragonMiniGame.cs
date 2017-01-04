@@ -96,10 +96,30 @@ public class DragonMiniGame : Minigame
     }
     void updateSprint(GameObject player)
     {
-        //float playerIsSprint = player.GetComponent<PlayerStat>().returnDictionary("isSprint");
-        //float playerSprintStart = player.GetComponent<PlayerStat>().returnDictionary("sprintStartTime");
-        //float playerSprintDuration = player.GetComponent<PlayerStat>().returnDictionary("sprintDuation");
-
+        float playerIsSprint = player.GetComponent<PlayerStat>().PSkills["isSprint"];
+        float playerSprintStart = player.GetComponent<PlayerStat>().PSkills["sprintStartTime"];
+        float playerSprintDuration = player.GetComponent<PlayerStat>().PSkills["sprintDuration"];
+        if (playerIsSprint == 1) //I'M SORRY I MUST DO THIS
+        {
+            //reset if duration is done
+            if ((playerSprintStart += Time.deltaTime) > playerSprintDuration)
+            {
+                player.GetComponent<PlayerStat>().PSkills["isSprint"] = 0;
+                Debug.Log(player.GetComponent<PlayerStat>().PSkills["isSprint"]);
+                player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = 0;
+                Debug.Log("DONE");
+            }
+            //increase distance and update
+            else
+            {
+                player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 15f * Time.deltaTime));
+                player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = playerSprintStart;
+            }
+        }
+        else if (player.GetComponent<PlayerStat>().SprintCurrentVal != 50 && playerIsSprint != 1)
+        {
+            player.GetComponent<PlayerStat>().SprintCurrentVal += (10 * Time.deltaTime);
+        }
     }
     // Update logic for this minigame
     void Update()
@@ -132,7 +152,6 @@ public class DragonMiniGame : Minigame
     public override void LeftTapAction(GameObject player)
     {
 		float jump_height = 0;
-        //jump_height = player.GetComponent<PlayerStat>().returnDictionary("jumpHeight");
         jump_height = player.GetComponent<PlayerStat>().PSkills["jumpHeight"];
         Debug.Log(jump_height);
 		if (player.GetComponent<PlayerCollision>().CanJump) {
@@ -142,9 +161,13 @@ public class DragonMiniGame : Minigame
 
     public override void CenterTapAction(GameObject player)
     {
-        player.GetComponent<PlayerStat>().SprintCurrentVal -= 10;
-        //player.GetComponent<PlayerStat>().returnDictionary("isSprint");
-        player.GetComponent<PlayerStat>().PSkills["isSprint"] = 1;
+        if (player.GetComponent<PlayerStat>().PSkills["isSprint"] == 0 && 
+            player.GetComponent<PlayerStat>().SprintCurrentVal == 50)
+        {
+            player.GetComponent<PlayerStat>().SprintCurrentVal -= 50;
+            player.GetComponent<PlayerStat>().PSkills["isSprint"] = 1;
+            player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = 0;
+        }
     }
 
     public override void RightTapAction(GameObject player)
@@ -165,7 +188,7 @@ public class DragonMiniGame : Minigame
 
     public override void CenterHeldAction(GameObject player)
     {
-        player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 15f * Time.deltaTime));
+        
     }
 
     public override void RightHeldAction(GameObject player)
