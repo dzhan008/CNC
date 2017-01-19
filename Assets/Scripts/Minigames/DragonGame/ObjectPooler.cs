@@ -8,11 +8,10 @@ public class ObjectPooler : MonoBehaviour {
 	public GameObject pooledObject;
 	public int pooledAmount;
 
-	List<GameObject> pooledObjects;
+	List<GameObject> pooledObjects = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
-		pooledObjects = new List<GameObject>();
 
 		for (int i = 0; i < pooledAmount; i++)
 		{
@@ -24,7 +23,7 @@ public class ObjectPooler : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+        //test
 	}
 
 	public GameObject GetPooledObject()

@@ -24,6 +24,12 @@ public class DragonMiniGame : Minigame
     [SerializeField]
     BarScript PlayerTwoSprintBar;
 
+    [SerializeField]
+    BarScript PlayerOneObstacleBar;
+    [SerializeField]
+    BarScript PlayerTwoObstacleBar;
+
+
     PlayerStat P1Stat;
     PlayerStat P2Stat;
     //Used to display the timer, if needed.
@@ -69,8 +75,8 @@ public class DragonMiniGame : Minigame
         PlayerTwo.AddComponent<PlayerStat>();
 
 
-        PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar);
-        PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar);
+        PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar, PlayerOneObstacleBar);
+        PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar, PlayerTwoObstacleBar);
 
         //P2Stat.Initialize(PlayerTwoStats);
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
@@ -105,9 +111,7 @@ public class DragonMiniGame : Minigame
             if ((playerSprintStart += Time.deltaTime) > playerSprintDuration)
             {
                 player.GetComponent<PlayerStat>().PSkills["isSprint"] = 0;
-                Debug.Log(player.GetComponent<PlayerStat>().PSkills["isSprint"]);
                 player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = 0;
-                Debug.Log("DONE");
             }
             //increase distance and update
             else
@@ -116,9 +120,19 @@ public class DragonMiniGame : Minigame
                 player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = playerSprintStart;
             }
         }
+        //if the player isn't sprinting and their sprint bar isn't full
         else if (player.GetComponent<PlayerStat>().SprintCurrentVal != 50 && playerIsSprint != 1)
         {
-            player.GetComponent<PlayerStat>().SprintCurrentVal += (10 * Time.deltaTime);
+            player.GetComponent<PlayerStat>().SprintCurrentVal += (2 * Time.deltaTime);
+        }
+    }
+
+    void updateObstacleSpawn(GameObject player)
+    {
+        //if the obstacle bar isn't full 
+        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal != 3)
+        {
+            player.GetComponent<PlayerStat>().ObstacleCurrentVal += (2 * Time.deltaTime);
         }
     }
     // Update logic for this minigame
@@ -173,6 +187,12 @@ public class DragonMiniGame : Minigame
     public override void RightTapAction(GameObject player)
     {
         Debug.Log("Tapped the right key!");
+        //spawn obstacle
+        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal > 15)
+        {
+            player.GetComponent<PlayerStat>().ObstacleCurrentVal -= 1;
+
+        }
     }
 
     public override void UpHeldAction(GameObject player)
