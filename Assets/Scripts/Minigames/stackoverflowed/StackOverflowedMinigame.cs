@@ -19,19 +19,9 @@ public class StackOverflowedMinigame : Minigame {
     private Stats PlayerOneStats;
     private Stats PlayerTwoStats;
 
-    //create variables to set player physics------Probably move this to another file
-    public float moveForce = 365f;
-    public float maxSpeed = 5f;
-    public float jumpForce = 1000f;
-    public Transform groundChecker;
-
-    private bool grounded = false;
-    private Rigidbody2D rb2d;   //------May or may not need
-
-
     //--------Scoring-----------//
-    public GUIText scoreText;
-    public int score;
+    public Text player1ScoreText;
+    public Text player2ScoreText;
 
     //Used to display the timer, if needed.
     public Text Timer;
@@ -50,11 +40,12 @@ public class StackOverflowedMinigame : Minigame {
     public GameObject SpawnPoint2;
 
 
+
     // Use this for initialization
     void Start ()
     {
         Debug.Log("Minigame Initializing!");
-        //Initialize time
+        //Initialize time and set score to 0
         TimerOn = false;
         TimeLeft = 5;
 
@@ -63,6 +54,9 @@ public class StackOverflowedMinigame : Minigame {
 
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
+
+        PlayerOneStats.MiniGameScore = 0;
+        PlayerTwoStats.MiniGameScore = 0;
 
         PlayerOne.transform.position = SpawnPoint1.transform.position;
         PlayerTwo.transform.position = SpawnPoint2.transform.position;
@@ -75,7 +69,6 @@ public class StackOverflowedMinigame : Minigame {
         bookSpawner = this.GetComponent<ObjectPooler>();
         spawnRate = Time.time + addTime;
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
-        UpdateText();
 
         Debug.Log(PlayerOneStats.Intel);
         Debug.Log(PlayerOneStats.Str);
@@ -111,16 +104,19 @@ public class StackOverflowedMinigame : Minigame {
     }
 
     //Scoring Fucntions
-    void AddScore (int newScoreValue)
+    public void AddScore (int newScoreValue, int player_id)
     {
-        score += newScoreValue;
-        UpdateText();
+        //check for player id and update corresponding score
+        if(player_id == 1)
+        {
+            player1ScoreText.text = "Player 1 Score: " + newScoreValue.ToString();
+        }
+        else
+        {
+            Debug.Log(PlayerTwoStats.MiniGameScore);
+            player2ScoreText.text = "Player 2 Score: " + newScoreValue.ToString();
+        }
     }
-
-    void UpdateText() {
-        scoreText.text = "Score: " +  score;
-    }
-}
 
     //Spawns books that fall from the sky
     void spawnBook()

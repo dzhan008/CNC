@@ -3,9 +3,10 @@ using System.Collections;
 
 public class ScoringTextScript : MonoBehaviour {
 
-    
 
-    TextAlignment 
+    /*
+    TextAlignment scoreText;
+    public int score = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -26,4 +27,5 @@ public class ScoringTextScript : MonoBehaviour {
     void UpdateText() {
         scoreText.text = "Score: " +  score;
     }
+    */
 }

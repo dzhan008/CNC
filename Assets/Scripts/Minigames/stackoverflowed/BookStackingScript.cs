@@ -1,11 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BookStackingScript : MonoBehaviour {
+public class BookStackingScript : MonoBehaviour
+{
 
     //book x: 1.33094
     //book y: 0.3164554
     public bool touched = false;
+
+    public StackOverflowedMinigame stackOverflowedMinigame;
+    public int scoreValue = 1;
+    private int player_id;
+
+    private Stats PlayerOneStats;
+    private Stats PlayerTwoStats;
+
+    void start()
+    {
+        PlayerOneStats = GameManager.Instance.Players[1].Value;
+        PlayerTwoStats = GameManager.Instance.Players[2].Value;
+    }
 
     //after the first book check to see if the following book belongs to the player if so then put it under the player book
     private void OnTriggerEnter2D(Collider2D c)
@@ -13,13 +27,23 @@ public class BookStackingScript : MonoBehaviour {
         //to make sure that we don't get NULL exception error check to see that the parent is not null
         if (c.gameObject.transform.parent != null)
         {
-            if (c.gameObject.GetComponent<BookStackingScript>().touched == true)
-            {
-                Debug.Log("This should not be happening");
-            }
             //then check the tag of the parent to see if the book is at the top of the stack
             if (c.gameObject.transform.parent.tag == "Player" && this.gameObject.transform.tag == "Book" && c.gameObject.GetComponent<BookStackingScript>().touched != true)
             {
+                //check for the appropiate player and increment the scoring TODO:
+                if (c.gameObject.transform.parent.GetComponent<Stats>().GetInstanceID() == 2)
+                {
+                    scoreValue = PlayerOneStats.MiniGameScore++;
+                    Debug.Log("From Book Stacking: ScoreValue: " + scoreValue);
+                    stackOverflowedMinigame.AddScore(scoreValue, 1);
+                }
+                else
+                {
+                    scoreValue = PlayerTwoStats.MiniGameScore++;
+                    Debug.Log("From Book Stacking: ScoreValue: " + scoreValue);
+                    stackOverflowedMinigame.AddScore(scoreValue, 2);
+                }
+
                 //if it is a player than put it with the player and stack it on top of the player
                 c.gameObject.GetComponent<BookStackingScript>().touched = true;
 
@@ -40,7 +64,7 @@ public class BookStackingScript : MonoBehaviour {
 
                 this.transform.tag = "BookTop";
                 c.gameObject.transform.tag = "BookTouched";
-                
+
             }
         }
     }

@@ -4,7 +4,7 @@ using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class BookDeSpawn : StackOverflowedMinigame
+public class BookDeSpawn : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D col)
     {

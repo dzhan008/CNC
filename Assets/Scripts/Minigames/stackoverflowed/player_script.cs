@@ -4,6 +4,19 @@ using System.Collections;
 public class player_script : MonoBehaviour
 {
 
+    public StackOverflowedMinigame stackOverflowedMinigame;
+    public int scoreValue = 1;
+    private int player_id;
+
+    private Stats PlayerOneStats;
+    private Stats PlayerTwoStats;
+
+    void start()
+    {
+        PlayerOneStats = GameManager.Instance.Players[1].Value;
+        PlayerTwoStats = GameManager.Instance.Players[2].Value;
+    }
+
     private void OnTriggerEnter2D(Collider2D c)
     {
         Debug.Log("I'm hit!");
@@ -12,6 +25,21 @@ public class player_script : MonoBehaviour
         //if the tag is book then change the tag to book touched 
         if (c.gameObject.tag == "Book")
         {
+            //scoring
+            //check for the appropiate player and increment the scoring
+            if (this.GetComponent<Stats>().GetInstanceID() == 2)
+            {
+                scoreValue = PlayerOneStats.MiniGameScore++;
+                Debug.Log("From Book Stacking: ScoreValue: " + scoreValue);
+                stackOverflowedMinigame.AddScore(scoreValue, 1);
+            }
+            else
+            {
+                scoreValue = PlayerTwoStats.MiniGameScore++;
+                Debug.Log("From Book Stacking: ScoreValue: " + scoreValue);
+                stackOverflowedMinigame.AddScore(scoreValue, 2);
+            }
+
             //change the book stacking script to true
             c.gameObject.GetComponent<BookStackingScript>().touched = false;
 

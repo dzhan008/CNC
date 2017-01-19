@@ -54,6 +54,7 @@ public class GameManager : Singleton<GameManager>
             MiniGames = new List<GameObject>();
             MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
             MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/stackoverflowed"));
             //LoadMiniGame();
         }
 
