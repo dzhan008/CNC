@@ -12,13 +12,16 @@ public class PlayerStat: MonoBehaviour {
 	//For Bar
     [SerializeField]
 	private BarScript SprintBar;
+    [SerializeField]
+    private BarScript ObstacleBar;
 
     [SerializeField]
     private float sprintMaxVal;
+    [SerializeField]
+    private float obstacleMaxVal;
 
     [SerializeField]
     private float sprintCurrentVal; //current value of the stat (ie health, mana, etc)
-
     public float SprintCurrentVal
     {
         get
@@ -48,11 +51,42 @@ public class PlayerStat: MonoBehaviour {
 
         }
     }
-	//End For Bar
-	/// <summary>
-	/// Description: Calculates the duration of sprint
-	/// </summary>
-	float sprintDurationCalc(Stats Player)
+    [SerializeField]
+    private float obstacleCurrentVal; //current value of the stat (ie health, mana, etc)
+    public float ObstacleCurrentVal
+    {
+        get
+        {
+            return obstacleCurrentVal;
+        }
+
+        set
+        {
+
+            obstacleCurrentVal = Mathf.Clamp(value, 0, ObstacleMaxVal); //lower v, upper M
+            ObstacleBar.Value = obstacleCurrentVal;
+        }
+    }
+
+    public float ObstacleMaxVal
+    {
+        get
+        {
+            return obstacleMaxVal;
+        }
+
+        set
+        {//set the max value of the bar
+            this.obstacleMaxVal = value;
+            ObstacleBar.MaxValue = obstacleMaxVal;
+
+        }
+    }
+    //End For Bar
+    /// <summary>
+    /// Description: Calculates the duration of sprint
+    /// </summary>
+    float sprintDurationCalc(Stats Player)
 	{
 		return 6;
 	}
@@ -79,12 +113,20 @@ public class PlayerStat: MonoBehaviour {
 	}
 	//Player stats
 
-	public void Initialize(Stats player, BarScript sprintBar)
+	public void Initialize(Stats player, BarScript sprintBar, BarScript obstacleBar)
     {
+        //Initialize Sprint Bar
         SprintBar = sprintBar;
         this.SprintMaxVal = sprintMaxVal;
         this.SprintCurrentVal = sprintCurrentVal;
+
+        //Initialize Obstacle Bar
+        ObstacleBar = obstacleBar;
+        this.ObstacleMaxVal = obstacleMaxVal;
+        this.ObstacleCurrentVal = obstacleCurrentVal;
+      
         PSkills = new Dictionary<string, float>();
+
 		//Strength 
 
 		PSkills.Add("sprintbar", 100);
@@ -100,8 +142,4 @@ public class PlayerStat: MonoBehaviour {
 		PSkills.Add("jumpHeight", jumpHeightCalc(player));
 		PSkills.Add("baseSpeed", baseSpeedCalc(player));
     }
-	//public float returnDictionary(string key){
-	//	return PSkills [key];
-	//}
-
 }
