@@ -15,7 +15,7 @@ public class BookStackingScript : MonoBehaviour
     private Stats PlayerOneStats;
     private Stats PlayerTwoStats;
 
-    void start()
+    void Start()
     {
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
@@ -28,20 +28,17 @@ public class BookStackingScript : MonoBehaviour
         if (c.gameObject.transform.parent != null)
         {
             //then check the tag of the parent to see if the book is at the top of the stack
+            //have to check for the book tag because if not then it will accept book stacked books and book which will cause a double collision
             if (c.gameObject.transform.parent.tag == "Player" && this.gameObject.transform.tag == "Book" && c.gameObject.GetComponent<BookStackingScript>().touched != true)
             {
                 //check for the appropiate player and increment the scoring TODO:
-                if (c.gameObject.transform.parent.GetComponent<Stats>().GetInstanceID() == 2)
+                if (c.gameObject.transform.parent.GetComponent<Stats>().Id == 1)
                 {
-                    scoreValue = PlayerOneStats.MiniGameScore++;
-                    Debug.Log("From Book Stacking: ScoreValue: " + scoreValue);
-                    stackOverflowedMinigame.AddScore(scoreValue, 1);
+                    stackOverflowedMinigame.UpdateScore(++PlayerOneStats.MiniGameScore, 1);
                 }
                 else
                 {
-                    scoreValue = PlayerTwoStats.MiniGameScore++;
-                    Debug.Log("From Book Stacking: ScoreValue: " + scoreValue);
-                    stackOverflowedMinigame.AddScore(scoreValue, 2);
+                    stackOverflowedMinigame.UpdateScore(++PlayerTwoStats.MiniGameScore, 2);
                 }
 
                 //if it is a player than put it with the player and stack it on top of the player
@@ -67,21 +64,41 @@ public class BookStackingScript : MonoBehaviour
 
             }
         }
-    }
 
-    /*
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        Collider2D collider = collision.collider;
-
-        if (collider.name == "target")
+        //if the tag is book then change the tag to book touched 
+        else if (c.gameObject.tag == "Player")
         {
-            Vector3 contactPoint = collision.contacts[0].point;
-            Vector3 center = collider.bounds.center;
+            //scoring
+            //check for the appropiate player and increment the scoring
+            if (c.GetComponent<Stats>().Id == 1)
+            {
+                stackOverflowedMinigame.UpdateScore(++PlayerOneStats.MiniGameScore, 1);
+            }
+            else
+            {
+                stackOverflowedMinigame.UpdateScore(++PlayerTwoStats.MiniGameScore, 2);
+            }
 
-            bool right = contactPoint.x > center.x;
-            bool top = contactPoint.y > center.y;
+            //change the book stacking script to true
+            this.gameObject.GetComponent<BookStackingScript>().touched = false;
+
+            this.gameObject.tag = "BookTop";
+            this.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            this.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+
+            //set the position of the book to the current object's position also reposition the object NO LONGER NEED TO BCUZ OF 1 to 1 SCALING BUT KEPT HERE FOR REFERENCE
+            /*
+            Vector3 newScale = new Vector3(c.transform.localScale.x / this.transform.localScale.x,
+                                                 c.transform.localScale.y / (this.transform.localScale.y),
+                                                 0);
+            */
+            this.transform.parent = c.transform;
+            //c.transform.localScale = newScale;
+
+            //reassign this layer so that other books don't collide with it
+            c.gameObject.layer = LayerMask.NameToLayer("BookTouchedLayer");
+
+            this.transform.position = new Vector3(c.transform.position.x, c.transform.position.y, 0);
         }
     }
-    */
 }

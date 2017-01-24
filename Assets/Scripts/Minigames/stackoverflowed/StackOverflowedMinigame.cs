@@ -104,7 +104,7 @@ public class StackOverflowedMinigame : Minigame {
     }
 
     //Scoring Fucntions
-    public void AddScore (int newScoreValue, int player_id)
+    public void UpdateScore (int newScoreValue, int player_id)
     {
         //check for player id and update corresponding score
         if(player_id == 1)
