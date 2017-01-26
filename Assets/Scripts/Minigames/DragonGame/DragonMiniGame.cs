@@ -45,14 +45,13 @@ public class DragonMiniGame : Minigame
     }
     
 	void updateSpeed(GameObject player)
-	{/*
+	{
 		float speed = 0;
-		if (player == PlayerOne)
-			speed = P1Skills ["baseSpeed"];
-		else
-			speed = P2Skills ["baseSpeed"];
-		float totalSpeed = speed - playerDrag;
-		player.transform.Translate(totalSpeed, 0f, 0f);*/
+        float slow = 0;
+        speed = player.GetComponent<PlayerStat>().PSkills["baseSpeed"] + player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"];
+        slow = playerDrag + player.GetComponent<PlayerStat>().PSkills["playerSlowAdd"];
+        float totalSpeed = speed - slow;
+		player.transform.Translate(totalSpeed, 0f, 0f);
 	}
 
     void Start()
@@ -112,11 +111,13 @@ public class DragonMiniGame : Minigame
             {
                 player.GetComponent<PlayerStat>().PSkills["isSprint"] = 0;
                 player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = 0;
+                player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"] = 0;
             }
             //increase distance and update
             else
             {
-                player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 15f * Time.deltaTime));
+                player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"] = 0.1f;  
+                //player.GetComponent<Rigidbody2D>().MovePosition(player.transform.position + (player.transform.right * 15f * Time.deltaTime));
                 player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = playerSprintStart;
             }
         }
