@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class PlayerCollision : MonoBehaviour
 {
-
+   
+    public PlayerStat player;
     public int Id;
     public bool CanJump;
     // Use this for initialization
@@ -31,7 +32,12 @@ public class PlayerCollision : MonoBehaviour
 
 
         //check obstacle
+        if (other.gameObject.tag.Equals("Obstacle"))
+        {
+            other.gameObject.SetActive(false);
+            player.PSkills["playerSlowAdd"] = 0.01f;
 
+        }
     }
 
     void OnCollisionExit2D(Collision2D other)

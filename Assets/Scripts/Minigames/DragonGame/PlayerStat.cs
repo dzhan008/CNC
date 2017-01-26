@@ -109,7 +109,7 @@ public class PlayerStat: MonoBehaviour {
 
 	float baseSpeedCalc(Stats Player)
 	{
-		return 5;
+		return 5.1f;
 	}
 	//Player stats
 
@@ -130,6 +130,7 @@ public class PlayerStat: MonoBehaviour {
 		//Strength 
 
 		PSkills.Add("sprintbar", 100);
+        PSkills.Add("sprintSpeedAdd", 0);
 		PSkills.Add("sprintChargeRate", 1);
 		PSkills.Add("sprintDuration", sprintDurationCalc(player));
         PSkills.Add("sprintStartTime", 0);
@@ -141,5 +142,6 @@ public class PlayerStat: MonoBehaviour {
 		//Dexterity
 		PSkills.Add("jumpHeight", jumpHeightCalc(player));
 		PSkills.Add("baseSpeed", baseSpeedCalc(player));
+        PSkills.Add("playerSlowAdd", 0);
     }
 }
