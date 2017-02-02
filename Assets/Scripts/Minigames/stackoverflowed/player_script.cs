@@ -5,12 +5,17 @@ public class player_script : MonoBehaviour
 {
 
     private int player_id;
-    private bool isOnTomb = false;
 
     void Start()
     {
         //set player id during the beginnning
         player_id = this.gameObject.GetComponent<Stats>().Id;
+    }
+
+    //get the player id
+    public int getPlayerID()
+    {
+        return player_id;
     }
 
     //update books carried from book stacking script when a book is caught
@@ -24,35 +29,20 @@ public class player_script : MonoBehaviour
         set
         {
             _BooksCarried = value;
-            Debug.Log("Player: " + player_id + " Has " + _BooksCarried + " Books");
         }
     }
 
-    //after the first book check to see if the following book belongs to the player if so then put it under the player book
-    private void OnTriggerEnter2D(Collider2D c)
+    private bool _isOnTomb = false;
+    public bool isOnTomb
     {
-        //to make sure that we don't get NULL exception error check to see that the parent is not null
-        if (c.gameObject.transform.tag != null)
+        get
         {
-            if (c.gameObject.transform.tag == "BookTomb")
-            {
-                Debug.Log("I'm in");
-                this.isOnTomb = true;
-            }
+            return _isOnTomb;
+        }
+        set
+        {
+            _isOnTomb = value;
         }
     }
 
-    //after the first book check to see if the following book belongs to the player if so then put it under the player book
-    private void OnTriggerExit2D(Collider2D c)
-    {
-        //to make sure that we don't get NULL exception error check to see that the parent is not null
-        if (c.gameObject.transform.tag != null)
-        {
-            if (c.gameObject.transform.tag == "BookTomb")
-            {
-                Debug.Log("I'm out");
-                this.isOnTomb = false;
-            }
-        }
-    }
 }

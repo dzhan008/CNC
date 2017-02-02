@@ -141,7 +141,35 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void CenterTapAction(GameObject player)
     {
+        //check to see if the player is on tomb and books carried is more than 1
+        if(player.GetComponent<player_script>().isOnTomb && player.GetComponent<player_script>().BooksCarried > 0)
+        {
+            Debug.Log("I SHOULD BE IN");
+            //update score
+            int player_score = player.GetComponent<player_script>().BooksCarried;
+            int player_id = player.GetComponent<player_script>().getPlayerID();
 
+            
+
+            //remove all the books
+            for(int i = 0; i < player.transform.childCount; ++i)
+            {
+                Debug.Log("I'm in: " + player.transform.GetChild(i).gameObject.tag);
+            
+                player.transform.GetChild(i).gameObject.SetActive(false);
+                //reset tags and information
+                player.transform.GetChild(i).gameObject.tag = "Book";
+                player.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("BookLayer");
+                player.transform.GetChild(i).gameObject.GetComponent<BookStackingScript>().touched = false;
+                player.transform.GetChild(i).gameObject.transform.parent = null;
+            }
+
+            //update the score GUI
+            UpdateScore(player_score, player_id);
+
+            player.gameObject.layer = LayerMask.NameToLayer("PlayerLayer");
+            player.GetComponent<player_script>().BooksCarried = 0;
+        }
     }
 
     public override void RightTapAction(GameObject player)
