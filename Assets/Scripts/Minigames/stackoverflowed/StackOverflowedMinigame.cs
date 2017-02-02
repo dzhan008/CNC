@@ -39,8 +39,6 @@ public class StackOverflowedMinigame : Minigame {
     public GameObject SpawnPoint1;
     public GameObject SpawnPoint2;
 
-
-
     // Use this for initialization
     void Start ()
     {
@@ -184,7 +182,7 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void UpRelAction(GameObject player)
     {
-
+        
     }
 
     public override void LeftRelAction(GameObject player)

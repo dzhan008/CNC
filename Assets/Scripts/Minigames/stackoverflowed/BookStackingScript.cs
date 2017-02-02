@@ -31,16 +31,19 @@ public class BookStackingScript : MonoBehaviour
             //have to check for the book tag because if not then it will accept book stacked books and book which will cause a double collision
             if (c.gameObject.transform.parent.tag == "Player" && this.gameObject.transform.tag == "Book" && c.gameObject.GetComponent<BookStackingScript>().touched != true)
             {
-                //check for the appropiate player and increment the scoring TODO:
+                ++c.gameObject.transform.parent.GetComponent<player_script>().BooksCarried; //see if this works
+                /*
+                //check for the appropiate player and increment the scoring 
                 if (c.gameObject.transform.parent.GetComponent<Stats>().Id == 1)
                 {
-                    stackOverflowedMinigame.UpdateScore(++PlayerOneStats.MiniGameScore, 1);
+                    
+                    //stackOverflowedMinigame.UpdateScore(++PlayerOneStats.MiniGameScore, 1);
                 }
                 else
                 {
-                    stackOverflowedMinigame.UpdateScore(++PlayerTwoStats.MiniGameScore, 2);
+                    //stackOverflowedMinigame.UpdateScore(++PlayerTwoStats.MiniGameScore, 2);
                 }
-
+                */
                 //if it is a player than put it with the player and stack it on top of the player
                 c.gameObject.GetComponent<BookStackingScript>().touched = true;
 
@@ -68,6 +71,7 @@ public class BookStackingScript : MonoBehaviour
         //if the tag is book then change the tag to book touched 
         else if (c.gameObject.tag == "Player")
         {
+            /*
             //scoring
             //check for the appropiate player and increment the scoring
             if (c.GetComponent<Stats>().Id == 1)
@@ -78,6 +82,9 @@ public class BookStackingScript : MonoBehaviour
             {
                 stackOverflowedMinigame.UpdateScore(++PlayerTwoStats.MiniGameScore, 2);
             }
+            */
+
+            ++c.gameObject.transform.GetComponent<player_script>().BooksCarried; //see if this works
 
             //change the book stacking script to true
             this.gameObject.GetComponent<BookStackingScript>().touched = false;
