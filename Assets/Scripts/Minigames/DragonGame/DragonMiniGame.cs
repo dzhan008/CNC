@@ -49,6 +49,7 @@ public class DragonMiniGame : Minigame
 		float speed = 0;
         float slow = 0;
         speed = player.GetComponent<PlayerStat>().PSkills["baseSpeed"] + player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"];
+
         slow = playerDrag + player.GetComponent<PlayerStat>().PSkills["playerSlowAdd"];
         float totalSpeed = speed - slow;
 		player.transform.Translate(totalSpeed, 0f, 0f);
@@ -189,7 +190,8 @@ public class DragonMiniGame : Minigame
     {
         Debug.Log("Tapped the right key!");
         //spawn obstacle
-        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal > 15)
+        Debug.Log(player.GetComponent<PlayerStat>().ObstacleCurrentVal);
+        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal > 1)
         {
             player.GetComponent<PlayerStat>().ObstacleCurrentVal -= 1;
 

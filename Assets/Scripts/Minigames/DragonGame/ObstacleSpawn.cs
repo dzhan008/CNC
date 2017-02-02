@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObstacleSpawn : MonoBehaviour {
 
-    public ObjectPooler ObstaclePool; 
+    public ObjectPooler ObstaclePool;
     IEnumerator SpawnObstacle()
     {
         while (true)
@@ -12,11 +12,7 @@ public class ObstacleSpawn : MonoBehaviour {
             GameObject NewObstacle = ObstaclePool.GetPooledObject();
             NewObstacle.transform.position = transform.position;
             NewObstacle.SetActive(true); //all initially not active
-
             yield return new WaitForSeconds(2);
-            Debug.Log("RICAAAA");
-
-
         }
     }
 
