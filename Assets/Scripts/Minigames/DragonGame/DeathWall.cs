@@ -23,8 +23,9 @@ public class DeathWall : MonoBehaviour
         {
             Debug.Log("Death Wall!!! Game Over");
         }
-        else
+        else if (other.gameObject.tag == "Obstacle")
         {
+            other.gameObject.SetActive(false);
         }
     }
 

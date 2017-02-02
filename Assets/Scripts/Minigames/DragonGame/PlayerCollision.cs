@@ -20,6 +20,13 @@ public class PlayerCollision : MonoBehaviour
 
     }
 
+    IEnumerator slowDuration()
+    {
+        player.PSkills["playerSlowAdd"] = .03f;
+        float slowDurationTime = 2;
+        yield return new WaitForSeconds(slowDurationTime);
+        player.PSkills["playerSlowAdd"] = 0;
+    }
     void OnCollisionStay2D(Collision2D other)
     {
         //check if game over
@@ -35,10 +42,9 @@ public class PlayerCollision : MonoBehaviour
         if (other.gameObject.tag.Equals("Obstacle"))
         {
             other.gameObject.SetActive(false);
-            player.PSkills["playerSlowAdd"] = 0.01f;
-
+            StartCoroutine(slowDuration());
         }
-    }
+   }
 
     void OnCollisionExit2D(Collision2D other)
     {
