@@ -129,6 +129,15 @@ public class DragonMiniGame : Minigame
         }
     }
 
+    void updateCockBlock(GameObject player)
+    {
+        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal != 3)
+        {
+            float rechargeSpeed = player.GetComponent<PlayerStat>().PSkills["chickenChargeRate"];
+            player.GetComponent<PlayerStat>().ObstacleCurrentVal += (rechargeSpeed * Time.deltaTime);
+        }
+    }
+
     void updateObstacleSpawn(GameObject player)
     {
         //if the obstacle bar isn't full 
@@ -157,6 +166,8 @@ public class DragonMiniGame : Minigame
 		updateSpeed(PlayerTwo);
         updateSprint(PlayerOne);
         updateSprint(PlayerTwo);
+        updateCockBlock(PlayerOne);
+        updateCockBlock(PlayerTwo);
         updateCamera();
     }
 
@@ -191,16 +202,17 @@ public class DragonMiniGame : Minigame
         Debug.Log("Tapped the right key!");
         //spawn obstacle
         Debug.Log(player.GetComponent<PlayerStat>().ObstacleCurrentVal);
-        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal > 1)
+        if (player.GetComponent<PlayerStat>().ObstacleCurrentVal >= 1)
         {
             player.GetComponent<PlayerStat>().ObstacleCurrentVal -= 1;
+            player.GetComponent<PlayerStat>().spawnCockBlockObstacle();
+
 
         }
     }
 
     public override void UpHeldAction(GameObject player)
     {
-        player.transform.Translate(0f, 0.5f, 0f);
     }
 
     public override void LeftHeldAction(GameObject player)

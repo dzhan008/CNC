@@ -8,7 +8,9 @@ public class PlayerStat: MonoBehaviour {
     public Dictionary<string, float> PSkills { get; set; }
     //public Dictionary<string, float> skills { get; set; }
     //Dictionary<string, float> PSkills = new Dictionary<string, float>();
-
+    //For Cock Block
+    [SerializeField]
+    private CockBlockSpawn CockBlockSpawner;
 	//For Bar
     [SerializeField]
 	private BarScript SprintBar;
@@ -96,7 +98,7 @@ public class PlayerStat: MonoBehaviour {
 	/// </summary>
 	float chickenChargeRateCalc(Stats Player)
 	{
-		return 1;
+		return 0.2f;
 	}
 
 	/// <summary>
@@ -111,6 +113,11 @@ public class PlayerStat: MonoBehaviour {
 	{
 		return 5.1f;
 	}
+
+    public void spawnCockBlockObstacle()
+    {
+        CockBlockSpawner.spawnCockBlock();
+    }
 	//Player stats
 
 	public void Initialize(Stats player, BarScript sprintBar, BarScript obstacleBar)
