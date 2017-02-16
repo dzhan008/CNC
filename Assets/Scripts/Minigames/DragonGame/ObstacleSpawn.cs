@@ -12,7 +12,7 @@ public class ObstacleSpawn : MonoBehaviour {
             GameObject NewObstacle = ObstaclePool.GetPooledObject();
             NewObstacle.transform.position = transform.position;
             NewObstacle.SetActive(true); //all initially not active
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(Random.Range(1, 3));
         }
     }
 
