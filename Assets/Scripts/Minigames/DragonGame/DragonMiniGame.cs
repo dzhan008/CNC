@@ -201,7 +201,7 @@ public class DragonMiniGame : Minigame
     {
         Debug.Log("Tapped the right key!");
         //spawn obstacle
-        Debug.Log(player.GetComponent<PlayerStat>().ObstacleCurrentVal);
+        //Debug.Log(player.GetComponent<PlayerStat>().ObstacleCurrentVal);
         if (player.GetComponent<PlayerStat>().ObstacleCurrentVal >= 1)
         {
             player.GetComponent<PlayerStat>().ObstacleCurrentVal -= 1;
