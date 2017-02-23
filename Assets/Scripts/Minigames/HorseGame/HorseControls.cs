@@ -164,7 +164,7 @@ public class HorseControls : Minigame
 
     public override void GameEnd()
     {
-        Debug.Log("Game End");
+        //Debug.Log("Game End");
         RaceEnd = true;
         PlayerOne.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         PlayerTwo.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);

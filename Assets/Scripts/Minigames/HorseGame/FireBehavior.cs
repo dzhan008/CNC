@@ -22,6 +22,7 @@ public class FireBehavior : MonoBehaviour
     }
     // Update is called once per frame
     Vector3 dir;
+    public float lifetime;
     void Update () {
         Direction = Target.transform.position - transform.position;
         
@@ -37,10 +38,29 @@ public class FireBehavior : MonoBehaviour
 
         }
         rb.AddForce(dir);
-        Debug.Log(Direction.magnitude);
+        if(lifetime <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+        lifetime -= Time.deltaTime;
+        //Debug.Log(Direction.magnitude);
 	}
-    void OnTriggerEnter2D(Collision2D col)
+    void OnCollisonEnter2D(Collision2D col)
     {
-        Destroy(this);
+        if(col.gameObject.tag == "Player")
+        {
+            Debug.Log("Hit");
+            Destroy(this.gameObject);
+        }
+        
+    }
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Player")
+        {
+            Debug.Log("Hit");
+            Destroy(this.gameObject);
+        }
+
     }
 }
