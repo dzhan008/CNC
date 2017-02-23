@@ -14,6 +14,10 @@ public class HuntingMinigame : Minigame {
     private ObjectPooler Pooler1;
 	public Text scoreP1;
 	public Text scoreP2;
+	float timeL = 30.00f;
+	public Text timeT;
+    public Text winner;
+    float Fire = 0.5f;
 	// Use this for initialization
 	void Start () 
 	{
@@ -33,7 +37,18 @@ public class HuntingMinigame : Minigame {
 	void Update () 
 	{
 		
-	}
+		timeL -= Time.deltaTime;
+		if ( timeL <= 0 )
+		{
+            timeL = 0;
+			GameEnd ();
+		}
+		timeT.text = "Time: " + (int) timeL;
+        Fire += Time.deltaTime;
+
+    }
+
+
 
 	public void SetScoreP1 () {
 		scoreP1.text = "Score: " + GameManager.Instance.Players [1].Value.MiniGameScore.ToString ();
@@ -46,20 +61,22 @@ public class HuntingMinigame : Minigame {
 	public override void UpTapAction(GameObject player)
 	{
 		Transform BulletGenePoint = player.transform.Find ("BulletGenPoint").transform;
-        if(player == Player1)
+        if(player == Player1 && Fire > 0.3f)
         {
-            Debug.Log("pkcfdk");
+            //Debug.Log("pkcfdk");
             GameObject NewBullet = Pooler.GetPooledObject();
             NewBullet.SetActive(true);
             NewBullet.transform.position = BulletGenePoint.position;
+            Fire = 0f;
         }
-        else if (player == Player2)
+        else if (player == Player2 && Fire > 0.3f)
         {
-            Debug.Log("player2");
+            //Debug.Log("player2");
             GameObject NewBullet = Pooler1.GetPooledObject();
             Debug.Log(NewBullet);
             NewBullet.SetActive(true);
             NewBullet.transform.position = BulletGenePoint.position;
+            Fire = 0f;
         }
 
     }
@@ -124,6 +141,26 @@ public class HuntingMinigame : Minigame {
 
 	public override void GameEnd ()
 	{
-		
-	}
+		if (GameManager.Instance.Players[2].Value.MiniGameScore < GameManager.Instance.Players[1].Value.MiniGameScore)
+        {
+            winner.text = "Player 1 Wins!";
+            winner.gameObject.SetActive(true);
+
+        }
+
+        if (GameManager.Instance.Players[2].Value.MiniGameScore > GameManager.Instance.Players[1].Value.MiniGameScore)
+        {
+            winner.text = "Player 2 Wins!";
+            winner.gameObject.SetActive(true);
+        }
+        if (GameManager.Instance.Players[2].Value.MiniGameScore == GameManager.Instance.Players[1].Value.MiniGameScore)
+        {
+            winner.text = "DRAW!";
+            winner.gameObject.SetActive(true);
+        }
+        foreach (GameObject monObj in GameObject.FindGameObjectsWithTag("Goblin"))
+        {
+            monObj.SetActive(false);
+        }
+    }
 }

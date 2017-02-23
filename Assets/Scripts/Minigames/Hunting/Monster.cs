@@ -13,8 +13,6 @@ public class Monster : MonoBehaviour {
 	void Start () 
 	{
 		DestructPoint = GameObject.Find ("MonsterPass");
-		GameManager.Instance.Players [1].Value.MiniGameScore = 0;
-		GameManager.Instance.Players [2].Value.MiniGameScore = 0;
 	}
 
     void OnTriggerEnter2D(Collider2D other)
@@ -22,23 +20,24 @@ public class Monster : MonoBehaviour {
         if (other.gameObject.tag == "Bullet")
         {
             health = health - other.gameObject.GetComponent<Bullet>().damage;
-            Debug.Log(health);
+            //Debug.Log(health);
             if (health <= 0)
             {  
 				health = 100;
 				GameObject Hunting = GameObject.Find ("HuntingMinigame");
-				Debug.Log (other.gameObject.name.ToString());
-				if (other.gameObject.name == "Bullet") {
+				//Debug.Log (other.gameObject.name + "==" + "Bullet(Clone)");
+				if (other.gameObject.name == "Bullet(Clone)") {
+					Debug.Log ("score: " + GameManager.Instance.Players [1].Value.MiniGameScore);
 					GameManager.Instance.Players [1].Value.MiniGameScore += 10;
 					Hunting.GetComponent <HuntingMinigame> ().SetScoreP1 ();
 					Debug.Log ("Kill by Player 1");
 				}
-				else if (other.gameObject.name == "Bullet 1") {
+				else if (other.gameObject.name == "Bullet 1(Clone)") {
 					GameManager.Instance.Players [2].Value.MiniGameScore += 10;
 					Hunting.GetComponent <HuntingMinigame> ().SetScoreP2 ();
 					Debug.Log("Kill by Player 2");
 				}
-				Debug.Log ("Hit");
+//				Debug.Log ("Hit");
 				gameObject.SetActive(false); 
             }
             other.gameObject.SetActive(false);
