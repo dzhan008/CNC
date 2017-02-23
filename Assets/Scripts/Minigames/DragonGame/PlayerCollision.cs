@@ -44,6 +44,12 @@ public class PlayerCollision : MonoBehaviour
             other.gameObject.SetActive(false);
             StartCoroutine(slowDuration());
         }
+
+        //checks end goal
+        if (other.gameObject.tag.Equals("Goal"))
+        {
+            Debug.Log("WINNERRR."); 
+        }
    }
 
     void OnCollisionExit2D(Collision2D other)
