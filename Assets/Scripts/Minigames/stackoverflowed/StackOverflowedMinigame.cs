@@ -163,6 +163,9 @@ public class StackOverflowedMinigame : Minigame {
                 player.transform.GetChild(i).gameObject.tag = "Book";
                 player.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("BookLayer");
                 player.transform.GetChild(i).gameObject.GetComponent<BookStackingScript>().touched = false;
+                player.transform.GetChild(i).gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                player.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
+
             }
 
             while(player.transform.childCount != 0)
