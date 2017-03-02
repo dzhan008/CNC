@@ -27,6 +27,7 @@ public class StackOverflowedMinigame : Minigame {
 
     //Used to display the timer, if needed.
     public Text Timer;
+    int displayTime = 0;
     private ObjectPooler bookSpawner;
 
     //for spawning books
@@ -46,8 +47,9 @@ public class StackOverflowedMinigame : Minigame {
     {
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
-        TimerOn = false;
-        TimeLeft = 5;
+        TimerOn = true;
+        TimeLeft = 60;
+        
 
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
@@ -98,7 +100,9 @@ public class StackOverflowedMinigame : Minigame {
             }
             else
             {
-                Timer.text = "Time: " + (int)TimeLeft;
+                TimeLeft -= Time.deltaTime;
+                displayTime = (int)TimeLeft;
+                Timer.text = TimeLeft.ToString();
             }
         }
     }
