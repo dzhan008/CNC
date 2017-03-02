@@ -39,6 +39,7 @@ public class ObjectPooler : MonoBehaviour {
             }
         }
         GameObject obj = (GameObject)Instantiate(pooledObject);
+        obj.transform.parent = poolContainer.transform;
         obj.SetActive(false);
         pooledObjects.Add(obj);
         return obj;
