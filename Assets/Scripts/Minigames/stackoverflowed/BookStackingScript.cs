@@ -71,19 +71,6 @@ public class BookStackingScript : MonoBehaviour
         //if the tag is book then change the tag to book touched 
         else if (c.gameObject.tag == "Player")
         {
-            /*
-            //scoring
-            //check for the appropiate player and increment the scoring
-            if (c.GetComponent<Stats>().Id == 1)
-            {
-                stackOverflowedMinigame.UpdateScore(++PlayerOneStats.MiniGameScore, 1);
-            }
-            else
-            {
-                stackOverflowedMinigame.UpdateScore(++PlayerTwoStats.MiniGameScore, 2);
-            }
-            */
-
             ++c.gameObject.transform.GetComponent<player_script>().BooksCarried; //see if this works
 
             //change the book stacking script to true

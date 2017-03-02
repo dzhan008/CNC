@@ -4,6 +4,8 @@ Description: Sample script to handle start/update/end minigame logic in one scri
 Requirements: A minigame prefab.
 */
 
+//2.413333
+
 using UnityEngine;
 using System.Collections;
 using System;
@@ -149,23 +151,28 @@ public class StackOverflowedMinigame : Minigame {
             int player_score = player.GetComponent<player_script>().BooksCarried;
             int player_id = player.GetComponent<player_script>().getPlayerID();
 
-            
-
+            Debug.Log(player.transform.childCount);
             //remove all the books
             for(int i = 0; i < player.transform.childCount; ++i)
             {
-                Debug.Log("I'm in: " + player.transform.GetChild(i).gameObject.tag);
+                
+                Debug.Log("Books: " + i + " " + player.transform.GetChild(i).gameObject.tag);
             
                 player.transform.GetChild(i).gameObject.SetActive(false);
                 //reset tags and information
                 player.transform.GetChild(i).gameObject.tag = "Book";
                 player.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("BookLayer");
                 player.transform.GetChild(i).gameObject.GetComponent<BookStackingScript>().touched = false;
-                player.transform.GetChild(i).gameObject.transform.parent = null;
+            }
+
+            while(player.transform.childCount != 0)
+            {
+                player.transform.GetChild(0).gameObject.transform.parent = GameObject.Find("Book Container").transform;
             }
 
             //update the score GUI
-            UpdateScore(player_score, player_id);
+            player.GetComponent<player_script>().TotalScore += player_score;
+            UpdateScore(player.GetComponent<player_script>().TotalScore, player_id);
 
             player.gameObject.layer = LayerMask.NameToLayer("PlayerLayer");
             player.GetComponent<player_script>().BooksCarried = 0;

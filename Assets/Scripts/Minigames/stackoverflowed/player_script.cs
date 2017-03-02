@@ -32,6 +32,20 @@ public class player_script : MonoBehaviour
         }
     }
 
+    //update books carried from book stacking script when a book is caught
+    private int _TotalScore = 0;
+    public int TotalScore
+    {
+        get
+        {
+            return _TotalScore;
+        }
+        set
+        {
+            _TotalScore = value;
+        }
+    }
+
     private bool _isOnTomb = false;
     public bool isOnTomb
     {
@@ -41,6 +55,7 @@ public class player_script : MonoBehaviour
         }
         set
         {
+            //Debug.Log("Changed to: " + value);
             _isOnTomb = value;
         }
     }
