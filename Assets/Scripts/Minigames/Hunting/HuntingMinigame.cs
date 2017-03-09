@@ -17,7 +17,12 @@ public class HuntingMinigame : Minigame {
 	float timeL = 30.00f;
 	public Text timeT;
     public Text winner;
-    float Fire = 0.5f;
+    float Fire1 = 1f;
+    float Fire2 = 1f;
+    float Fire1Max;
+    float Fire2Max;
+    public GameObject Bull;
+    public GameObject Bull1;
 	// Use this for initialization
 	void Start () 
 	{
@@ -31,6 +36,16 @@ public class HuntingMinigame : Minigame {
         Generator1 = GameObject.Find("BulletGenerator (1)");
         Pooler = Generator.GetComponent <ObjectPooler> ();
         Pooler1 = Generator1.GetComponent<ObjectPooler>();
+        Fire1 = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
+        Fire2 = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
+        Fire1Max = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
+        Fire2Max = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
+        Debug.Log(Player1.GetComponent<Stats>().Dex);
+        Debug.Log(1f - ((Player1.GetComponent<Stats>().Dex) * .05f));
+        Bull.GetComponent<Bullet>().speed = 1f - ((Player1.GetComponent<Stats>().Intel) * .1f);
+        Debug.Log(Player1.GetComponent<Stats>().Intel);
+        Debug.Log(1f - ((Player1.GetComponent<Stats>().Intel) * .1f));
+        Bull1.GetComponent<Bullet1>().speed = 1f - ((Player2.GetComponent<Stats>().Intel) * .1f);
     }
 	
 	// Update is called once per frame
@@ -44,7 +59,8 @@ public class HuntingMinigame : Minigame {
 			GameEnd ();
 		}
 		timeT.text = "Time: " + (int) timeL;
-        Fire += Time.deltaTime;
+        Fire1 += Time.deltaTime;
+        Fire2 += Time.deltaTime;
 
     }
 
@@ -61,22 +77,22 @@ public class HuntingMinigame : Minigame {
 	public override void UpTapAction(GameObject player)
 	{
 		Transform BulletGenePoint = player.transform.Find ("BulletGenPoint").transform;
-        if(player == Player1 && Fire > 0.3f)
+        if(player == Player1 && Fire1 > Fire1Max)
         {
             //Debug.Log("pkcfdk");
             GameObject NewBullet = Pooler.GetPooledObject();
             NewBullet.SetActive(true);
             NewBullet.transform.position = BulletGenePoint.position;
-            Fire = 0f;
+            Fire1 = 0f;
         }
-        else if (player == Player2 && Fire > 0.3f)
+        if (player == Player2 && Fire2 > Fire2Max)
         {
             //Debug.Log("player2");
             GameObject NewBullet = Pooler1.GetPooledObject();
             Debug.Log(NewBullet);
             NewBullet.SetActive(true);
             NewBullet.transform.position = BulletGenePoint.position;
-            Fire = 0f;
+            Fire2 = 0f;
         }
 
     }

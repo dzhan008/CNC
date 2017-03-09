@@ -19,7 +19,7 @@ public enum States
 
 public class GameManager : Singleton<GameManager>
 {
-    States GameStates;
+    public States GameState;
 
     public Dictionary<int, KeyValuePair<GameObject, Stats>> Players;
     private List<int> PlayerIDs;
@@ -48,22 +48,23 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     void Start ()
     {
-        GameStates = States.Debug;
-        if(GameStates != States.Debug)
+        GameState = States.Debug;
+        if(GameState != States.Debug)
         {
             MiniGames = new List<GameObject>();
+            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
             MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
-            LoadMiniGame();
+            //LoadMiniGame();
         }
 
 	}
 
-    private void LoadMiniGame()
+    public void LoadMiniGame()
     {
         CurrentMiniGameIndex = Random.Range(0, MiniGames.Count);
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;
+        GameState = States.InGame;
     }
 	
 	// Update is called once per frame
@@ -77,6 +78,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void QueueNewGame()
     {
+
         for(int i = 0; i < PlayerIDs.Count; i++)
         {
                 Players[PlayerIDs[i]].Value.ResetMiniGameScore();

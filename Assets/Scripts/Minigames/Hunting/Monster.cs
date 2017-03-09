@@ -19,7 +19,14 @@ public class Monster : MonoBehaviour {
     {
         if (other.gameObject.tag == "Bullet")
         {
-            health = health - other.gameObject.GetComponent<Bullet>().damage;
+            if (other.gameObject.name == "Bullet(Clone)")
+            {
+               health = health - other.gameObject.GetComponent<Bullet>().damage;
+            }
+            else if (other.gameObject.name == "Bullet 1(Clone)")
+            {
+                health = health - other.gameObject.GetComponent<Bullet1>().damage;
+            }
             //Debug.Log(health);
             if (health <= 0)
             {  
@@ -42,6 +49,7 @@ public class Monster : MonoBehaviour {
             }
             other.gameObject.SetActive(false);
         }
+
     }
 
     // Update is called once per frame
