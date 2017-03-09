@@ -92,6 +92,14 @@ public class PlayerStat: MonoBehaviour {
 	{
 		return 6;
 	}
+    float speedReductionCalc(Stats Player)
+    {
+        return 0.03f;
+    }
+    float slowDurationCalc(Stats Player)
+    {
+        return 2;
+    }
 
 	/// <summary>
 	/// Description: Calculates the cooldown of chicken charges
@@ -134,8 +142,7 @@ public class PlayerStat: MonoBehaviour {
       
         PSkills = new Dictionary<string, float>();
 
-		//Strength 
-
+		//Dexterity 
 		PSkills.Add("sprintbar", 100);
         PSkills.Add("sprintSpeedAdd", 0);
 		PSkills.Add("sprintChargeRate", 1);
@@ -146,9 +153,11 @@ public class PlayerStat: MonoBehaviour {
 		PSkills.Add("chickenBar", 100);
 		PSkills.Add("chickenChargeRate", chickenChargeRateCalc(player));
 		PSkills.Add("chickenCharges", 3);
-		//Dexterity
+		//Strength
 		PSkills.Add("jumpHeight", jumpHeightCalc(player));
 		PSkills.Add("baseSpeed", baseSpeedCalc(player));
         PSkills.Add("playerSlowAdd", 0);
+        PSkills.Add("speedReduction", speedReductionCalc(player));
+        PSkills.Add("sprintSlowDuration", slowDurationCalc(player));
     }
 }

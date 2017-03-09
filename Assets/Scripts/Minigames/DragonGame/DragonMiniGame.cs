@@ -93,12 +93,14 @@ public class DragonMiniGame : Minigame
     }
     void updateCamera()
     {
+        float offset = 0.8f;
         //find the new x position of the camera to be in the middle of two players
         float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
-            MidPointFormula(), ref CameraVelocity.x, SmoothTimeX);
+            MidPointFormula() + offset, ref CameraVelocity.x, SmoothTimeX);
         //Change the camera's position
         MainCamera.transform.position = new Vector3(posX, 5f,
             MainCamera.transform.position.z);
+        
     }
     void updateSprint(GameObject player)
     {
