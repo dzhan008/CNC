@@ -22,8 +22,8 @@ public class PlayerCollision : MonoBehaviour
 
     IEnumerator slowDuration()
     {
-        player.PSkills["playerSlowAdd"] = .03f;
-        float slowDurationTime = 2;
+        player.PSkills["playerSlowAdd"] = player.PSkills["speedReduction"];
+        float slowDurationTime = player.PSkills["sprintSlowDuration"];
         yield return new WaitForSeconds(slowDurationTime);
         player.PSkills["playerSlowAdd"] = 0;
     }

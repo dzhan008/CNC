@@ -7,7 +7,6 @@ public class ObjectPooler : MonoBehaviour {
 	// Setting variables
 	public GameObject pooledObject;
 	public int pooledAmount;
-
 	List<GameObject> pooledObjects = new List<GameObject>();
 
 	// Use this for initialization
