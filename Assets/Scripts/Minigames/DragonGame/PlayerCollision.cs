@@ -46,9 +46,8 @@ public class PlayerCollision : MonoBehaviour
         }
 
         //checks end goal
-        if (other.gameObject.tag.Equals("Goal"))
+        if (other.gameObject.tag.Equals("EndGoal"))
         {
-            Debug.Log("WINNERRR."); 
         }
    }
 

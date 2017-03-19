@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BackgroundSpawner: MonoBehaviour
 {
-
+    public GameObject endWall;
     public ObjectPooler ObstaclePool;
     public List<Sprite> spritePictures;
     public int numSpawned;
@@ -24,6 +24,11 @@ public class BackgroundSpawner: MonoBehaviour
         LastTile.transform.position = transform.position;
         LastTile.SetActive(true); //all initially not active
         LastTile.GetComponent<SpriteRenderer>().sprite = spritePictures[spritePictures.Count - 1];
+        //add in gameobject 
+        GameObject wall = (GameObject)Instantiate(endWall);
+        wall.name = "GoalWall";
+        wall.transform.position = this.transform.position;
+        
     }
     // Use this for initialization
     void Start()

@@ -69,7 +69,7 @@ public class DragonMiniGame : Minigame
         TimeLeft = 5;
         //Set player's positions/controls
         PlayerOne.transform.position = new Vector3(-30f, 7.48f, 0f);
-        PlayerTwo.transform.position = new Vector3(-30f, 2.81f, 0f);
+        PlayerTwo.transform.position = new Vector3(-30f, 3.94f, 0f);
 
         PlayerOne.AddComponent<PlayerStat>();
         PlayerTwo.AddComponent<PlayerStat>();
@@ -151,19 +151,6 @@ public class DragonMiniGame : Minigame
     // Update logic for this minigame
     void Update()
     {
-        //MainCamera.transform.Translate(0.1f, 0f, 0f);
-        if (!Finished && TimerOn)
-        {
-            if (CountDown(1) != 0)
-            {
-                Finished = true;
-                GameEnd();
-            }
-            else
-            {
-                Timer.text = "Time: " + (int)TimeLeft;
-            }
-        }
 		updateSpeed(PlayerOne);
 		updateSpeed(PlayerTwo);
         updateSprint(PlayerOne);
