@@ -151,6 +151,7 @@ public class DragonMiniGame : Minigame
     // Update logic for this minigame
     void Update()
     {
+        if (false) GameEnd();
 		updateSpeed(PlayerOne);
 		updateSpeed(PlayerTwo);
         updateSprint(PlayerOne);
