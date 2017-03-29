@@ -48,12 +48,13 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     void Start ()
     {
+        MiniGames = new List<GameObject>();
+        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
+        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
         GameState = States.Debug;
         if(GameState != States.Debug)
         {
-            MiniGames = new List<GameObject>();
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+
             //LoadMiniGame();
         }
 
@@ -73,19 +74,40 @@ public class GameManager : Singleton<GameManager>
 	
 	}
 
+    public void DisplayProgress()
+    {
+        StartCoroutine(CoroutineProgress(1));
+    }
+
     /// <summary>
     /// Destroys the old minigame, and instantiates a new minigame from the list.
     /// </summary>
     public void QueueNewGame()
     {
+        StartCoroutine(QueueGame(1));
+    }
 
-        for(int i = 0; i < PlayerIDs.Count; i++)
+    IEnumerator CoroutineProgress(float time)
+    {
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(time);
+        UIManager.Instance.FadeOut();
+        UIManager.Instance.ShowProgressScreen();
+    }
+
+    IEnumerator QueueGame(float time)
+    {
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(time);
+        UIManager.Instance.DisableProgressScreen();
+        for (int i = 0; i < PlayerIDs.Count; i++)
         {
-                Players[PlayerIDs[i]].Value.ResetMiniGameScore();
+            Players[PlayerIDs[i]].Value.ResetMiniGameScore();
         }
         GameObject mini_game = CurrentMiniGame;
         MiniGames.RemoveAt(CurrentMiniGameIndex);
         Destroy(mini_game);
         LoadMiniGame();
+        UIManager.Instance.FadeOut();
     }
 }

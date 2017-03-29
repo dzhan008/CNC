@@ -83,7 +83,7 @@ public abstract class Minigame : MonoBehaviour
             output += i + ", ";
             Debug.Log(output);
         }
-        GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
+        GameManager.Instance.DisplayProgress(); //Starts a new minigame. May modify to change the state of the game manager instead.
 
     }
 
