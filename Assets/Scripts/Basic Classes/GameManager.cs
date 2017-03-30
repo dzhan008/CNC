@@ -65,7 +65,7 @@ public class GameManager : Singleton<GameManager>
         CurrentMiniGameIndex = Random.Range(0, MiniGames.Count);
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;
-        GameState = States.InGame;
+        GameState = States.InGame; //NOTE: We might need to move this into the minigames because we need to lock the controls somehow avoiding errors
     }
 	
 	// Update is called once per frame
@@ -77,6 +77,7 @@ public class GameManager : Singleton<GameManager>
     public void DisplayProgress()
     {
         StartCoroutine(CoroutineProgress(1));
+        GameState = States.Results;
     }
 
     /// <summary>
