@@ -21,6 +21,11 @@ public class StackOverflowedMinigame : Minigame {
     private Stats PlayerOneStats;
     private Stats PlayerTwoStats;
 
+    //---------instruction screen---------//
+    public GameObject ruleScreen;
+    public GameObject controlScreen;
+    public GameObject instructionScreen;
+
     //--------Scoring-----------//
     public Text player1ScoreText;
     public Text player2ScoreText;
@@ -46,10 +51,11 @@ public class StackOverflowedMinigame : Minigame {
     // Use this for initialization
     void Start ()
     {
+        // CREATE INSTRUCTION STATE---------------------------------TODO: Start timer in on start
+
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
-        TimerOn = true;
-        TimeLeft = 3;
+        TimeLeft = 60;
 
         //disbale finished text until game is won
         finishedText.enabled = false;
@@ -73,7 +79,7 @@ public class StackOverflowedMinigame : Minigame {
         //object pooling stuff
         bookSpawner = this.GetComponent<ObjectPooler>();
         spawnRate = Time.time + addTime;
-        InvokeRepeating("spawnBook", 1.0f, 0.5f);
+        
 
         Debug.Log(PlayerOneStats.Intel);
         Debug.Log(PlayerOneStats.Str);
@@ -84,6 +90,26 @@ public class StackOverflowedMinigame : Minigame {
         SetControls(PlayerTwo);
 
    
+    }
+
+    public void OnStart()
+    {
+        Debug.Log("I'm playing");
+        instructionScreen.SetActive(false);
+        TimerOn = true;
+        InvokeRepeating("spawnBook", 1.0f, 0.5f);
+    }
+
+    public void OnRules()
+    {
+        ruleScreen.SetActive(true);
+        controlScreen.SetActive(false);
+    }
+
+    public void OnControls()
+    {
+        ruleScreen.SetActive(false);
+        controlScreen.SetActive(true);
     }
 
     //Game is finished complete the game now :D
