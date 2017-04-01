@@ -19,7 +19,7 @@ public enum States
 
 public class GameManager : Singleton<GameManager>
 {
-    States GameStates;
+    public States GameState;
 
     public Dictionary<int, KeyValuePair<GameObject, Stats>> Players;
     private List<int> PlayerIDs;
@@ -48,22 +48,24 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     void Start ()
     {
-        GameStates = States.Debug;
-        if(GameStates != States.Debug)
+        MiniGames = new List<GameObject>();
+        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
+        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
+        GameState = States.Debug;
+        if(GameState != States.Debug)
         {
-            MiniGames = new List<GameObject>();
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/DragonGame"));
-            MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/DragonGame"));
-            LoadMiniGame();
+
+            //LoadMiniGame();
         }
 
 	}
 
-    private void LoadMiniGame()
+    public void LoadMiniGame()
     {
         CurrentMiniGameIndex = Random.Range(0, MiniGames.Count);
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;
+        GameState = States.InGame; //NOTE: We might need to move this into the minigames because we need to lock the controls somehow avoiding errors
     }
 	
 	// Update is called once per frame
@@ -72,18 +74,41 @@ public class GameManager : Singleton<GameManager>
 	
 	}
 
+    public void DisplayProgress()
+    {
+        StartCoroutine(CoroutineProgress(1));
+        GameState = States.Results;
+    }
+
     /// <summary>
     /// Destroys the old minigame, and instantiates a new minigame from the list.
     /// </summary>
     public void QueueNewGame()
     {
-        for(int i = 0; i < PlayerIDs.Count; i++)
+        StartCoroutine(QueueGame(1));
+    }
+
+    IEnumerator CoroutineProgress(float time)
+    {
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(time);
+        UIManager.Instance.FadeOut();
+        UIManager.Instance.ShowProgressScreen();
+    }
+
+    IEnumerator QueueGame(float time)
+    {
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(time);
+        UIManager.Instance.DisableProgressScreen();
+        for (int i = 0; i < PlayerIDs.Count; i++)
         {
-                Players[PlayerIDs[i]].Value.ResetMiniGameScore();
+            Players[PlayerIDs[i]].Value.ResetMiniGameScore();
         }
         GameObject mini_game = CurrentMiniGame;
         MiniGames.RemoveAt(CurrentMiniGameIndex);
         Destroy(mini_game);
         LoadMiniGame();
+        UIManager.Instance.FadeOut();
     }
 }
