@@ -6,6 +6,40 @@ using UnityEngine.UI;
 
 public class DragonMiniGame : Minigame
 {
+    [SerializeField]
+    private BarScript ProgressBar;
+
+    [SerializeField]
+    private float _ProgressDistVal;
+    public float ProgressDistVal
+    {
+        get
+        {
+            return _ProgressDistVal;
+        }
+        set
+        {
+            _ProgressDistVal = Mathf.Clamp(value, 0, ProgressMaxVal);
+            ProgressBar.Value = _ProgressDistVal;
+        }
+    }
+    [SerializeField]
+    private float _ProgressMaxVal;
+    public float ProgressMaxVal
+    {
+        get
+        {
+            return _ProgressMaxVal;
+        }
+
+        set
+        {//set the max value of the bar
+            this._ProgressMaxVal = value;
+            ProgressBar.MaxValue = _ProgressMaxVal;
+
+        }
+    }
+    public Text GameOverText;
     GameObject PlayerOne;
     GameObject PlayerTwo;
     [SerializeField]
@@ -34,8 +68,13 @@ public class DragonMiniGame : Minigame
     PlayerStat P2Stat;
     //Used to display the timer, if needed.
     public Text Timer;
-
+    private bool _IsGameEnd = false;
+    public bool IsGameEnd { get; set; }
+    private int _Winner = -1;
+    public int Winner { get; set; }
 	public float playerDrag = 5;
+    bool _StartGame = false;
+    public bool StartGame { get; set; }
     /*Contains the skills/abilities value of each player*/
 
     private void Awake()
@@ -54,8 +93,7 @@ public class DragonMiniGame : Minigame
         float totalSpeed = speed - slow;
 		player.transform.Translate(totalSpeed, 0f, 0f);
 	}
-
-    void Start()
+    IEnumerator StartTimer()
     {
         //Initialize time
         TimerOn = false;
@@ -68,23 +106,47 @@ public class DragonMiniGame : Minigame
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls
-        PlayerOne.transform.position = new Vector3(-30f, 7.48f, 0f);
-        PlayerTwo.transform.position = new Vector3(-30f, 3.94f, 0f);
+        PlayerOne.transform.position = new Vector3(-30f, 5.70f, 0f);
+        PlayerTwo.transform.position = new Vector3(-30f, 3.0f, 0f);
 
         PlayerOne.AddComponent<PlayerStat>();
         PlayerTwo.AddComponent<PlayerStat>();
 
+        //Update Camera
+        float offset = 0.8f;
+        //find the new x position of the camera to be in the middle of two players
+        float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
+            MidPointFormula() + offset, ref CameraVelocity.x, SmoothTimeX);
+        //Change the camera's position
+        MainCamera.transform.position = new Vector3(posX, 5f,
+            MainCamera.transform.position.z);
 
+        //Start Timer
+        int count = 5;
+        while (count > 0)
+        {
+            string text = "Game starts in " + count.ToString() + ".";
+            GameOverText.text = text;
+            count--;
+            yield return new WaitForSeconds(1);
+        }
+        GameOverText.text = "Go!";
+        yield return new WaitForSeconds(1);
+        GameOverText.text = "";
+        StartGame = true;
+        //Game Starts
         PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar, PlayerOneObstacleBar);
         PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar, PlayerTwoObstacleBar);
 
-        //P2Stat.Initialize(PlayerTwoStats);
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
 
-        //Init the offset of camera
-        offset = MainCamera.transform.position - PlayerOne.transform.position;
+        ProgressMaxVal = findEndDist();
+    }
+    void Start()
+    {
+        StartCoroutine(StartTimer());
     }
 
     float MidPointFormula()
@@ -93,6 +155,11 @@ public class DragonMiniGame : Minigame
     }
     void updateCamera()
     {
+        GameObject roadSpawner = GameObject.Find("RoadSpawner");
+        if (MainCamera.transform.position.x > (roadSpawner.transform.position.x - 7))
+        {
+            return;
+        }
         float offset = 0.8f;
         //find the new x position of the camera to be in the middle of two players
         float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
@@ -148,10 +215,37 @@ public class DragonMiniGame : Minigame
             player.GetComponent<PlayerStat>().ObstacleCurrentVal += (2 * Time.deltaTime);
         }
     }
+    float findEndDist()
+    {
+        //check who's in lead first
+        GameObject temp;
+        if (PlayerOne.transform.position.x > PlayerTwo.transform.position.x) temp = PlayerOne;
+        else temp = PlayerTwo;
+        GameObject endPoint = GameObject.Find("RoadSpawner");
+        float distance = endPoint.transform.position.x - temp.transform.position.x;
+        return distance;
+    }
+    void updateProgressBar()
+    {
+        ProgressDistVal = ProgressMaxVal - findEndDist();
+    }
+    void myGameEnd(GameObject winner, GameObject loser)
+    {
+        Debug.Log("WIN GAME OVER");
+        int i = 0;
+        while (i++ < 4) { updateSpeed(winner); i++;}
+        //Stop players after winning
+    }
     // Update logic for this minigame
     void Update()
     {
-        if (false) GameEnd();
+        if (IsGameEnd)
+        {
+            StartGame = false;
+            if (Winner == 1) myGameEnd(PlayerOne, PlayerTwo);
+            else myGameEnd(PlayerTwo, PlayerOne);
+            GameEnd();
+        }
 		updateSpeed(PlayerOne);
 		updateSpeed(PlayerTwo);
         updateSprint(PlayerOne);
@@ -159,6 +253,7 @@ public class DragonMiniGame : Minigame
         updateCockBlock(PlayerOne);
         updateCockBlock(PlayerTwo);
         updateCamera();
+        updateProgressBar();
     }
 
  	public override void UpTapAction(GameObject player)
@@ -241,22 +336,5 @@ public class DragonMiniGame : Minigame
         Debug.Log("Released the right key!");
     }
 
-    public override void GameEnd()
-    {
-        //Checks if the score of the first player is greater than the other player.
-        if (PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
-        {
-            Debug.Log("Player One wins!");
-        }
-        else if (PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
-        {
-            Debug.Log("Player Two wins!");
-        }
-        else
-        {
-            Debug.Log("It is a tie!");
-        }
-        GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
-    }
 }
 

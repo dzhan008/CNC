@@ -48,6 +48,11 @@ public class PlayerCollision : MonoBehaviour
         //checks end goal
         if (other.gameObject.tag.Equals("EndGoal"))
         {
+            Debug.Log("MOSHI MOSHI");
+            gameObject.GetComponent<Stats>().MiniGameScore++;
+            GameObject game = GameObject.Find("DragonGame");
+            game.GetComponent<DragonMiniGame>().IsGameEnd = true;
+
         }
    }
 

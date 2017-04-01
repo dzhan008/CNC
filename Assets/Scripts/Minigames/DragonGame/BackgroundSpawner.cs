@@ -5,7 +5,8 @@ using UnityEngine;
 public class BackgroundSpawner: MonoBehaviour
 {
     public GameObject endWall;
-    public ObjectPooler ObstaclePool;
+    public GameObject LastTile;
+    public HHDObjectPooler ObstaclePool;
     public List<Sprite> spritePictures;
     public int numSpawned;
 
@@ -20,14 +21,24 @@ public class BackgroundSpawner: MonoBehaviour
             NewObstacle.GetComponent<SpriteRenderer>().sprite = spritePictures[Random.Range(0, spritePictures.Count -1)];
             this.transform.Translate(6f, 0f, 0f);
         }
-        GameObject LastTile = ObstaclePool.GetPooledObject();
-        LastTile.transform.position = transform.position;
-        LastTile.SetActive(true); //all initially not active
-        LastTile.GetComponent<SpriteRenderer>().sprite = spritePictures[spritePictures.Count - 1];
+        if (LastTile)
+        {
+            GameObject lastTile = (GameObject)Instantiate(LastTile);
+            lastTile.transform.position = transform.position;
+            lastTile.transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y + 0.13f, transform.position.z);
+            lastTile.name = "LastTile";
+        }
+        //GameObject LastTile = ObstaclePool.GetPooledObject();
+        //LastTile.transform.position = transform.position;
+        //LastTile.SetActive(true); //all initially not active
+        //LastTile.GetComponent<SpriteRenderer>().sprite = spritePictures[spritePictures.Count - 1];
         //add in gameobject 
-        GameObject wall = (GameObject)Instantiate(endWall);
-        wall.name = "GoalWall";
-        wall.transform.position = this.transform.position;
+        if (endWall)
+        {
+            GameObject wall = (GameObject)Instantiate(endWall);
+            wall.name = "GoalWall";
+            wall.transform.position = this.transform.position;
+        }
         
     }
     // Use this for initialization

@@ -126,9 +126,8 @@ public class PlayerStat: MonoBehaviour {
     {
         CockBlockSpawner.spawnCockBlock();
     }
-	//Player stats
-
-	public void Initialize(Stats player, BarScript sprintBar, BarScript obstacleBar)
+    //Player stats
+    public void Initialize(Stats player, BarScript sprintBar, BarScript obstacleBar)
     {
         //Initialize Sprint Bar
         SprintBar = sprintBar;
@@ -139,23 +138,22 @@ public class PlayerStat: MonoBehaviour {
         ObstacleBar = obstacleBar;
         this.ObstacleMaxVal = obstacleMaxVal;
         this.ObstacleCurrentVal = obstacleCurrentVal;
-      
+
         PSkills = new Dictionary<string, float>();
 
-		//Dexterity 
-		PSkills.Add("sprintbar", 100);
+        PSkills.Add("sprintbar", 100);
         PSkills.Add("sprintSpeedAdd", 0);
-		PSkills.Add("sprintChargeRate", 1);
-		PSkills.Add("sprintDuration", sprintDurationCalc(player));
+        PSkills.Add("sprintChargeRate", 1);
+        PSkills.Add("sprintDuration", sprintDurationCalc(player));
         PSkills.Add("sprintStartTime", 0);
-		PSkills.Add("isSprint", 0);
-		//Intelligence
-		PSkills.Add("chickenBar", 100);
-		PSkills.Add("chickenChargeRate", chickenChargeRateCalc(player));
-		PSkills.Add("chickenCharges", 3);
-		//Strength
-		PSkills.Add("jumpHeight", jumpHeightCalc(player));
-		PSkills.Add("baseSpeed", baseSpeedCalc(player));
+        PSkills.Add("isSprint", 0);
+
+        PSkills.Add("chickenBar", 100);
+        PSkills.Add("chickenChargeRate", chickenChargeRateCalc(player));
+        PSkills.Add("chickenCharges", 3);
+
+        PSkills.Add("jumpHeight", jumpHeightCalc(player));
+        PSkills.Add("baseSpeed", baseSpeedCalc(player));
         PSkills.Add("playerSlowAdd", 0);
         PSkills.Add("speedReduction", speedReductionCalc(player));
         PSkills.Add("sprintSlowDuration", slowDurationCalc(player));

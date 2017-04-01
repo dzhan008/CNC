@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ObjectPooler : MonoBehaviour {
+public class HHDObjectPooler : MonoBehaviour {
 
 	// Setting variables
 	public GameObject pooledObject;

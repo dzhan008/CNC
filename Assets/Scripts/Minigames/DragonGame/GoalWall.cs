@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DeathWall : MonoBehaviour
+public class GoalWall : MonoBehaviour
 {
+
     // Use this for initialization
     void Start()
     {
@@ -20,19 +21,14 @@ public class DeathWall : MonoBehaviour
         //Checks if the right player hit the right goal
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Death Wall!!! Game Over");
+            Debug.Log("Goal Wall!!! Game Over");
+            other.GetComponent<Stats>().MiniGameScore++;
             GameObject game = GameObject.Find("DragonGame");
             game.GetComponent<DragonMiniGame>().IsGameEnd = true;
-            int player_id = other.GetComponent<Stats>().Id;
-            int winner = 2;
-            if (player_id == 2) winner = 1;
+            int winner = other.GetComponent<Stats>().Id;
             game.GetComponent<DragonMiniGame>().Winner = winner;
             string text = "Player " + winner + " wins!";
             game.GetComponent<DragonMiniGame>().GameOverText.text = text;
-        }
-        else if (other.gameObject.tag == "Obstacle")
-        {
-            other.gameObject.SetActive(false);
         }
     }
 }

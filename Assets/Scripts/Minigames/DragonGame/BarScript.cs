@@ -20,9 +20,12 @@ public class BarScript : MonoBehaviour {
         {
             //because its not always gonna be health before the :, 
             //so we take out everything before the colon
-            string[] temp = valueText.text.Split(':');
-            valueText.text = temp[0] + ": " + (int) value; //make sure its lowercase v
-            fillAmount = Map(value, 0, MaxValue, 0, 1);
+            if (valueText)
+            {
+                string[] temp = valueText.text.Split(':');
+                valueText.text = temp[0] + ": " + (int)value; //make sure its lowercase v
+                fillAmount = Map(value, 0, MaxValue, 0, 1);
+            }
         }
     }
     
