@@ -25,7 +25,7 @@ public class BackgroundSpawner: MonoBehaviour
         {
             GameObject lastTile = (GameObject)Instantiate(LastTile);
             lastTile.transform.position = transform.position;
-            lastTile.transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y + 0.13f, transform.position.z);
+            lastTile.transform.position = new Vector3(transform.position.x - 0.3f, transform.position.y + 0.13f, transform.position.z);
             lastTile.name = "LastTile";
         }
         //GameObject LastTile = ObstaclePool.GetPooledObject();

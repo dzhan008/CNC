@@ -75,7 +75,29 @@ public class DragonMiniGame : Minigame
 	public float playerDrag = 5;
     bool _StartGame = false;
     public bool StartGame { get; set; }
+
+    public GameObject HHDCamera;
+
+    public GameObject PlayerOneSpawnPoint;
+    public GameObject PlayerTwoSpawnPoint;
+
     /*Contains the skills/abilities value of each player*/
+
+    public override void OnStart()
+    {
+        InstructionPanel.SetActive(false);
+        StartCoroutine(StartTimer());
+    }
+    public override void OnControls()
+    {
+        ControlsPanel.SetActive(true);
+        RulesPanel.SetActive(false);
+    }
+    public override void OnRules()
+    {
+        ControlsPanel.SetActive(false);
+        RulesPanel.SetActive(true);
+    }
 
     private void Awake()
     {
@@ -95,32 +117,6 @@ public class DragonMiniGame : Minigame
 	}
     IEnumerator StartTimer()
     {
-        //Initialize time
-        TimerOn = false;
-        TimeLeft = 5000;
-        PlayerOne = GameManager.Instance.Players[1].Key;
-        PlayerTwo = GameManager.Instance.Players[2].Key;
-
-        PlayerOneStats = GameManager.Instance.Players[1].Value;
-        PlayerTwoStats = GameManager.Instance.Players[2].Value;
-        //Initialize time
-        TimeLeft = 5;
-        //Set player's positions/controls
-        PlayerOne.transform.position = new Vector3(-30f, 5.70f, 0f);
-        PlayerTwo.transform.position = new Vector3(-30f, 3.0f, 0f);
-
-        PlayerOne.AddComponent<PlayerStat>();
-        PlayerTwo.AddComponent<PlayerStat>();
-
-        //Update Camera
-        float offset = 0.8f;
-        //find the new x position of the camera to be in the middle of two players
-        float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
-            MidPointFormula() + offset, ref CameraVelocity.x, SmoothTimeX);
-        //Change the camera's position
-        MainCamera.transform.position = new Vector3(posX, 5f,
-            MainCamera.transform.position.z);
-
         //Start Timer
         int count = 5;
         while (count > 0)
@@ -135,18 +131,42 @@ public class DragonMiniGame : Minigame
         GameOverText.text = "";
         StartGame = true;
         //Game Starts
-        PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar, PlayerOneObstacleBar);
-        PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar, PlayerTwoObstacleBar);
-
-        //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
-        SetControls(PlayerOne);
-        SetControls(PlayerTwo);
-
         ProgressMaxVal = findEndDist();
+
     }
     void Start()
     {
-        StartCoroutine(StartTimer());
+        HHDCamera.transform.parent = MainCamera.transform;
+        //Initialize time
+        TimerOn = false;
+        TimeLeft = 5000;
+        PlayerOne = GameManager.Instance.Players[1].Key;
+        PlayerTwo = GameManager.Instance.Players[2].Key;
+
+        PlayerOneStats = GameManager.Instance.Players[1].Value;
+        PlayerTwoStats = GameManager.Instance.Players[2].Value;
+        //Initialize time
+        TimeLeft = 5;
+        //Set player's positions/controls
+        PlayerOne.transform.position = PlayerOneSpawnPoint.transform.position;
+        PlayerTwo.transform.position = PlayerTwoSpawnPoint.transform.position;
+
+        PlayerOne.AddComponent<PlayerStat>();
+        PlayerTwo.AddComponent<PlayerStat>();
+
+        //Update Camera
+        float offset = 0.8f;
+        //find the new x position of the camera to be in the middle of two players
+        float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
+            MidPointFormula() + offset, ref CameraVelocity.x, SmoothTimeX);
+        //Change the camera's position
+        MainCamera.transform.position = new Vector3(posX, 5f,
+            MainCamera.transform.position.z);
+        //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
+        SetControls(PlayerOne);
+        SetControls(PlayerTwo);
+        PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar, PlayerOneObstacleBar);
+        PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar, PlayerTwoObstacleBar);
     }
 
     float MidPointFormula()
@@ -233,7 +253,7 @@ public class DragonMiniGame : Minigame
     {
         Debug.Log("WIN GAME OVER");
         int i = 0;
-        while (i++ < 4) { updateSpeed(winner); i++;}
+        while (i++ < 9) { updateSpeed(winner); i++;}
         //Stop players after winning
     }
     // Update logic for this minigame
@@ -246,14 +266,19 @@ public class DragonMiniGame : Minigame
             else myGameEnd(PlayerTwo, PlayerOne);
             GameEnd();
         }
-		updateSpeed(PlayerOne);
-		updateSpeed(PlayerTwo);
-        updateSprint(PlayerOne);
-        updateSprint(PlayerTwo);
-        updateCockBlock(PlayerOne);
-        updateCockBlock(PlayerTwo);
-        updateCamera();
-        updateProgressBar();
+        if (StartGame)
+        {
+            //Debug.Log("asdf");
+            //PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
+            updateSpeed(PlayerOne);
+            updateSpeed(PlayerTwo);
+            updateSprint(PlayerOne);
+            updateSprint(PlayerTwo);
+            updateCockBlock(PlayerOne);
+            updateCockBlock(PlayerTwo);
+            updateCamera();
+            updateProgressBar();
+        }
     }
 
  	public override void UpTapAction(GameObject player)
