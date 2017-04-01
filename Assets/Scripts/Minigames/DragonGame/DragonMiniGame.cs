@@ -133,15 +133,21 @@ public class DragonMiniGame : Minigame
         //Game Starts
         ProgressMaxVal = findEndDist();
 
+        PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
+        PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
     void Start()
     {
+  
         HHDCamera.transform.parent = MainCamera.transform;
         //Initialize time
         TimerOn = false;
         TimeLeft = 5000;
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
+
+        Destroy(PlayerOne.transform.GetChild(0).GetComponent<Rigidbody2D>());
+        Destroy(PlayerTwo.transform.GetChild(0).GetComponent<Rigidbody2D>());
 
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
@@ -167,6 +173,8 @@ public class DragonMiniGame : Minigame
         SetControls(PlayerTwo);
         PlayerOne.GetComponent<PlayerStat>().Initialize(PlayerOneStats, PlayerOneSprintBar, PlayerOneObstacleBar);
         PlayerTwo.GetComponent<PlayerStat>().Initialize(PlayerTwoStats, PlayerTwoSprintBar, PlayerTwoObstacleBar);
+        PlayerOne.GetComponent<Rigidbody2D>().isKinematic = false;
+        PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = false;
     }
 
     float MidPointFormula()
@@ -180,7 +188,7 @@ public class DragonMiniGame : Minigame
         {
             return;
         }
-        float offset = 0.8f;
+        float offset = 0.9f;
         //find the new x position of the camera to be in the middle of two players
         float posX = Mathf.SmoothDamp(MainCamera.transform.position.x,
             MidPointFormula() + offset, ref CameraVelocity.x, SmoothTimeX);
@@ -251,10 +259,17 @@ public class DragonMiniGame : Minigame
     }
     void myGameEnd(GameObject winner, GameObject loser)
     {
-        Debug.Log("WIN GAME OVER");
+        PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 0);
+        PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 0);
         int i = 0;
         while (i++ < 9) { updateSpeed(winner); i++;}
-        //Stop players after winning
+        PlayerOne.GetComponent<Rigidbody2D>().isKinematic = true;
+        PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = true;
+        PlayerOne.transform.GetChild(0).gameObject.AddComponent<Rigidbody2D>();
+        PlayerOne.transform.GetChild(0).gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+        PlayerTwo.transform.GetChild(0).gameObject.AddComponent<Rigidbody2D>();
+        PlayerTwo.transform.GetChild(0).gameObject.AddComponent<Rigidbody2D>().isKinematic = true;
+
     }
     // Update logic for this minigame
     void Update()
@@ -269,7 +284,6 @@ public class DragonMiniGame : Minigame
         if (StartGame)
         {
             //Debug.Log("asdf");
-            //PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
             updateSpeed(PlayerOne);
             updateSpeed(PlayerTwo);
             updateSprint(PlayerOne);
@@ -290,7 +304,6 @@ public class DragonMiniGame : Minigame
     {
 		float jump_height = 0;
         jump_height = player.GetComponent<PlayerStat>().PSkills["jumpHeight"];
-        Debug.Log(jump_height);
 		if (player.GetComponent<PlayerCollision>().CanJump) {
 			player.GetComponent<Rigidbody2D> ().AddForce (player.transform.up * jump_height);
 		}
