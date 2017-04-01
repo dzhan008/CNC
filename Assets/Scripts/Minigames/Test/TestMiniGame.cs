@@ -62,6 +62,21 @@ public class TestMiniGame : Minigame {
         }
     }
 
+    public override void OnStart()
+    {
+        
+    }
+
+    public override void OnControls()
+    {
+        
+    }
+
+    public override void OnRules()
+    {
+        
+    }
+
     public override void UpTapAction(GameObject player)
     {
         Debug.Log("Tapped the up key!");
@@ -69,7 +84,10 @@ public class TestMiniGame : Minigame {
 
     public override void LeftTapAction(GameObject player)
     {
-        Debug.Log("Tapped the left key!");
+        Vector2 side = player.transform.localScale;
+        side.x = (player.transform.localScale.x < 0f) ? -1 * player.transform.localScale.x : player.transform.localScale.x;
+        player.transform.localScale = side;
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
 
     public override void CenterTapAction(GameObject player)
@@ -79,7 +97,10 @@ public class TestMiniGame : Minigame {
 
     public override void RightTapAction(GameObject player)
     {
-        Debug.Log("Tapped the right key!");
+        Vector2 side = player.transform.localScale;
+        side.x = (player.transform.localScale.x > 0f) ? -1 * player.transform.localScale.x : player.transform.localScale.x;
+        player.transform.localScale = side;
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
 
     public override void UpHeldAction(GameObject player)
@@ -90,6 +111,7 @@ public class TestMiniGame : Minigame {
     public override void LeftHeldAction(GameObject player)
     {
         player.transform.Translate(-0.5f, 0f, 0f);
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
 
     public override void CenterHeldAction(GameObject player)
@@ -100,6 +122,7 @@ public class TestMiniGame : Minigame {
     public override void RightHeldAction(GameObject player)
     {
         player.transform.Translate(0.5f, 0f, 0f);
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
 
     public override void UpRelAction(GameObject player)
@@ -109,7 +132,7 @@ public class TestMiniGame : Minigame {
 
     public override void LeftRelAction(GameObject player)
     {
-        Debug.Log("Released the left key!");
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 0);
     }
 
     public override void CenterRelAction(GameObject player)
@@ -119,6 +142,6 @@ public class TestMiniGame : Minigame {
 
     public override void RightRelAction(GameObject player)
     {
-        Debug.Log("Released the right key!");
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 0);
     }
 }

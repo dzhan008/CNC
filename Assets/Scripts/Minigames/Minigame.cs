@@ -11,10 +11,19 @@ using System.Collections.Generic;
 public abstract class Minigame : MonoBehaviour
 {
 
+    /* Timer Related Variables */
     protected float TimeLeft = 0;
     protected float TimeLimit;
     protected bool TimerOn = false;
     protected bool Finished = false;
+
+    /* Instruction Screen Gameobjects */
+    [SerializeField]
+    protected GameObject InstructionPanel;
+    [SerializeField]
+    protected GameObject RulesPanel;
+    [SerializeField]
+    protected GameObject ControlsPanel;
 
     /// <summary>
     /// This is a simple timer that will subtract the time left each second.
@@ -83,9 +92,16 @@ public abstract class Minigame : MonoBehaviour
             output += i + ", ";
             Debug.Log(output);
         }
-        GameManager.Instance.QueueNewGame(); //Starts a new minigame. May modify to change the state of the game manager instead.
+        GameManager.Instance.DisplayProgress(); //Starts a new minigame. May modify to change the state of the game manager instead.
 
     }
+
+                                                                                               /* Minigame Functions */
+    public abstract void OnStart();
+    public abstract void OnRules();
+    public abstract void OnControls();
+
+                                                                                                /* Key Actions */
 
     /// <summary>
     /// The logic for a up key press.

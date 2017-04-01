@@ -25,7 +25,7 @@ public class BlacksmithMinigame : Minigame {
     int CurrentWeapon = 0;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
 
         audio = GetComponent<AudioSource>();
         audio.time = 20;
@@ -43,45 +43,93 @@ public class BlacksmithMinigame : Minigame {
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
 
-        SetTime(60);
-        TimerOn = true;
+        SetTime(3);
 
         Weapons = new List<GameObject>();
         Point = HitPoint.GetComponent<HitPoint>();
         InitWeapons();
-        SelectWeapon();
-
 
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        if(Weapons[CurrentWeapon].GetComponent<Weapon>().Completed)
+    // Update is called once per frame
+    void Update() {
+
+        if (Weapons[CurrentWeapon].GetComponent<Weapon>().Completed)
         {
             SelectWeapon();
             Weapons[CurrentWeapon].GetComponent<Weapon>().ResetWeapon();
         }
-        if(!Finished && TimerOn)
+        if (!Finished && TimerOn)
         {
-            if(CountDown(1) != 0)
+            if (CountDown(1) != 0)
             {
                 Finished = true;
-                GameEnd();
+                StartCoroutine(EndGame(2));
             }
             else
             {
                 Timer.text = "Time Left: " + (int)TimeLeft;
             }
         }
-	
-	}
+
+    }
+
+    public override void OnStart()
+    {
+        StartCoroutine(StartGame(1));
+    }
+
+    IEnumerator EndGame(float time)
+    {
+        if(PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
+        {
+            Timer.text = "Player 1 Wins!";
+        }
+        else if(PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
+        {
+            Timer.text = "Player 2 Wins!";
+        }
+        else
+        {
+            Timer.text = "It's a tie!";
+        }
+        yield return new WaitForSeconds(time);
+        GameEnd();
+        
+    }
+
+    IEnumerator StartGame(float time)
+    {
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(time);
+        UIManager.Instance.FadeOut();
+        InstructionPanel.SetActive(false);
+        yield return new WaitForSeconds(time);
+        SelectWeapon();
+        TimerOn = true;
+    }
+
+    public override void OnRules()
+    {
+        RulesPanel.SetActive(true);
+        ControlsPanel.SetActive(false);
+    }
+
+    public override void OnControls()
+    {
+        ControlsPanel.SetActive(true);
+        RulesPanel.SetActive(false);
+    }
 
     void InitWeapons()
     {
         Weapons.Add((GameObject)Instantiate(Resources.Load("Prefabs/Minigames/Swift Smiths/Axe")));
         Weapons.Add((GameObject)Instantiate(Resources.Load("Prefabs/Minigames/Swift Smiths/Spear")));
         Weapons.Add((GameObject)Instantiate(Resources.Load("Prefabs/Minigames/Swift Smiths/Sword")));
+        for(int i = 0; i < Weapons.Count; i++)
+        {
+            Weapons[i].transform.parent = this.transform;
+        }
     }
 
     void SelectWeapon()
