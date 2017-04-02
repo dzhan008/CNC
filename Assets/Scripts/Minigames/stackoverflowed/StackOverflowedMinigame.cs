@@ -25,6 +25,7 @@ public class StackOverflowedMinigame : Minigame {
     public GameObject ruleScreen;
     public GameObject controlScreen;
     public GameObject instructionScreen;
+    public bool inInstructions = true;
 
     //--------Scoring-----------//
     public Text player1ScoreText;
@@ -55,7 +56,7 @@ public class StackOverflowedMinigame : Minigame {
 
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
-        TimeLeft = 60;
+        TimeLeft = 5;
 
         //disbale finished text until game is won
         finishedText.enabled = false;
@@ -98,6 +99,7 @@ public class StackOverflowedMinigame : Minigame {
         instructionScreen.SetActive(false);
         TimerOn = true;
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
+        inInstructions = false;
     }
 
     public void OnRules()
@@ -165,13 +167,42 @@ public class StackOverflowedMinigame : Minigame {
             PlayerTwo.transform.GetChild(0).gameObject.transform.parent = GameObject.Find("Book Container").transform;
         }
 
+        //Check to see who is the winner
+        //delay for a little bit then show the winner
+        StartCoroutine(Example());
 
+        //update minigamescore because i did not use that variable xP
+        PlayerOneStats.MiniGameScore = PlayerOne.GetComponent<player_script>().TotalScore;
+        PlayerTwoStats.MiniGameScore = PlayerTwo.GetComponent<player_script>().TotalScore;
+
+        Debug.Log("Player One Score: " + PlayerOneStats.MiniGameScore);
+        Debug.Log("Player Two Score: " + PlayerTwoStats.MiniGameScore);
+        if (PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
+        {
+            finishedText.text = "Player One Wins!";
+        }
+        else if (PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
+        {
+            finishedText.text = "Player Two Wins!";
+        }
+        else
+        {
+            finishedText.text = "Tie!";
+        }
 
         //Finish running the game after its do
         GameEnd();
     }
 
-	// Update logic for this minigame
+    //this coroutine is to pause for a little bit after finished is displayed
+    IEnumerator Example()
+    {
+        print(Time.time);
+        yield return new WaitForSeconds(3);
+        print(Time.time);
+    }
+
+    // Update logic for this minigame
     void Update()
     {
         //updating player movements
@@ -235,7 +266,7 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void CenterTapAction(GameObject player)
     {
-        if (!Finished)
+        if (!Finished && !inInstructions)
         {
             //check to see if the player is on tomb and books carried is more than 1
             if (player.GetComponent<player_script>().isOnTomb && player.GetComponent<player_script>().BooksCarried > 0)
@@ -289,7 +320,7 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void LeftHeldAction(GameObject player)
     {
-        if (!Finished)
+        if (!Finished && !inInstructions)
         {
             player.GetComponent<Rigidbody2D>().MovePosition(player.GetComponent<Rigidbody2D>().position + new Vector2(-8, 0) * Time.deltaTime);
             if (player.GetComponent<Rigidbody2D>().transform.childCount > 0)
@@ -307,7 +338,7 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void RightHeldAction(GameObject player)
     {
-        if (!Finished)
+        if (!Finished && !inInstructions)
         {
             player.GetComponent<Rigidbody2D>().MovePosition(player.GetComponent<Rigidbody2D>().position + new Vector2(8, 0) * Time.deltaTime);
             if (player.GetComponent<Rigidbody2D>().transform.childCount > 0)
