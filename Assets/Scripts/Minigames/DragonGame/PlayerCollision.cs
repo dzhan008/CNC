@@ -8,18 +8,11 @@ public class PlayerCollision : MonoBehaviour
     public PlayerStat player;
     public int Id;
     public bool CanJump;
-    // Use this for initialization
-    void Start()
+    public void Initialize(int ID, PlayerStat player)
     {
-
+        Id = ID;
+        this.player = player;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     IEnumerator slowDuration()
     {
         player.PSkills["playerSlowAdd"] = player.PSkills["speedReduction"];

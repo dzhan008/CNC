@@ -6,8 +6,6 @@ using UnityEngine.UI;
 [Serializable]
 public class PlayerStat: MonoBehaviour {
     public Dictionary<string, float> PSkills { get; set; }
-    //public Dictionary<string, float> skills { get; set; }
-    //Dictionary<string, float> PSkills = new Dictionary<string, float>();
     //For Cock Block
     [SerializeField]
     private CockBlockSpawn CockBlockSpawner;
@@ -90,11 +88,18 @@ public class PlayerStat: MonoBehaviour {
     /// </summary>
     float sprintDurationCalc(Stats Player)
 	{
-		return 6;
+        int playerDex = Player.Dex;
+        if (playerDex > 7) return 3;
+        else if (playerDex > 4) return 2.5f;
+		return 2;
 	}
     float speedReductionCalc(Stats Player)
     {
-        return 0.03f;
+        //Assuming scale 1-10
+        int playerStr = Player.Str;
+        if (playerStr > 7) return 0.024f;
+        else if (playerStr > 4) return 0.026f;
+        return 0.028f;
     }
     float slowDurationCalc(Stats Player)
     {
@@ -106,6 +111,9 @@ public class PlayerStat: MonoBehaviour {
 	/// </summary>
 	float chickenChargeRateCalc(Stats Player)
 	{
+        int playerIntel = Player.Intel;
+        if (playerIntel > 7) return 0.4f;
+        else if (playerIntel > 4) return 0.32f;
 		return 0.2f;
 	}
 
@@ -114,7 +122,7 @@ public class PlayerStat: MonoBehaviour {
 	/// </summary>
 	float jumpHeightCalc(Stats Player)
 	{
-		return 400;
+		return 530;
 	}
 
 	float baseSpeedCalc(Stats Player)
@@ -127,15 +135,22 @@ public class PlayerStat: MonoBehaviour {
         CockBlockSpawner.spawnCockBlock();
     }
     //Player stats
-    public void Initialize(Stats player, BarScript sprintBar, BarScript obstacleBar)
+    public void Initialize(Stats player, BarScript sprintBar, BarScript obstacleBar,
+        CockBlockSpawn CBSpawner,
+        int sprintMax, int sprintCur, int obsMax, int obsCur)
     {
+        CockBlockSpawner = CBSpawner;
         //Initialize Sprint Bar
         SprintBar = sprintBar;
+        sprintMaxVal = sprintMax;
+        sprintCurrentVal = sprintCur;
         this.SprintMaxVal = sprintMaxVal;
         this.SprintCurrentVal = sprintCurrentVal;
 
         //Initialize Obstacle Bar
         ObstacleBar = obstacleBar;
+        obstacleMaxVal = obsMax;
+        obstacleCurrentVal = obsCur;
         this.ObstacleMaxVal = obstacleMaxVal;
         this.ObstacleCurrentVal = obstacleCurrentVal;
 
@@ -144,18 +159,18 @@ public class PlayerStat: MonoBehaviour {
         PSkills.Add("sprintbar", 100);
         PSkills.Add("sprintSpeedAdd", 0);
         PSkills.Add("sprintChargeRate", 1);
-        PSkills.Add("sprintDuration", sprintDurationCalc(player));
+        PSkills.Add("sprintDuration", sprintDurationCalc(player)); //DEX
         PSkills.Add("sprintStartTime", 0);
         PSkills.Add("isSprint", 0);
 
         PSkills.Add("chickenBar", 100);
-        PSkills.Add("chickenChargeRate", chickenChargeRateCalc(player));
+        PSkills.Add("chickenChargeRate", chickenChargeRateCalc(player)); //INT
         PSkills.Add("chickenCharges", 3);
 
         PSkills.Add("jumpHeight", jumpHeightCalc(player));
         PSkills.Add("baseSpeed", baseSpeedCalc(player));
         PSkills.Add("playerSlowAdd", 0);
-        PSkills.Add("speedReduction", speedReductionCalc(player));
+        PSkills.Add("speedReduction", speedReductionCalc(player)); //STR
         PSkills.Add("sprintSlowDuration", slowDurationCalc(player));
     }
 }
