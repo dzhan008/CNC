@@ -169,14 +169,24 @@ public class StackOverflowedMinigame : Minigame {
 
         //Check to see who is the winner
         //delay for a little bit then show the winner
-        StartCoroutine(Example());
-
         //update minigamescore because i did not use that variable xP
         PlayerOneStats.MiniGameScore = PlayerOne.GetComponent<player_script>().TotalScore;
         PlayerTwoStats.MiniGameScore = PlayerTwo.GetComponent<player_script>().TotalScore;
 
-        Debug.Log("Player One Score: " + PlayerOneStats.MiniGameScore);
-        Debug.Log("Player Two Score: " + PlayerTwoStats.MiniGameScore);
+        StartCoroutine(Example());
+
+
+       
+        
+    }
+
+    //this coroutine is to pause for a little bit after finished is displayed
+    IEnumerator Example()
+    {
+
+        //pause 3 seconds
+        yield return new WaitForSeconds(3);
+
         if (PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
         {
             finishedText.text = "Player One Wins!";
@@ -192,14 +202,6 @@ public class StackOverflowedMinigame : Minigame {
 
         //Finish running the game after its do
         GameEnd();
-    }
-
-    //this coroutine is to pause for a little bit after finished is displayed
-    IEnumerator Example()
-    {
-        print(Time.time);
-        yield return new WaitForSeconds(3);
-        print(Time.time);
     }
 
     // Update logic for this minigame
