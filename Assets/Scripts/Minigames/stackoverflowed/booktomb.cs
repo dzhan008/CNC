@@ -34,7 +34,7 @@ public class BookTomb : MonoBehaviour {
         if (c.gameObject.transform.root.tag != null)
         {
            
-            if (c.gameObject.transform.tag == "Player")
+            if (c.gameObject.transform.root.tag == "Player")
             {
                 Debug.Log("I'm out");
                 c.gameObject.transform.root.GetComponent<PlayerScript>().isOnTomb = false;
