@@ -57,7 +57,7 @@ public class StackOverflowedMinigame : Minigame {
 
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
-        TimeLeft = 5;
+        TimeLeft = 45;
 
         //disbale finished text until game is won
         finishedText.enabled = false;
@@ -80,8 +80,8 @@ public class StackOverflowedMinigame : Minigame {
         PlayerOneBookHolder.transform.parent = PlayerOne.transform;
         PlayerTwoBookHolder.transform.parent = PlayerTwo.transform;
 
-        PlayerOne.AddComponent<player_script>();
-        PlayerTwo.AddComponent<player_script>();
+        PlayerOne.AddComponent<PlayerScript>();
+        PlayerTwo.AddComponent<PlayerScript>();
 
         //object pooling stuff
         bookSpawner = this.GetComponent<ObjectPooler>();
@@ -103,6 +103,7 @@ public class StackOverflowedMinigame : Minigame {
         TimerOn = true;
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
         inInstructions = false;
+        GameManager.Instance.GameState = States.InGame;
     }
 
     public override void OnRules()
@@ -129,16 +130,18 @@ public class StackOverflowedMinigame : Minigame {
         Destroy(PlayerOneBookHolder);
         Destroy(PlayerTwoBookHolder);
 
-        Destroy(PlayerOne.GetComponent<player_script>());
-        Destroy(PlayerTwo.GetComponent<player_script>());
+        Destroy(PlayerOne.GetComponent<PlayerScript>());
+        Destroy(PlayerTwo.GetComponent<PlayerScript>());
+
+        Destroy(GameObject.Find("Book Container"));
 
         //Check to see who is the winner
         //delay for a little bit then show the winner
         //update minigamescore because i did not use that variable xP
-        PlayerOneStats.MiniGameScore = PlayerOne.GetComponent<player_script>().TotalScore;
-        PlayerTwoStats.MiniGameScore = PlayerTwo.GetComponent<player_script>().TotalScore;
+        PlayerOneStats.MiniGameScore = PlayerOne.GetComponent<PlayerScript>().TotalScore;
+        PlayerTwoStats.MiniGameScore = PlayerTwo.GetComponent<PlayerScript>().TotalScore;
 
-        StartCoroutine(Example());
+        StartCoroutine(DecideWinner());
 
 
        
@@ -146,11 +149,11 @@ public class StackOverflowedMinigame : Minigame {
     }
 
     //this coroutine is to pause for a little bit after finished is displayed
-    IEnumerator Example()
+    IEnumerator DecideWinner()
     {
 
         //pause 3 seconds
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
 
         if (PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
         {
@@ -165,6 +168,7 @@ public class StackOverflowedMinigame : Minigame {
             finishedText.text = "Tie!";
         }
 
+        yield return new WaitForSeconds(3);
         //Finish running the game after its do
         GameEnd();
     }
@@ -238,18 +242,17 @@ public class StackOverflowedMinigame : Minigame {
     {
         if (!Finished && !inInstructions)
         {
-            Debug.Log(player.GetComponent<player_script>().isOnTomb);
+            Debug.Log(player.GetComponent<PlayerScript>().isOnTomb);
             //check to see if the player is on tomb and books carried is more than 1
-            if (player.GetComponent<player_script>().isOnTomb && player.GetComponent<player_script>().BooksCarried > 0)
+            if (player.GetComponent<PlayerScript>().isOnTomb && player.GetComponent<PlayerScript>().BooksCarried > 0)
             {
                 Debug.Log("I SHOULD BE IN");
                 //update score
-                int player_score = player.GetComponent<player_script>().BooksCarried;
-                int player_id = player.GetComponent<player_script>().getPlayerID();
+                int player_score = player.GetComponent<PlayerScript>().BooksCarried + (int)(player.GetComponent<PlayerScript>().BooksCarried * 0.3);
+                int player_id = player.GetComponent<PlayerScript>().getPlayerID();
 
                 Transform book_holder = player.transform.Find("BookHolder");
 
-                Debug.Log(player.transform.childCount);
                 //remove all the books
                 for (int i = 0; i < book_holder.childCount; ++i)
                 {
@@ -258,7 +261,6 @@ public class StackOverflowedMinigame : Minigame {
                     GameObject book = book_holder.GetChild(i).gameObject;
                     if(book.tag == "BookTouched" || book.tag == "BookTop")
                     {
-                        Debug.Log("TURNING INNNNNN");
                         //reset tags and information
                         book.tag = "Book";
                         book.layer = LayerMask.NameToLayer("BookLayer");
@@ -278,11 +280,11 @@ public class StackOverflowedMinigame : Minigame {
                 }
 
                 //update the score GUI
-                player.GetComponent<player_script>().TotalScore += player_score;
-                UpdateScore(player.GetComponent<player_script>().TotalScore, player_id);
+                player.GetComponent<PlayerScript>().TotalScore += player_score;
+                UpdateScore(player.GetComponent<PlayerScript>().TotalScore, player_id);
 
                 player.gameObject.layer = LayerMask.NameToLayer("Player");
-                player.GetComponent<player_script>().BooksCarried = 0;
+                player.GetComponent<PlayerScript>().BooksCarried = 0;
             }
         }
     }

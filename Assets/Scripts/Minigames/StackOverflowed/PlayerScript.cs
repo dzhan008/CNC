@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class player_script : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {
 
     private int player_id;

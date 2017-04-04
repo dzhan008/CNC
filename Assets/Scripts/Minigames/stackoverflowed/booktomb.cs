@@ -21,7 +21,7 @@ public class BookTomb : MonoBehaviour {
             if (c.gameObject.transform.root.tag == "Player")
             {
                 Debug.Log("I'm in");
-                c.gameObject.transform.root.GetComponent<player_script>().isOnTomb = true;
+                c.gameObject.transform.root.GetComponent<PlayerScript>().isOnTomb = true;
             }
         }
     }
@@ -37,7 +37,7 @@ public class BookTomb : MonoBehaviour {
             if (c.gameObject.transform.tag == "Player")
             {
                 Debug.Log("I'm out");
-                c.gameObject.transform.root.GetComponent<player_script>().isOnTomb = false;
+                c.gameObject.transform.root.GetComponent<PlayerScript>().isOnTomb = false;
             }
         }
     }

@@ -34,7 +34,7 @@ public class BookStackingScript : MonoBehaviour
 
             if (c.gameObject.transform.parent.tag == "BookHolder" && this.gameObject.transform.tag == "Book" && c.gameObject.GetComponent<BookStackingScript>().touched != true)
             {
-                ++c.gameObject.transform.parent.parent.GetComponent<player_script>().BooksCarried; //see if this works
+                ++c.gameObject.transform.parent.parent.GetComponent<PlayerScript>().BooksCarried; //see if this works
                 /*
                 //check for the appropiate player and increment the scoring 
                 if (c.gameObject.transform.parent.GetComponent<Stats>().Id == 1)
@@ -74,7 +74,7 @@ public class BookStackingScript : MonoBehaviour
         //if the tag is book then change the tag to book touched 
         else if (c.gameObject.tag == "BookHolder" && c.gameObject.transform.parent.tag == "Player")
         {
-            ++c.gameObject.transform.parent.GetComponent<player_script>().BooksCarried; //see if this works
+            ++c.gameObject.transform.parent.GetComponent<PlayerScript>().BooksCarried; //see if this works
 
             //change the book stacking script to true
             this.gameObject.GetComponent<BookStackingScript>().touched = false;
