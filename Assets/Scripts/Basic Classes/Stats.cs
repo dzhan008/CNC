@@ -63,6 +63,7 @@ public class Stats : MonoBehaviour
         }
         set
         {
+            Debug.Log("Current Val: " + _MiniGameScore + " Added Value: " + value);
             _MiniGameScore = value;
         }
     }

@@ -31,11 +31,11 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
 
-        Players = new Dictionary<int, KeyValuePair<GameObject, Stats> >();
+        Players = new Dictionary<int, KeyValuePair<GameObject, Stats>>();
         PlayerIDs = new List<int>();
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
 
-        for(int i = 0; i < tempPlayers.Length; i++)
+        for (int i = 0; i < tempPlayers.Length; i++)
         {
             Players.Add(tempPlayers[i].GetComponent<Stats>().Id, new KeyValuePair<GameObject, Stats>(tempPlayers[i], tempPlayers[i].GetComponent<Stats>()));
             PlayerIDs.Add(tempPlayers[i].GetComponent<Stats>().Id);
@@ -46,19 +46,19 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// Initializes the GameManager, loading in all the minigames randomly and starting the first minigame.
     /// </summary>
-    void Start ()
+    void Start()
     {
         MiniGames = new List<GameObject>();
         MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
         MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
         GameState = States.Debug;
-        if(GameState != States.Debug)
+        if (GameState != States.Debug)
         {
 
             //LoadMiniGame();
         }
 
-	}
+    }
 
     public void LoadMiniGame(string name)
     {
@@ -76,12 +76,12 @@ public class GameManager : Singleton<GameManager>
         CurrentMiniGame = new_game;
         GameState = States.InGame; //NOTE: We might need to move this into the minigames because we need to lock the controls somehow avoiding errors
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-	
-	}
+
+    }
 
     public void DisplayProgress()
     {
