@@ -52,19 +52,23 @@ public class Key
         ButtonHeld = Input.GetButton(Button);
         ButtonUp = Input.GetButtonUp(Button);
 
-        //If we tap a key.
-        if (ButtonDown)
+        if(GameManager.Instance.GameState == States.InGame || GameManager.Instance.GameState == States.Debug)
         {
-            TapAction(player);
+            //If we tap a key.
+            if (ButtonDown)
+            {
+                TapAction(player);
+            }
+            else if (ButtonHeld) //If we tap and hold a key.
+            {
+                HeldAction(player);
+            }
+            else if (ButtonUp) //If we release a key.
+            {
+                ReleaseAction(player);
+            }
         }
-        else if (ButtonHeld) //If we tap and hold a key.
-        {
-            HeldAction(player);
-        }
-        else if(ButtonUp) //If we release a key.
-        {
-            ReleaseAction(player);
-        }
+
     }
 
     /// <summary>

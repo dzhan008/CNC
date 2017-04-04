@@ -22,8 +22,10 @@ public class MainMenu : MonoBehaviour {
     }
 	
     public void onPlay()
-    {
-        StartCoroutine(Play(2));
+    { 
+        UIManager.Instance.ShowMiniGameScreen();
+        this.gameObject.SetActive(false);
+        //StartCoroutine(Play(2));
     }
 
     public void onSettings()
@@ -48,7 +50,6 @@ public class MainMenu : MonoBehaviour {
         UIManager.Instance.FadeIn();
         yield return new WaitForSeconds(time);
         UIManager.Instance.FadeOut();
-        GameManager.Instance.GameState = States.InGame;
         GameManager.Instance.LoadMiniGame();
         Debug.Log("Current State: " + GameManager.Instance.GameState);
         this.gameObject.SetActive(false);

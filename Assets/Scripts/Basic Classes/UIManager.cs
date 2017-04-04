@@ -12,11 +12,14 @@ public class UIManager : Singleton<UIManager> {
     Progress (After every minigame)
     End of Game Screen
     */
-
+    [SerializeField]
+    private GameObject MainMenuCanvas;
     [SerializeField]
     private Image FadeScreen;
     [SerializeField]
     private GameObject ProgressScreen;
+    [SerializeField]
+    private GameObject MiniGameScreen;
     [SerializeField]
     private Text PlayerOneScore;
     [SerializeField]
@@ -72,6 +75,34 @@ public class UIManager : Singleton<UIManager> {
         FadeScreen.CrossFadeAlpha(0, time, false);
         yield return new WaitForSeconds(time);
         FadeScreen.gameObject.SetActive(false);
+    }
+
+    /* Demo UI Functions Here */
+    public void ShowMiniGameScreen()
+    {
+        MiniGameScreen.SetActive(true);
+    }
+
+    public void OnSelectGame(string name)
+    {
+
+        StartCoroutine(SelectGame(2, name));
+    }
+
+    public void OnMainMenu()
+    {
+        MainMenuCanvas.SetActive(true);
+        MiniGameScreen.SetActive(false);
+    }
+
+    IEnumerator SelectGame(float time, string name)
+    {
+        UIManager.Instance.FadeIn();
+        yield return new WaitForSeconds(time);
+        UIManager.Instance.FadeOut();
+        GameManager.Instance.LoadMiniGame(name);
+        Debug.Log("Current State: " + GameManager.Instance.GameState);
+        MiniGameScreen.SetActive(false);
     }
 
 

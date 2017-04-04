@@ -60,12 +60,21 @@ public class GameManager : Singleton<GameManager>
 
     }
 
+    public void LoadMiniGame(string name)
+    {
+        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/" + name + "/" + name));
+        CurrentMiniGameIndex = MiniGames.Count - 1;
+        GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
+        CurrentMiniGame = new_game;
+        GameState = States.InGame;
+    }
+
     public void LoadMiniGame()
     {
         CurrentMiniGameIndex = Random.Range(0, MiniGames.Count);
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;
-        GameState = States.InGame;
+        GameState = States.InGame; //NOTE: We might need to move this into the minigames because we need to lock the controls somehow avoiding errors
     }
 
     // Update is called once per frame
@@ -76,7 +85,12 @@ public class GameManager : Singleton<GameManager>
 
     public void DisplayProgress()
     {
-        StartCoroutine(CoroutineProgress(1));
+        Debug.Log("DISPLAYINGPROGRESS");
+        /*Change after demo */
+        UIManager.Instance.ShowMiniGameScreen();
+        DestroyMiniGame();
+        //StartCoroutine(CoroutineProgress(1));
+        GameState = States.Results;
     }
 
     /// <summary>
@@ -84,7 +98,17 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void QueueNewGame()
     {
-        StartCoroutine(QueueGame(1));
+        StartCoroutine(CoroutineQueueGame(1));
+    }
+
+    /// <summary>
+    /// Destroys the current minigame.
+    /// </summary>
+    public void DestroyMiniGame()
+    {
+        GameObject mini_game = CurrentMiniGame;
+        MiniGames.RemoveAt(CurrentMiniGameIndex);
+        Destroy(mini_game);
     }
 
     IEnumerator CoroutineProgress(float time)
@@ -95,7 +119,7 @@ public class GameManager : Singleton<GameManager>
         UIManager.Instance.ShowProgressScreen();
     }
 
-    IEnumerator QueueGame(float time)
+    IEnumerator CoroutineQueueGame(float time)
     {
         UIManager.Instance.FadeIn();
         yield return new WaitForSeconds(time);
@@ -104,9 +128,6 @@ public class GameManager : Singleton<GameManager>
         {
             Players[PlayerIDs[i]].Value.ResetMiniGameScore();
         }
-        GameObject mini_game = CurrentMiniGame;
-        MiniGames.RemoveAt(CurrentMiniGameIndex);
-        Destroy(mini_game);
         LoadMiniGame();
         UIManager.Instance.FadeOut();
     }

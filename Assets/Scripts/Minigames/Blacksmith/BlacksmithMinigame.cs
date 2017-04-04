@@ -14,12 +14,6 @@ public class BlacksmithMinigame : Minigame {
     public GameObject HitPoint;
     private HitPoint Point;
 
-    [SerializeField]
-    private GameObject InstructionPanel;
-    [SerializeField]
-    private GameObject RulesPanel;
-    [SerializeField]
-    private GameObject ControlsPanel;
     public Text PlayerOneScore;
     public Text PlayerTwoScore;
     public Text Timer;
@@ -80,18 +74,18 @@ public class BlacksmithMinigame : Minigame {
 
     }
 
-    public void OnStart()
+    public override void OnStart()
     {
         StartCoroutine(StartGame(1));
     }
 
     IEnumerator EndGame(float time)
     {
-        if(PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
+        if(PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
         {
             Timer.text = "Player 1 Wins!";
         }
-        else if(PlayerOneStats.MiniGameScore > PlayerTwoStats.MiniGameScore)
+        else if(PlayerOneStats.MiniGameScore < PlayerTwoStats.MiniGameScore)
         {
             Timer.text = "Player 2 Wins!";
         }
@@ -115,13 +109,13 @@ public class BlacksmithMinigame : Minigame {
         TimerOn = true;
     }
 
-    public void OnRules()
+    public override void OnRules()
     {
         RulesPanel.SetActive(true);
         ControlsPanel.SetActive(false);
     }
 
-    public void OnControls()
+    public override void OnControls()
     {
         ControlsPanel.SetActive(true);
         RulesPanel.SetActive(false);
