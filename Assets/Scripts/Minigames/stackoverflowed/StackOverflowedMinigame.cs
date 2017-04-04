@@ -21,10 +21,11 @@ public class StackOverflowedMinigame : Minigame {
     private Stats PlayerOneStats;
     private Stats PlayerTwoStats;
 
-    //---------instruction screen---------//
-    public GameObject ruleScreen;
-    public GameObject controlScreen;
-    public GameObject instructionScreen;
+    /*Player BookHolders */
+    public GameObject PlayerOneBookHolder;
+    public GameObject PlayerTwoBookHolder;
+    
+    //-----Instructions-----//
     public bool inInstructions = true;
 
     //--------Scoring-----------//
@@ -73,45 +74,47 @@ public class StackOverflowedMinigame : Minigame {
         PlayerOne.transform.position = SpawnPoint1.transform.position;
         PlayerTwo.transform.position = SpawnPoint2.transform.position;
 
-        //Set player's positions/controls
-        //PlayerOne.transform.position = new Vector3(-30f, 5f, 0f);
-        //PlayerTwo.transform.position = new Vector3(-20f, 5f, 0f);
+        PlayerOneBookHolder.transform.position = SpawnPoint1.transform.position;
+        PlayerTwoBookHolder.transform.position = SpawnPoint2.transform.position;
+
+        PlayerOneBookHolder.transform.parent = PlayerOne.transform;
+        PlayerTwoBookHolder.transform.parent = PlayerTwo.transform;
+
+        PlayerOne.AddComponent<player_script>();
+        PlayerTwo.AddComponent<player_script>();
 
         //object pooling stuff
         bookSpawner = this.GetComponent<ObjectPooler>();
         spawnRate = Time.time + addTime;
         
-
-        Debug.Log(PlayerOneStats.Intel);
-        Debug.Log(PlayerOneStats.Str);
-        Debug.Log(PlayerOneStats.Dex);
-
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
 
+
+
    
     }
 
-    public void OnStart()
+    public override void OnStart()
     {
         Debug.Log("I'm playing");
-        instructionScreen.SetActive(false);
+        InstructionPanel.SetActive(false);
         TimerOn = true;
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
         inInstructions = false;
     }
 
-    public void OnRules()
+    public override void OnRules()
     {
-        ruleScreen.SetActive(true);
-        controlScreen.SetActive(false);
+        RulesPanel.SetActive(true);
+        ControlsPanel.SetActive(false);
     }
 
-    public void OnControls()
+    public override void OnControls()
     {
-        ruleScreen.SetActive(false);
-        controlScreen.SetActive(true);
+        RulesPanel.SetActive(false);
+        ControlsPanel.SetActive(true);
     }
 
     //Game is finished complete the game now :D
@@ -123,49 +126,11 @@ public class StackOverflowedMinigame : Minigame {
         //stop all the invokes spawning books
         CancelInvoke();
 
-        PlayerOne.tag = "Book";
-        PlayerTwo.tag = "Book";
+        Destroy(PlayerOneBookHolder);
+        Destroy(PlayerTwoBookHolder);
 
-        //get rid of all the books on the players
-        for (int i = 0; i < PlayerOne.transform.childCount; ++i)
-        {
-
-            Debug.Log("Books: " + i + " " + PlayerOne.transform.GetChild(i).gameObject.tag);
-
-            PlayerOne.transform.GetChild(i).gameObject.SetActive(false);
-            //reset tags and information
-            PlayerOne.transform.GetChild(i).gameObject.tag = "Book";
-            PlayerOne.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("BookLayer");
-            PlayerOne.transform.GetChild(i).gameObject.GetComponent<BookStackingScript>().touched = false;
-            PlayerOne.transform.GetChild(i).gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-            PlayerOne.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
-
-        }
-
-        while (PlayerOne.transform.childCount != 0)
-        {
-            PlayerOne.transform.GetChild(0).gameObject.transform.parent = GameObject.Find("Book Container").transform;
-        }
-
-        for (int i = 0; i < PlayerTwo.transform.childCount; ++i)
-        {
-
-            Debug.Log("Books: " + i + " " + PlayerTwo.transform.GetChild(i).gameObject.tag);
-
-            PlayerTwo.transform.GetChild(i).gameObject.SetActive(false);
-            //reset tags and information
-            PlayerTwo.transform.GetChild(i).gameObject.tag = "Book";
-            PlayerTwo.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("BookLayer");
-            PlayerTwo.transform.GetChild(i).gameObject.GetComponent<BookStackingScript>().touched = false;
-            PlayerTwo.transform.GetChild(i).gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-            PlayerTwo.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
-
-        }
-
-        while (PlayerTwo.transform.childCount != 0)
-        {
-            PlayerTwo.transform.GetChild(0).gameObject.transform.parent = GameObject.Find("Book Container").transform;
-        }
+        Destroy(PlayerOne.GetComponent<player_script>());
+        Destroy(PlayerTwo.GetComponent<player_script>());
 
         //Check to see who is the winner
         //delay for a little bit then show the winner
@@ -263,13 +228,17 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void LeftTapAction(GameObject player)
     {
-
+        Vector2 side = player.transform.localScale;
+        side.x = (player.transform.localScale.x < 0f) ? -1 * player.transform.localScale.x : player.transform.localScale.x;
+        player.transform.localScale = side;
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
 
     public override void CenterTapAction(GameObject player)
     {
         if (!Finished && !inInstructions)
         {
+            Debug.Log(player.GetComponent<player_script>().isOnTomb);
             //check to see if the player is on tomb and books carried is more than 1
             if (player.GetComponent<player_script>().isOnTomb && player.GetComponent<player_script>().BooksCarried > 0)
             {
@@ -278,33 +247,41 @@ public class StackOverflowedMinigame : Minigame {
                 int player_score = player.GetComponent<player_script>().BooksCarried;
                 int player_id = player.GetComponent<player_script>().getPlayerID();
 
+                Transform book_holder = player.transform.Find("BookHolder");
+
                 Debug.Log(player.transform.childCount);
                 //remove all the books
-                for (int i = 0; i < player.transform.childCount; ++i)
+                for (int i = 0; i < book_holder.childCount; ++i)
                 {
 
-                    Debug.Log("Books: " + i + " " + player.transform.GetChild(i).gameObject.tag);
+                    Debug.Log("Books: " + i + " " + book_holder.GetChild(i).gameObject.tag);
+                    GameObject book = book_holder.GetChild(i).gameObject;
+                    if(book.tag == "BookTouched" || book.tag == "BookTop")
+                    {
+                        Debug.Log("TURNING INNNNNN");
+                        //reset tags and information
+                        book.tag = "Book";
+                        book.layer = LayerMask.NameToLayer("BookLayer");
+                        book.GetComponent<BookStackingScript>().touched = false;
+                        book.GetComponent<Rigidbody2D>().isKinematic = false;
+                        book.GetComponent<BoxCollider2D>().enabled = true;
+                        book.gameObject.SetActive(false);
+                    }
 
-                    player.transform.GetChild(i).gameObject.SetActive(false);
-                    //reset tags and information
-                    player.transform.GetChild(i).gameObject.tag = "Book";
-                    player.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("BookLayer");
-                    player.transform.GetChild(i).gameObject.GetComponent<BookStackingScript>().touched = false;
-                    player.transform.GetChild(i).gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-                    player.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
                 }
 
-                while (player.transform.childCount != 0)
+                //Should probably fix this. This ASSUMES that the model is the first child, so we know that new books added are under it.
+                while (book_holder.childCount != 0)
                 {
-                    player.transform.GetChild(0).gameObject.transform.parent = GameObject.Find("Book Container").transform;
+                        book_holder.GetChild(0).gameObject.transform.parent = GameObject.Find("Book Container").transform;
                 }
 
                 //update the score GUI
                 player.GetComponent<player_script>().TotalScore += player_score;
                 UpdateScore(player.GetComponent<player_script>().TotalScore, player_id);
 
-                player.gameObject.layer = LayerMask.NameToLayer("PlayerLayer");
+                player.gameObject.layer = LayerMask.NameToLayer("Player");
                 player.GetComponent<player_script>().BooksCarried = 0;
             }
         }
@@ -312,7 +289,10 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void RightTapAction(GameObject player)
     {
-
+        Vector2 side = player.transform.localScale;
+        side.x = (player.transform.localScale.x > 0f) ? -1 * player.transform.localScale.x : player.transform.localScale.x;
+        player.transform.localScale = side;
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
 
     public override void UpHeldAction(GameObject player)
@@ -322,13 +302,16 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void LeftHeldAction(GameObject player)
     {
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
         if (!Finished && !inInstructions)
         {
             player.GetComponent<Rigidbody2D>().MovePosition(player.GetComponent<Rigidbody2D>().position + new Vector2(-8, 0) * Time.deltaTime);
             if (player.GetComponent<Rigidbody2D>().transform.childCount > 0)
             {
-                player.transform.Find("Book(Clone)").gameObject.GetComponent<Rigidbody2D>().transform.position = new Vector2(player.GetComponent<Rigidbody2D>().position.x,
-                                                                                                            player.transform.Find("Book(Clone)").gameObject.GetComponent<Rigidbody2D>().transform.position.y);
+                Transform possible_book = player.transform.Find("Book(Clone)");
+                if(possible_book != null)
+                possible_book.gameObject.GetComponent<Rigidbody2D>().transform.position = new Vector2(player.GetComponent<Rigidbody2D>().position.x,
+                                                                                                            possible_book.gameObject.GetComponent<Rigidbody2D>().transform.position.y);
             }
         }
     }
@@ -340,13 +323,16 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void RightHeldAction(GameObject player)
     {
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 1);
         if (!Finished && !inInstructions)
         {
             player.GetComponent<Rigidbody2D>().MovePosition(player.GetComponent<Rigidbody2D>().position + new Vector2(8, 0) * Time.deltaTime);
             if (player.GetComponent<Rigidbody2D>().transform.childCount > 0)
             {
-                player.transform.Find("Book(Clone)").gameObject.GetComponent<Rigidbody2D>().transform.position = new Vector2(player.GetComponent<Rigidbody2D>().position.x,
-                                                                                                            player.transform.Find("Book(Clone)").gameObject.GetComponent<Rigidbody2D>().transform.position.y);
+                Transform possible_book = player.transform.Find("Book(Clone)");
+                if (possible_book != null)
+                possible_book.gameObject.GetComponent<Rigidbody2D>().transform.position = new Vector2(player.GetComponent<Rigidbody2D>().position.x,
+                                                                                                            possible_book.gameObject.GetComponent<Rigidbody2D>().transform.position.y);
             }
             //rigidbody2D.MovePosition(rigidbody2D.position + speed * Time.deltaTime);
         }
@@ -359,7 +345,7 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void LeftRelAction(GameObject player)
     {
-
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 0);
     }
 
     public override void CenterRelAction(GameObject player)
@@ -369,7 +355,7 @@ public class StackOverflowedMinigame : Minigame {
 
     public override void RightRelAction(GameObject player)
     {
-
+        player.GetComponentInChildren<Animator>().SetFloat("Running", 0);
     }
 
    

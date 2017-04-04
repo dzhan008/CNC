@@ -17,8 +17,8 @@ public class BookTomb : MonoBehaviour {
         //to make sure that we don't get NULL exception error check to see that the parent is not null
         if (c.gameObject.transform.tag != null)
         {
-            
-            if (c.gameObject.transform.tag == "Player")
+            Debug.Log(c.gameObject.transform.tag);
+            if (c.gameObject.transform.root.tag == "Player")
             {
                 Debug.Log("I'm in");
                 c.gameObject.transform.root.GetComponent<player_script>().isOnTomb = true;

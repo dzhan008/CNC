@@ -24,14 +24,17 @@ public class BookStackingScript : MonoBehaviour
     //after the first book check to see if the following book belongs to the player if so then put it under the player book
     private void OnTriggerEnter2D(Collider2D c)
     {
+        Debug.Log(c.gameObject.tag);
         //to make sure that we don't get NULL exception error check to see that the parent is not null
-        if (c.gameObject.transform.parent != null)
+        if (c.gameObject.transform.parent != null && c.gameObject.tag != "BookHolder" )
         {
+
             //then check the tag of the parent to see if the book is at the top of the stack
             //have to check for the book tag because if not then it will accept book stacked books and book which will cause a double collision
-            if (c.gameObject.transform.parent.tag == "Player" && this.gameObject.transform.tag == "Book" && c.gameObject.GetComponent<BookStackingScript>().touched != true)
+
+            if (c.gameObject.transform.parent.tag == "BookHolder" && this.gameObject.transform.tag == "Book" && c.gameObject.GetComponent<BookStackingScript>().touched != true)
             {
-                ++c.gameObject.transform.parent.GetComponent<player_script>().BooksCarried; //see if this works
+                ++c.gameObject.transform.parent.parent.GetComponent<player_script>().BooksCarried; //see if this works
                 /*
                 //check for the appropiate player and increment the scoring 
                 if (c.gameObject.transform.parent.GetComponent<Stats>().Id == 1)
@@ -69,9 +72,9 @@ public class BookStackingScript : MonoBehaviour
         }
 
         //if the tag is book then change the tag to book touched 
-        else if (c.gameObject.tag == "Player")
+        else if (c.gameObject.tag == "BookHolder" && c.gameObject.transform.parent.tag == "Player")
         {
-            ++c.gameObject.transform.GetComponent<player_script>().BooksCarried; //see if this works
+            ++c.gameObject.transform.parent.GetComponent<player_script>().BooksCarried; //see if this works
 
             //change the book stacking script to true
             this.gameObject.GetComponent<BookStackingScript>().touched = false;
@@ -89,8 +92,6 @@ public class BookStackingScript : MonoBehaviour
             this.transform.parent = c.transform;
             //c.transform.localScale = newScale;
 
-            //reassign this layer so that other books don't collide with it
-            c.gameObject.layer = LayerMask.NameToLayer("BookTouchedLayer");
 
             this.transform.position = new Vector3(c.transform.position.x, c.transform.position.y, 0);
         }
