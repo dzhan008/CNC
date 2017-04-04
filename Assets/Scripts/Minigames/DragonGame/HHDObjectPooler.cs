@@ -7,15 +7,18 @@ public class HHDObjectPooler : MonoBehaviour {
 	// Setting variables
 	public GameObject pooledObject;
 	public int pooledAmount;
-	List<GameObject> pooledObjects = new List<GameObject>();
+    private GameObject poolContainer;
+    List<GameObject> pooledObjects = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
-
-		for (int i = 0; i < pooledAmount; i++)
+        poolContainer = new GameObject();
+        poolContainer.name = pooledObject.name + " Container";
+        for (int i = 0; i < pooledAmount; i++)
 		{
 			GameObject obj = (GameObject)Instantiate(pooledObject);
-			obj.SetActive(false);
+            obj.transform.parent = poolContainer.transform;
+            obj.SetActive(false);
 			pooledObjects.Add(obj);
 		}
 	}
@@ -29,13 +32,15 @@ public class HHDObjectPooler : MonoBehaviour {
 	{
 		for (int i = 0; i < pooledObjects.Count; i++)
 		{
-			if (!pooledObjects[i].activeInHierarchy) 
-			{
+			if (!pooledObjects[i].activeInHierarchy && pooledObjects != null)
+
+            {
 				return pooledObjects[i];
 			}
 		}
 		GameObject obj = (GameObject)Instantiate(pooledObject);
-		obj.SetActive(false);
+        obj.transform.parent = poolContainer.transform;
+        obj.SetActive(false);
 		pooledObjects.Add(obj);
 		return obj;
 	}

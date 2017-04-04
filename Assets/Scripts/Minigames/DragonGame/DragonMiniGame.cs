@@ -144,9 +144,6 @@ public class DragonMiniGame : Minigame
         PlayerOne = GameManager.Instance.Players[1].Key;
         PlayerTwo = GameManager.Instance.Players[2].Key;
 
-        Destroy(PlayerOne.transform.GetChild(0).GetComponent<Rigidbody2D>());
-        Destroy(PlayerTwo.transform.GetChild(0).GetComponent<Rigidbody2D>());
-
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
         //Initialize time
@@ -281,6 +278,7 @@ public class DragonMiniGame : Minigame
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForSeconds(5);
+        GameEnd();
     }
     void myGameEnd(GameObject winner, GameObject loser)
     {
@@ -289,10 +287,6 @@ public class DragonMiniGame : Minigame
         StartCoroutine(EndCinematic(winner, loser));
         PlayerOne.GetComponent<Rigidbody2D>().isKinematic = true;
         PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = true;
-        PlayerOne.transform.GetChild(0).gameObject.AddComponent<Rigidbody2D>();
-        PlayerOne.transform.GetChild(0).gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
-        PlayerTwo.transform.GetChild(0).gameObject.AddComponent<Rigidbody2D>();
-        PlayerTwo.transform.GetChild(0).gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
         Destroy(PlayerOne.GetComponent<PlayerCollision>());
         Destroy(PlayerOne.GetComponent<PlayerCollision>());
         Destroy(PlayerOne.GetComponent<PlayerStat>());
@@ -307,7 +301,6 @@ public class DragonMiniGame : Minigame
             StartGame = false;
             if (Winner == 1) myGameEnd(PlayerOne, PlayerTwo);
             else myGameEnd(PlayerTwo, PlayerOne);
-            GameEnd();
         }
         if (StartGame)
         {
