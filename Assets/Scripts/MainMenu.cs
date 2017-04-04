@@ -22,8 +22,10 @@ public class MainMenu : MonoBehaviour {
     }
 	
     public void onPlay()
-    {
-        StartCoroutine(Play(2));
+    { 
+        UIManager.Instance.ShowMiniGameScreen();
+        this.gameObject.SetActive(false);
+        //StartCoroutine(Play(2));
     }
 
     public void onSettings()
