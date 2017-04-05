@@ -278,6 +278,10 @@ public class DragonMiniGame : Minigame
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForSeconds(5);
+        Destroy(GameObject.Find("Road1 Container"));
+        Destroy(GameObject.Find("LastTile"));
+        Destroy(GameObject.Find("GoalWall"));
+        Destroy(GameObject.Find("HHDCamera"));
         GameEnd();
     }
     void myGameEnd(GameObject winner, GameObject loser)
@@ -291,6 +295,8 @@ public class DragonMiniGame : Minigame
         Destroy(PlayerOne.GetComponent<PlayerCollision>());
         Destroy(PlayerOne.GetComponent<PlayerStat>());
         Destroy(PlayerTwo.GetComponent<PlayerStat>());
+        Destroy(GameObject.Find("Obstacle Container"));
+        Destroy(GameObject.Find("chicken Container"));
         
     }
     // Update logic for this minigame
