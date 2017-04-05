@@ -51,7 +51,7 @@ public class GameManager : Singleton<GameManager>
         MiniGames = new List<GameObject>();
         MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
         MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/Test"));
-        GameState = States.Debug;
+        //GameState = States.Debug;
         if (GameState != States.Debug)
         {
 
@@ -66,7 +66,6 @@ public class GameManager : Singleton<GameManager>
         CurrentMiniGameIndex = MiniGames.Count - 1;
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;
-        GameState = States.InGame;
     }
 
     public void LoadMiniGame()

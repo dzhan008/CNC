@@ -57,7 +57,7 @@ public class StackOverflowedMinigame : Minigame {
 
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
-        TimeLeft = 45;
+        TimeLeft = 5;
 
         //disbale finished text until game is won
         finishedText.enabled = false;
@@ -127,6 +127,8 @@ public class StackOverflowedMinigame : Minigame {
         //stop all the invokes spawning books
         CancelInvoke();
 
+        GameManager.Instance.GameState = States.Results;
+
         Destroy(PlayerOneBookHolder);
         Destroy(PlayerTwoBookHolder);
 
@@ -142,10 +144,6 @@ public class StackOverflowedMinigame : Minigame {
         PlayerTwoStats.MiniGameScore = PlayerTwo.GetComponent<PlayerScript>().TotalScore;
 
         StartCoroutine(DecideWinner());
-
-
-       
-        
     }
 
     //this coroutine is to pause for a little bit after finished is displayed

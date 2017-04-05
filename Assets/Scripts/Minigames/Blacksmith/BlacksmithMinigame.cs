@@ -76,6 +76,7 @@ public class BlacksmithMinigame : Minigame {
 
     public override void OnStart()
     {
+        GameManager.Instance.GameState = States.InGame;
         StartCoroutine(StartGame(1));
     }
 
