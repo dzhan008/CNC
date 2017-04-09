@@ -12,9 +12,11 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
     [SerializeField]
-    GameObject Menu;
+    private GameObject Menu;
     [SerializeField]
-    GameObject Settings;
+    private GameObject Settings;
+    [SerializeField]
+    private GameObject CharacterSelectCanvas;
 
 	// Use this for initialization
 	void Start () {
@@ -22,8 +24,8 @@ public class MainMenu : MonoBehaviour {
     }
 	
     public void onPlay()
-    { 
-        UIManager.Instance.ShowMiniGameScreen();
+    {
+        CharacterSelectCanvas.SetActive(true);
         this.gameObject.SetActive(false);
         //StartCoroutine(Play(2));
     }

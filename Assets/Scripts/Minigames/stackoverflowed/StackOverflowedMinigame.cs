@@ -143,6 +143,9 @@ public class StackOverflowedMinigame : Minigame {
         PlayerOneStats.MiniGameScore = PlayerOne.GetComponent<PlayerScript>().TotalScore;
         PlayerTwoStats.MiniGameScore = PlayerTwo.GetComponent<PlayerScript>().TotalScore;
 
+        PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 0);
+        PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 0);
+
         StartCoroutine(DecideWinner());
     }
 
