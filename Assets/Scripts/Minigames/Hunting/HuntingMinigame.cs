@@ -47,6 +47,9 @@ public class HuntingMinigame : Minigame {
         Debug.Log(Player1.GetComponent<Stats>().Intel);
         Debug.Log(1f - ((Player1.GetComponent<Stats>().Intel) * .1f));
         Bull1.GetComponent<Bullet1>().speed = 1f - ((Player2.GetComponent<Stats>().Intel) * .1f);
+
+        //TODO: Move this to the instructions screen!
+        OnStart();
     }
 	
 	// Update is called once per frame
@@ -78,7 +81,7 @@ public class HuntingMinigame : Minigame {
 
     public override void OnStart()
     {
-
+        GameManager.Instance.GameState = States.InGame;
     }
 
 
