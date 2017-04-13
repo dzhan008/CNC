@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager> {
@@ -24,6 +25,10 @@ public class UIManager : Singleton<UIManager> {
     private Text PlayerOneScore;
     [SerializeField]
     private Text PlayerTwoScore;
+    [SerializeField]
+    private GameObject PlayerOneModel;
+    [SerializeField]
+    private GameObject PlayerTwoModel;
 
     public float FadeTime
     {
@@ -91,8 +96,13 @@ public class UIManager : Singleton<UIManager> {
 
     public void OnMainMenu()
     {
-        MainMenuCanvas.SetActive(true);
+        SceneManager.LoadScene("Main Menu");
+        //TO DO: Find a way to reset the game without having to remake the scene?
+        /*MainMenuCanvas.SetActive(true);
         MiniGameScreen.SetActive(false);
+        PlayerOneModel.SetActive(true);
+        PlayerTwoModel.SetActive(true);
+        AudioManager.Instance.SetSong("Title");*/
     }
 
     IEnumerator SelectGame(float time, string name)

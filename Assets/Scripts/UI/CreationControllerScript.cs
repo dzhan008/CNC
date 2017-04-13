@@ -134,8 +134,8 @@ public class CreationControllerScript : MonoBehaviour {
         {
             Player1Model.transform.parent = Player1ModelHolder.transform.root;
             Player2Model.transform.parent = Player2ModelHolder.transform.root;
-            Destroy(Player1ModelHolder);
-            Destroy(Player2ModelHolder);
+            Player1ModelHolder.SetActive(false);
+            Player2ModelHolder.SetActive(false);
             CharacterCanvas.SetActive(false);
             UIManager.Instance.ShowMiniGameScreen();
             GameState = "Done";

@@ -43,14 +43,15 @@ public class DragonMiniGame : Minigame
 
         }
     }
+
+    [SerializeField]
+    private Canvas CanvasUI;
     public Text GameOverText;
     GameObject PlayerOne;
     GameObject PlayerTwo;
     [SerializeField]
     private Vector3 offset;
-
-    [SerializeField]
-    Camera MainCamera;
+    private Camera MainCamera;
     public float SmoothTimeX;
     public float SmoothTimeY;
     public Vector2 CameraVelocity;
@@ -74,6 +75,7 @@ public class DragonMiniGame : Minigame
     public Text Timer;
     private bool _IsGameEnd = false;
     public bool IsGameEnd { get; set; }
+    private bool EndingGame = false;
     private int _Winner = -1;
     public int Winner { get; set; }
 	public float playerDrag = 5;
@@ -81,6 +83,7 @@ public class DragonMiniGame : Minigame
     public bool StartGame { get; set; }
 
     public GameObject HHDCamera;
+    private Vector3 OrigCameraPos;
 
     public GameObject PlayerOneSpawnPoint;
     public GameObject PlayerTwoSpawnPoint;
@@ -130,14 +133,18 @@ public class DragonMiniGame : Minigame
         StartGame = true;
         //Game Starts
         ProgressMaxVal = findEndDist();
-
+        GameManager.Instance.GameState = States.InGame;
         PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
         PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
     void Start()
     {
-  
+        AudioManager.Instance.SetSong("Hungry Hungry Dragon");
+        MainCamera = Camera.main;
         HHDCamera.transform.parent = MainCamera.transform;
+        CanvasUI.worldCamera = Camera.main;
+        OrigCameraPos = Camera.main.transform.position;
+
         //Initialize time
         //TimerOn = false;
         //TimeLeft = 5000;
@@ -146,6 +153,7 @@ public class DragonMiniGame : Minigame
 
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
+
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls
@@ -175,6 +183,12 @@ public class DragonMiniGame : Minigame
         PlayerTwo.GetComponent<PlayerCollision>().Initialize(2, PlayerTwo.GetComponent<PlayerStat>());
         PlayerOne.GetComponent<Rigidbody2D>().isKinematic = false;
         PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = false;
+        PlayerOne.GetComponent<Rigidbody2D>().gravityScale = 3;
+        PlayerTwo.GetComponent<Rigidbody2D>().gravityScale = 3;
+        PlayerOne.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
+        PlayerTwo.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
+        PlayerOne.layer = LayerMask.NameToLayer("LayerC");
+        PlayerTwo.layer = LayerMask.NameToLayer("LayerC");
     }
 
     float MidPointFormula()
@@ -259,6 +273,7 @@ public class DragonMiniGame : Minigame
     }
     IEnumerator EndCinematic(GameObject winner, GameObject loser)
     {
+        GameManager.Instance.GameState = States.Results;
         GameObject dragon = GameObject.Find("Dragon");
         while (dragon.transform.position.x < loser.transform.position.x - 1)
         {
@@ -277,26 +292,35 @@ public class DragonMiniGame : Minigame
             }
             yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         Destroy(GameObject.Find("Road1 Container"));
         Destroy(GameObject.Find("LastTile"));
         Destroy(GameObject.Find("GoalWall"));
         Destroy(GameObject.Find("HHDCamera"));
-        GameEnd();
+        Destroy(GameObject.Find("Obstacle Container"));
+        Destroy(GameObject.Find("chicken Container"));
+        PlayerOne.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        PlayerTwo.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        PlayerOne.GetComponent<Rigidbody2D>().isKinematic = true;
+        PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = true;
+        IsGameEnd = false;
+        EndingGame = true;
+        PlayerOne.transform.localScale = new Vector3(1f, 1f, 1f);
+        PlayerTwo.transform.localScale = new Vector3(1f, 1f, 1f);
+        PlayerOne.layer = LayerMask.NameToLayer("Player");
+        PlayerTwo.layer = LayerMask.NameToLayer("Player");
+        Camera.main.transform.position = OrigCameraPos;
     }
     void myGameEnd(GameObject winner, GameObject loser)
     {
         PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 0);
         PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 0);
         StartCoroutine(EndCinematic(winner, loser));
-        PlayerOne.GetComponent<Rigidbody2D>().isKinematic = true;
-        PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = true;
         Destroy(PlayerOne.GetComponent<PlayerCollision>());
-        Destroy(PlayerOne.GetComponent<PlayerCollision>());
+        Destroy(PlayerTwo.GetComponent<PlayerCollision>());
         Destroy(PlayerOne.GetComponent<PlayerStat>());
         Destroy(PlayerTwo.GetComponent<PlayerStat>());
-        Destroy(GameObject.Find("Obstacle Container"));
-        Destroy(GameObject.Find("chicken Container"));
+
         
     }
     // Update logic for this minigame
@@ -307,6 +331,10 @@ public class DragonMiniGame : Minigame
             StartGame = false;
             if (Winner == 1) myGameEnd(PlayerOne, PlayerTwo);
             else myGameEnd(PlayerTwo, PlayerOne);
+        }
+        else if(EndingGame)
+        {
+            GameEnd();
         }
         if (StartGame)
         {
@@ -331,7 +359,9 @@ public class DragonMiniGame : Minigame
     {
 		float jump_height = 0;
         jump_height = player.GetComponent<PlayerStat>().PSkills["jumpHeight"];
+        Debug.Log(jump_height);
 		if (player.GetComponent<PlayerCollision>().CanJump) {
+            Debug.Log("Jumping!");
 			player.GetComponent<Rigidbody2D> ().AddForce (player.transform.up * jump_height);
 		}
     }

@@ -21,7 +21,7 @@ public class DeathWall : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Debug.Log("Death Wall!!! Game Over");
-            GameObject game = GameObject.Find("DragonGame");
+            GameObject game = GameObject.Find("HHD(Clone)");
             game.GetComponent<DragonMiniGame>().IsGameEnd = true;
             int player_id = other.GetComponent<Stats>().Id;
             int winner = 2;

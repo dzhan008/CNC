@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BookTomb : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject game;
 
     // Use this for initialization
     void Start()
@@ -17,7 +19,7 @@ public class BookTomb : MonoBehaviour
         Debug.Log("Game Object Name: " + c.gameObject.name);
         Debug.Log("Who's this on my lawn: " + c.gameObject.transform.root.tag);
         //to make sure that we don't get NULL exception error check to see that the parent is not null
-        if (c.gameObject.transform.tag != null)
+        if (c.gameObject.transform.tag != null && GameManager.Instance.GameState == States.InGame)
         {
             Debug.Log(c.gameObject.transform.tag);
             if (c.gameObject.transform.root.tag == "Player")
@@ -33,7 +35,7 @@ public class BookTomb : MonoBehaviour
     {
         Debug.Log("Who's this off my lawn: " + c.gameObject.transform.root.tag);
         //to make sure that we don't get NULL exception error check to see that the parent is not null
-        if (c.gameObject.transform.root.tag != null)
+        if (c.gameObject.transform.root.tag != null && GameManager.Instance.GameState == States.InGame)
         {
 
             if (c.gameObject.transform.root.tag == "Player")

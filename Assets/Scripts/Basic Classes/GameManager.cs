@@ -62,7 +62,7 @@ public class GameManager : Singleton<GameManager>
 
     public void LoadMiniGame(string name)
     {
-        MiniGames.Add((GameObject)Resources.Load("Prefabs/Minigames/" + name + "/" + name));
+        MiniGames.Add(ResourceManager.Instance.MiniGames[name]);
         CurrentMiniGameIndex = MiniGames.Count - 1;
         GameObject new_game = (GameObject)Instantiate(MiniGames[CurrentMiniGameIndex]);
         CurrentMiniGame = new_game;

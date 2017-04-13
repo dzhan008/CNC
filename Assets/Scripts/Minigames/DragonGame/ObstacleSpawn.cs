@@ -6,10 +6,10 @@ public class ObstacleSpawn : MonoBehaviour {
 
     public HHDObjectPooler ObstaclePool;
     public List<Sprite> spritePictures;
+    public GameObject game;
 
     IEnumerator SpawnObstacle()
     {
-        GameObject game = GameObject.Find("DragonGame");
         bool spawn = game.GetComponent<DragonMiniGame>().StartGame;
         while (true)
         {

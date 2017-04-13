@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioManager : MonoBehaviour {
+public class AudioManager : Singleton<AudioManager> {
 
 	// Use this for initialization
 	void Start () {
@@ -12,4 +12,10 @@ public class AudioManager : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public void SetSong(string name)
+    {
+        GetComponent<AudioSource>().clip = ResourceManager.Instance.Audio[name];
+        GetComponent<AudioSource>().Play();
+    }
 }

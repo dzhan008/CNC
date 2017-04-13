@@ -23,7 +23,7 @@ public class GoalWall : MonoBehaviour
         {
             Debug.Log("Goal Wall!!! Game Over");
             other.GetComponent<Stats>().MiniGameScore++;
-            GameObject game = GameObject.Find("DragonGame");
+            GameObject game = GameObject.Find("HHD(Clone)");
             game.GetComponent<DragonMiniGame>().IsGameEnd = true;
             int winner = other.GetComponent<Stats>().Id;
             game.GetComponent<DragonMiniGame>().Winner = winner;

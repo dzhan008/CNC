@@ -10,10 +10,14 @@ public class HHDObjectPooler : MonoBehaviour {
     private GameObject poolContainer;
     List<GameObject> pooledObjects = new List<GameObject>();
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
         poolContainer = new GameObject();
         poolContainer.name = pooledObject.name + " Container";
+    }
+
+	// Use this for initialization
+	void Start () {
         for (int i = 0; i < pooledAmount; i++)
 		{
 			GameObject obj = (GameObject)Instantiate(pooledObject);

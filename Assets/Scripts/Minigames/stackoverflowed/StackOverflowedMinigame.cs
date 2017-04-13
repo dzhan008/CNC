@@ -54,10 +54,10 @@ public class StackOverflowedMinigame : Minigame {
     void Start ()
     {
         // CREATE INSTRUCTION STATE---------------------------------TODO: Start timer in on start
-
+        AudioManager.Instance.SetSong("Stack Overflowed");
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
-        TimeLeft = 5;
+        TimeLeft = 30;
 
         //disbale finished text until game is won
         finishedText.enabled = false;
