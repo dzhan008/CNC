@@ -10,8 +10,8 @@ public class HuntingMinigame : Minigame {
 	private Stats Player2Stats;
 	private GameObject Generator;
     private GameObject Generator1;
-    private ObjectPooler Pooler;
-    private ObjectPooler Pooler1;
+    private HuntingObjectPooler Pooler;
+    private HuntingObjectPooler Pooler1;
 	public Text scoreP1;
 	public Text scoreP2;
 	float timeL = 30.00f;
@@ -34,8 +34,8 @@ public class HuntingMinigame : Minigame {
 		SetControls (Player2);
 		Generator = GameObject.Find ("BulletGenerator");
         Generator1 = GameObject.Find("BulletGenerator (1)");
-        Pooler = Generator.GetComponent <ObjectPooler> ();
-        Pooler1 = Generator1.GetComponent<ObjectPooler>();
+        Pooler = Generator.GetComponent <HuntingObjectPooler> ();
+        Pooler1 = Generator1.GetComponent<HuntingObjectPooler>();
         Fire1 = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
         Fire2 = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
         Fire1Max = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
@@ -56,6 +56,7 @@ public class HuntingMinigame : Minigame {
 		if ( timeL <= 0 )
 		{
             timeL = 0;
+            MyGameEnd();
 			GameEnd ();
 		}
 		timeT.text = "Time: " + (int) timeL;
@@ -155,7 +156,7 @@ public class HuntingMinigame : Minigame {
 		
 	}
 
-	public override void GameEnd ()
+	public void MyGameEnd ()
 	{
 		if (GameManager.Instance.Players[2].Value.MiniGameScore < GameManager.Instance.Players[1].Value.MiniGameScore)
         {
