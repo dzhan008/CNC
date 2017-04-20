@@ -91,9 +91,11 @@ public class StackOverflowedMinigame : Minigame {
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
 
+        PlayerOne.layer = LayerMask.NameToLayer("Player");
+        PlayerTwo.layer = LayerMask.NameToLayer("Player");
 
 
-   
+
     }
 
     public override void OnStart()
