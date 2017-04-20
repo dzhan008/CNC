@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BookTomb : MonoBehaviour
+public class booktomb : MonoBehaviour
 {
     [SerializeField]
     private GameObject game;
