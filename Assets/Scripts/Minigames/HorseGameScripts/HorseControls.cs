@@ -35,7 +35,7 @@ public class HorseControls : Minigame
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls
-
+        GameManager.Instance.GameState = States.InGame;
         //Sets the controls, THIS MUST BE CALLED IN ORDER FOR CONTROLS TO WORK
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
@@ -100,7 +100,7 @@ public class HorseControls : Minigame
 
     public override void LeftHeldAction(GameObject player)
     {
-        
+        Debug.Log("Up Pressed");
         if (RaceStart && !RaceEnd)
         {
             Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
@@ -173,10 +173,15 @@ public class HorseControls : Minigame
     }
     public void HGameEnd()
     {
-        //Debug.Log("Game End");
+        Debug.Log("Game End");
         RaceEnd = true;
         PlayerOne.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         PlayerTwo.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        while(this.GetComponent<HGameUI>().running)
+        {
+
+        }
+        GameEnd();
     }
 
 }

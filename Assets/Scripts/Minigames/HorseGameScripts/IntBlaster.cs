@@ -30,7 +30,7 @@ public class IntBlaster : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Fireball exists");
+                //Debug.Log("Fireball exists");
             }
             
         }

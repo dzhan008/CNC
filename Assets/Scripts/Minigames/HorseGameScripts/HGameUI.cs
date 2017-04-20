@@ -23,7 +23,7 @@ public class HGameUI : MonoBehaviour {
         }
         else if ((x <= 0) && (GameState == false))
         {
-            Debug.Log("Race has not ended");
+            //Debug.Log("Race has not ended");
             Countdown.text = "GO!";
             StartCoroutine(WaitAndSetActive(1f, 0, false));
         }
@@ -32,16 +32,20 @@ public class HGameUI : MonoBehaviour {
             Debug.Log("Race is over");
             int y = Canvas[1].GetComponent<FinishLine>().WinningPlayer;
             Canvas[2].GetComponent<Text>().text = "Player " + y + " Wins!";
-            StartCoroutine( WaitAndSetActive(1f, 2, true));
+            StartCoroutine(WaitAndSetActive(1f, 2, true));
         }
 
     }
+    public bool running = false;
     private IEnumerator WaitAndSetActive(float waitTime, int UiElement, bool Display)
     {
+        running = true;
         while (true)
         {
             yield return new WaitForSeconds(waitTime);
             Canvas[UiElement].SetActive(Display);
+            running = false;
         }
+        
     }
 }

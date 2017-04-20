@@ -22,7 +22,7 @@ public class FinishLine : MonoBehaviour {
     {
         int PlayerID = Player.gameObject.GetComponent<Stats>().Id;
         WinningPlayer = PlayerID;
-        GM.GetComponent<HorseControls>().GameEnd();
+        GM.GetComponent<HorseControls>().HGameEnd();
         Debug.Log("Player " + PlayerID + " wins!");
     }
 }
