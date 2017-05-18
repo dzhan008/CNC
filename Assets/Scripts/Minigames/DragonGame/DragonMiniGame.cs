@@ -71,6 +71,7 @@ public class DragonMiniGame : Minigame
 
     PlayerStat P1Stat;
     PlayerStat P2Stat;
+
     //Used to display the timer, if needed.
     public Text Timer;
     private bool _IsGameEnd = false;
@@ -78,7 +79,7 @@ public class DragonMiniGame : Minigame
     private bool EndingGame = false;
     private int _Winner = -1;
     public int Winner { get; set; }
-	public float playerDrag = 5;
+    public float playerDrag = 5;
     bool _StartGame = false;
     public bool StartGame { get; set; }
 
@@ -88,6 +89,12 @@ public class DragonMiniGame : Minigame
     public GameObject PlayerOneSpawnPoint;
     public GameObject PlayerTwoSpawnPoint;
 
+    public float numPacePoints;
+    private float increasePacePoint;
+    private float numGapSpace;
+    public float increasePace;
+
+    public float increaseObstacleSlow;
     /*Contains the skills/abilities value of each player*/
 
     public override void OnStart()
@@ -95,27 +102,17 @@ public class DragonMiniGame : Minigame
         InstructionPanel.SetActive(false);
         StartCoroutine(StartTimer());
     }
-    public override void OnControls()
-    {
-        ControlsPanel.SetActive(true);
-        RulesPanel.SetActive(false);
-    }
-    public override void OnRules()
-    {
-        ControlsPanel.SetActive(false);
-        RulesPanel.SetActive(true);
-    }
 
-	void updateSpeed(GameObject player)
-	{
-		float speed = 0;
+    void updateSpeed(GameObject player)
+    {
+        float speed = 0;
         float slow = 0;
         speed = player.GetComponent<PlayerStat>().PSkills["baseSpeed"] + player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"];
 
         slow = playerDrag + player.GetComponent<PlayerStat>().PSkills["playerSlowAdd"];
         float totalSpeed = speed - slow;
-		player.transform.Translate(totalSpeed, 0f, 0f);
-	}
+        player.transform.Translate(totalSpeed, 0f, 0f);
+    }
     IEnumerator StartTimer()
     {
         //Start Timer
@@ -133,13 +130,15 @@ public class DragonMiniGame : Minigame
         StartGame = true;
         //Game Starts
         ProgressMaxVal = findEndDist();
+        numGapSpace = ProgressMaxVal / numPacePoints;
+        increasePacePoint = numGapSpace;
         GameManager.Instance.GameState = States.InGame;
         PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
         PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 1);
     }
     void Start()
     {
-        AudioManager.Instance.SetSong("Hungry Hungry Dragon");
+        //AudioManager.Instance.SetSong("Hungry Hungry Dragon");
         MainCamera = Camera.main;
         HHDCamera.transform.parent = MainCamera.transform;
         CanvasUI.worldCamera = Camera.main;
@@ -185,8 +184,8 @@ public class DragonMiniGame : Minigame
         PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = false;
         PlayerOne.GetComponent<Rigidbody2D>().gravityScale = 3;
         PlayerTwo.GetComponent<Rigidbody2D>().gravityScale = 3;
-        PlayerOne.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
-        PlayerTwo.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
+        //PlayerOne.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
+        //PlayerTwo.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
         PlayerOne.layer = LayerMask.NameToLayer("LayerC");
         PlayerTwo.layer = LayerMask.NameToLayer("LayerC");
     }
@@ -209,7 +208,7 @@ public class DragonMiniGame : Minigame
         //Change the camera's position
         MainCamera.transform.position = new Vector3(posX, 5f,
             MainCamera.transform.position.z);
-        
+
     }
     void updateSprint(GameObject player)
     {
@@ -228,12 +227,12 @@ public class DragonMiniGame : Minigame
             //increase distance and update
             else
             {
-                player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"] = 0.07f;  
+                player.GetComponent<PlayerStat>().PSkills["sprintSpeedAdd"] = 0.07f;
                 player.GetComponent<PlayerStat>().PSkills["sprintStartTime"] = playerSprintStart;
             }
         }
         //if the player isn't sprinting and their sprint bar isn't full
-        else if (player.GetComponent<PlayerStat>().SprintCurrentVal != player.GetComponent<PlayerStat>().SprintMaxVal 
+        else if (player.GetComponent<PlayerStat>().SprintCurrentVal != player.GetComponent<PlayerStat>().SprintMaxVal
             && playerIsSprint != 1)
         {
             player.GetComponent<PlayerStat>().SprintCurrentVal += (2 * Time.deltaTime);
@@ -267,9 +266,17 @@ public class DragonMiniGame : Minigame
         float distance = endPoint.transform.position.x - temp.transform.position.x;
         return distance;
     }
-    void updateProgressBar()
+    void updateProgressBar(GameObject player1, GameObject player2)
     {
         ProgressDistVal = ProgressMaxVal - findEndDist();
+        if (ProgressDistVal >= increasePacePoint)
+        {
+            player1.GetComponent<PlayerStat>().PSkills["baseSpeed"] += increasePace;
+            player2.GetComponent<PlayerStat>().PSkills["baseSpeed"] += increasePace;
+            increasePacePoint += numGapSpace;
+            player1.GetComponent<PlayerStat>().PSkills["speedReduction"] += increaseObstacleSlow;
+            player2.GetComponent<PlayerStat>().PSkills["speedReduction"] += increaseObstacleSlow;
+        }
     }
     IEnumerator EndCinematic(GameObject winner, GameObject loser)
     {
@@ -321,7 +328,7 @@ public class DragonMiniGame : Minigame
         Destroy(PlayerOne.GetComponent<PlayerStat>());
         Destroy(PlayerTwo.GetComponent<PlayerStat>());
 
-        
+
     }
     // Update logic for this minigame
     void Update()
@@ -329,10 +336,10 @@ public class DragonMiniGame : Minigame
         if (IsGameEnd)
         {
             StartGame = false;
-            if (Winner == 1) myGameEnd(PlayerOne, PlayerTwo);
+            if (Winner == 1) myGameEnd(PlayerOne, PlayerTwo); //make it so that it only calls once 
             else myGameEnd(PlayerTwo, PlayerOne);
         }
-        else if(EndingGame)
+        else if (EndingGame)
         {
             GameEnd();
         }
@@ -346,31 +353,31 @@ public class DragonMiniGame : Minigame
             updateCockBlock(PlayerOne);
             updateCockBlock(PlayerTwo);
             updateCamera();
-            updateProgressBar();
+            updateProgressBar(PlayerOne, PlayerTwo);
         }
     }
 
- 	public override void UpTapAction(GameObject player)
+    public override void UpTapAction(GameObject player)
     {
         Debug.Log("Tapped the up key!");
     }
-		
+
     public override void LeftTapAction(GameObject player)
     {
-		float jump_height = 0;
+        float jump_height = 0;
         jump_height = player.GetComponent<PlayerStat>().PSkills["jumpHeight"];
-        Debug.Log(jump_height);
-		if (player.GetComponent<PlayerCollision>().CanJump) {
-            Debug.Log("Jumping!");
-			player.GetComponent<Rigidbody2D> ().AddForce (player.transform.up * jump_height);
-		}
+        if (player.GetComponent<PlayerCollision>().CanJump)
+        {
+            player.GetComponent<PlayerCollision>().CanJump = false;
+            player.GetComponent<Rigidbody2D>().AddForce(player.transform.up * jump_height);
+        }
     }
 
     public override void CenterTapAction(GameObject player)
     {
         float max = player.GetComponent<PlayerStat>().SprintMaxVal;
         float current = player.GetComponent<PlayerStat>().SprintCurrentVal;
-        if (player.GetComponent<PlayerStat>().PSkills["isSprint"] == 0 && 
+        if (player.GetComponent<PlayerStat>().PSkills["isSprint"] == 0 &&
             current == max)
         {
             player.GetComponent<PlayerStat>().SprintCurrentVal -= max;
@@ -405,7 +412,7 @@ public class DragonMiniGame : Minigame
 
     public override void CenterHeldAction(GameObject player)
     {
-        
+
     }
 
     public override void RightHeldAction(GameObject player)

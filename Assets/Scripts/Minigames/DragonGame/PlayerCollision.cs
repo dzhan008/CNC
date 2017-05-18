@@ -4,23 +4,24 @@ using UnityEngine.UI;
 
 public class PlayerCollision : MonoBehaviour
 {
-   
+
     public PlayerStat player;
     public int Id;
     public bool CanJump;
+
     public void Initialize(int ID, PlayerStat player)
     {
         Id = ID;
         this.player = player;
     }
-    IEnumerator slowDuration()
+    IEnumerator slowDuration(float slow)
     {
-        player.PSkills["playerSlowAdd"] = player.PSkills["speedReduction"];
+        player.PSkills["playerSlowAdd"] = player.PSkills["speedReduction"] + slow;
         float slowDurationTime = player.PSkills["sprintSlowDuration"];
         yield return new WaitForSeconds(slowDurationTime);
         player.PSkills["playerSlowAdd"] = 0;
     }
-    void OnCollisionStay2D(Collision2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         //check if game over
         if (other.gameObject.tag.Equals("DeathWall"))
@@ -28,16 +29,21 @@ public class PlayerCollision : MonoBehaviour
 
         //check ground
         if (other.gameObject.tag.Equals("Ground") && Id == other.gameObject.GetComponent<Ground>().Id)
+        {
             CanJump = true;
-
-
+        }
         //check obstacle
         if (other.gameObject.tag.Equals("Obstacle"))
         {
             other.gameObject.SetActive(false);
-            StartCoroutine(slowDuration());
+            StartCoroutine(slowDuration(0));
         }
-
+        //check cock block
+        if (other.gameObject.tag.Equals("CockBlock"))
+        {
+            other.gameObject.SetActive(false);
+            StartCoroutine(slowDuration(0.04f));
+        }
         //checks end goal
         if (other.gameObject.tag.Equals("EndGoal"))
         {
@@ -47,11 +53,12 @@ public class PlayerCollision : MonoBehaviour
             game.GetComponent<DragonMiniGame>().IsGameEnd = true;
 
         }
-   }
-
-    void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.tag.Equals("Ground") && Id == other.gameObject.GetComponent<Ground>().Id)
-            CanJump = false;
     }
+    /*
+        void OnCollisionExit2D(Collision2D other)
+        {
+            if (other.gameObject.tag.Equals("Ground") && Id == other.gameObject.GetComponent<Ground>().Id)
+                CanJump = false;
+       }
+       */
 }
