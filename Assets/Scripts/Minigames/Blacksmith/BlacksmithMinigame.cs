@@ -109,19 +109,6 @@ public class BlacksmithMinigame : Minigame {
         SelectWeapon();
         TimerOn = true;
     }
-
-    public override void OnRules()
-    {
-        RulesPanel.SetActive(true);
-        ControlsPanel.SetActive(false);
-    }
-
-    public override void OnControls()
-    {
-        ControlsPanel.SetActive(true);
-        RulesPanel.SetActive(false);
-    }
-
     void InitWeapons()
     {
         Weapons.Add((GameObject)Instantiate(Resources.Load("Prefabs/Minigames/Swift Smiths/Axe")));

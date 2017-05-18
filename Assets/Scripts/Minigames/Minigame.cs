@@ -98,8 +98,16 @@ public abstract class Minigame : MonoBehaviour
 
                                                                                                /* Minigame Functions */
     public abstract void OnStart();
-    public abstract void OnRules();
-    public abstract void OnControls();
+    public void OnRules()
+    {
+        RulesPanel.SetActive(true);
+        ControlsPanel.SetActive(false);
+    }
+    public void OnControls()
+    {
+        RulesPanel.SetActive(false);
+        ControlsPanel.SetActive(true);
+    }
 
                                                                                                 /* Key Actions */
 

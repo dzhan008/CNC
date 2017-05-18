@@ -54,11 +54,11 @@ public class StackOverflowedMinigame : Minigame {
     void Start ()
     {
         // CREATE INSTRUCTION STATE---------------------------------TODO: Start timer in on start
-        AudioManager.Instance.SetSong("Stack Overflowed");
+        //AudioManager.Instance.PlaySong("Stack Overflowed");
+        
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
         TimeLeft = 30;
-
         //disbale finished text until game is won
         finishedText.enabled = false;
 
@@ -94,8 +94,6 @@ public class StackOverflowedMinigame : Minigame {
         PlayerOne.layer = LayerMask.NameToLayer("Player");
         PlayerTwo.layer = LayerMask.NameToLayer("Player");
 
-
-
     }
 
     public override void OnStart()
@@ -106,18 +104,6 @@ public class StackOverflowedMinigame : Minigame {
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
         inInstructions = false;
         GameManager.Instance.GameState = States.InGame;
-    }
-
-    public override void OnRules()
-    {
-        RulesPanel.SetActive(true);
-        ControlsPanel.SetActive(false);
-    }
-
-    public override void OnControls()
-    {
-        RulesPanel.SetActive(false);
-        ControlsPanel.SetActive(true);
     }
 
     //Game is finished complete the game now :D
