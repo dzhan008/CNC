@@ -88,6 +88,7 @@ public class DragonMiniGame : Minigame
 
     public GameObject PlayerOneSpawnPoint;
     public GameObject PlayerTwoSpawnPoint;
+    public GameObject Dragon;
 
     public float numPacePoints;
     private float increasePacePoint;
@@ -135,10 +136,11 @@ public class DragonMiniGame : Minigame
         GameManager.Instance.GameState = States.InGame;
         PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
         PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 1);
+        Dragon.GetComponent<Animator>().SetFloat("Running", 1);
     }
     void Start()
     {
-        //AudioManager.Instance.SetSong("Hungry Hungry Dragon");
+        AudioManager.Instance.PlaySong("Hungry Hungry Dragon");
         MainCamera = Camera.main;
         HHDCamera.transform.parent = MainCamera.transform;
         CanvasUI.worldCamera = Camera.main;
@@ -184,8 +186,8 @@ public class DragonMiniGame : Minigame
         PlayerTwo.GetComponent<Rigidbody2D>().isKinematic = false;
         PlayerOne.GetComponent<Rigidbody2D>().gravityScale = 3;
         PlayerTwo.GetComponent<Rigidbody2D>().gravityScale = 3;
-        //PlayerOne.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
-        //PlayerTwo.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
+        PlayerOne.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
+        PlayerTwo.transform.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
         PlayerOne.layer = LayerMask.NameToLayer("LayerC");
         PlayerTwo.layer = LayerMask.NameToLayer("LayerC");
     }
@@ -281,20 +283,20 @@ public class DragonMiniGame : Minigame
     IEnumerator EndCinematic(GameObject winner, GameObject loser)
     {
         GameManager.Instance.GameState = States.Results;
-        GameObject dragon = GameObject.Find("Dragon");
-        while (dragon.transform.position.x < loser.transform.position.x - 1)
+        Dragon.GetComponent<Animator>().SetFloat("Running", 0);
+        while (Dragon.transform.position.x < loser.transform.position.x - 1)
         {
-            dragon.transform.Translate(0.001f, 0f, 0f);
+            Dragon.transform.Translate(0.001f, 0f, 0f);
             winner.transform.Translate(0.01f, 0f, 0f);
-            if (dragon.transform.position.y != loser.transform.position.y + 2)
+            if (Dragon.transform.position.y != loser.transform.position.y + 2)
             {
-                if (dragon.transform.position.y < loser.transform.position.y + 2)
+                if (Dragon.transform.position.y < loser.transform.position.y + 2)
                 {
-                    dragon.transform.Translate(0f, 0.001f, 0f);
+                    Dragon.transform.Translate(0f, 0.001f, 0f);
                 }
-                if (dragon.transform.position.y > loser.transform.position.y + 2)
+                if (Dragon.transform.position.y > loser.transform.position.y + 2)
                 {
-                    dragon.transform.Translate(0f, -0.001f, 0f);
+                    Dragon.transform.Translate(0f, -0.001f, 0f);
                 }
             }
             yield return new WaitForEndOfFrame();
