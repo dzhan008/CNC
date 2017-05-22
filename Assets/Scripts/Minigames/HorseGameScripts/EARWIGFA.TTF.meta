@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: c03f138f3d17c3649ad36fa43bfe5835
+timeCreated: 1495412129
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Earwig Factory
+  fontNames:
+  - Earwig Factory
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

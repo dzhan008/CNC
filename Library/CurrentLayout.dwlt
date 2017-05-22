@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 6}
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -42,10 +42,10 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 731
-  m_MinSize: {x: 679, y: 492}
-  m_MaxSize: {x: 14002, y: 14042}
+  m_MinSize: {x: 683, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 43
+  controlID: 21
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -64,8 +64,8 @@ MonoBehaviour:
     y: 0
     width: 311
     height: 731
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -89,8 +89,8 @@ MonoBehaviour:
     y: 0
     width: 303
     height: 442
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -206,10 +206,10 @@ MonoBehaviour:
     y: 0
     width: 1225
     height: 731
-  m_MinSize: {x: 404, y: 492}
+  m_MinSize: {x: 406, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 44
+  controlID: 22
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -230,10 +230,10 @@ MonoBehaviour:
     y: 0
     width: 1225
     height: 442
-  m_MinSize: {x: 404, y: 221}
-  m_MaxSize: {x: 8004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 45
+  controlID: 23
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -324,19 +324,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts/Minigames/HorseGameScripts
+    - Assets/Resources/Prefabs/Minigames/HorseGamePrefabs
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Minigames/HorseGameScripts
+  - Assets/Resources/Prefabs/Minigames/HorseGamePrefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Danny Diep\Documents\GitHub\CNC
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 313}
-    m_SelectedIDs: 42280000
-    m_LastClickedID: 10306
-    m_ExpandedIDs: 0000000072250000e02500001a260000dc260000e2260000ea26000028270000962900009829000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 113}
+    m_SelectedIDs: b2280000
+    m_LastClickedID: 10418
+    m_ExpandedIDs: 00000000ba2500003c2600004a2600005226000094260000662700006c27000074270000a4270000be2700007a2b00007c2b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -364,7 +364,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000072250000e02500001a260000dc260000e2260000ea260000282700009629000098290000
+    m_ExpandedIDs: 00000000ba2500003c2600004a2600005226000094260000662700006c27000074270000a4270000be2700007a2b00007c2b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -445,7 +445,7 @@ MonoBehaviour:
     y: 92
     width: 309
     height: 710
-  m_ScrollPosition: {x: 0, y: 511.95508}
+  m_ScrollPosition: {x: 0, y: 0}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 160
@@ -480,9 +480,9 @@ MonoBehaviour:
     height: 421
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f4250000
+    m_SelectedIDs: 9e260000
     m_LastClickedID: 0
-    m_ExpandedIDs: d0fbffff00000000aa280000be2800000e29000018290000
+    m_ExpandedIDs: 52ebfeff46effeffa6f5feff0e06ffff4c07ffffb063ffffb463ffffd863ffff6c83ffff7083ffff9483ffff7890ffff7e90ffff98bdffff9abdffffe6beffff5cf8ffffd0fbffff00000000e8290000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -532,14 +532,14 @@ MonoBehaviour:
     width: 918
     height: 421
   m_SceneLighting: 1
-  lastFramingTime: 1868.0527483726132
+  lastFramingTime: 828.1076937719897
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.839918, y: 30.208637, z: -19.625}
+    m_Target: {x: 9.960491, y: 14.874007, z: 0}
     speed: 2
-    m_Value: {x: -0.839918, y: 30.208637, z: -19.625}
+    m_Value: {x: 9.960491, y: 14.874007, z: 0}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -566,9 +566,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 16.535576
+    m_Target: 41.483322
     speed: 2
-    m_Value: 16.535576
+    m_Value: 41.483322
   m_Ortho:
     m_Target: 1
     speed: 2

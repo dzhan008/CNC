@@ -24,6 +24,10 @@ public class HorseControls : Minigame
     Vector3 Forward1;
     Vector3 Forward2;
     public float Countdown;
+    [SerializeField] GameObject map;
+    public Transform start;
+    [SerializeField] GameObject start1;
+    [SerializeField] GameObject start2;
     // Use this for initialization
     void Start()
     {
@@ -41,6 +45,12 @@ public class HorseControls : Minigame
         SetControls(PlayerTwo);
         P1Speed = GameManager.Instance.Players[1].Value.Dex;
         P2Speed = GameManager.Instance.Players[2].Value.Dex;
+        map = GameObject.FindGameObjectWithTag("Map");
+        start = map.gameObject.transform.FindChild("StartLine");
+        start1 = GameObject.Find("Player1Start");
+        start2 = GameObject.Find("Player2Start");
+        PlayerOne.transform.position = start1.transform.position;
+        PlayerTwo.transform.position = start2.transform.position;
 
     }
 
