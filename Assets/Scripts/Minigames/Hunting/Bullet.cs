@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour {
 	// Use this for initialization
 	private GameObject DestructPoint;
 	public float speed;
-    public int damage = 50;
+    public int damage;
 	// Use this for initialization
 	void Start () 
 	{

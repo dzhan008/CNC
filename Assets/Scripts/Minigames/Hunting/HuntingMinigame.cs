@@ -24,8 +24,8 @@ public class HuntingMinigame : Minigame {
     float Fire2Max;
     public GameObject Bull;
     public GameObject Bull1;
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    void Start () 
 	{
 		Player1 = GameManager.Instance.Players [1].Key;
 		Player2 = GameManager.Instance.Players [2].Key;
@@ -47,13 +47,58 @@ public class HuntingMinigame : Minigame {
         Debug.Log(Player1.GetComponent<Stats>().Intel);
         Debug.Log(1f - ((Player1.GetComponent<Stats>().Intel) * .1f));
         Bull1.GetComponent<Bullet1>().speed = 1f - ((Player2.GetComponent<Stats>().Intel) * .1f);
+        if (Player1.GetComponent<Stats>().Str >= 1 || Player1.GetComponent<Stats>().Str <= 3)
+        {
+            Bull.GetComponent<Bullet>().damage = 100;
+        }
+
+        else if (Player1.GetComponent<Stats>().Str > 3 || Player1.GetComponent<Stats>().Str <= 6)
+        {
+            Bull.GetComponent<Bullet>().damage = 125;
+        }
+
+        else if (Player1.GetComponent<Stats>().Str > 6 || Player1.GetComponent<Stats>().Str <= 9)
+        {
+            Bull.GetComponent<Bullet>().damage = 167;
+        }
+
+        else if (Player1.GetComponent<Stats>().Str >= 10)
+        {
+            Bull.GetComponent<Bullet>().damage = 250;
+        }
+
+        if (Player2.GetComponent<Stats>().Str >= 1 || Player2.GetComponent<Stats>().Str <= 3)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 100;
+        }
+
+        else if (Player2.GetComponent<Stats>().Str > 3 || Player2.GetComponent<Stats>().Str <= 6)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 125;
+        }
+
+        else if (Player2.GetComponent<Stats>().Str > 6 || Player2.GetComponent<Stats>().Str <= 9)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 167;
+        }
+
+        else if (Player2.GetComponent<Stats>().Str >= 10)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 250;
+        }
 
         //TODO: Move this to the instructions screen!
         OnStart();
     }
-	
-	// Update is called once per frame
-	void Update () 
+
+    // Update is called once per frame
+    IEnumerator MyCoroutine()
+    {
+        yield return new WaitForSeconds(5);
+        GameEnd();
+    }
+
+    void Update () 
 	{
 		
 		timeL -= Time.deltaTime;
@@ -61,8 +106,10 @@ public class HuntingMinigame : Minigame {
 		{
             timeL = 0;
             MyGameEnd();
-			GameEnd ();
-		}
+            MyCoroutine();
+
+
+        }
 		timeT.text = "Time: " + (int) timeL;
         Fire1 += Time.deltaTime;
         Fire2 += Time.deltaTime;
@@ -183,12 +230,12 @@ public class HuntingMinigame : Minigame {
 
         }
 
-        if (GameManager.Instance.Players[2].Value.MiniGameScore > GameManager.Instance.Players[1].Value.MiniGameScore)
+        else if (GameManager.Instance.Players[2].Value.MiniGameScore > GameManager.Instance.Players[1].Value.MiniGameScore)
         {
             winner.text = "Player 2 Wins!";
             winner.gameObject.SetActive(true);
         }
-        if (GameManager.Instance.Players[2].Value.MiniGameScore == GameManager.Instance.Players[1].Value.MiniGameScore)
+        else if (GameManager.Instance.Players[2].Value.MiniGameScore == GameManager.Instance.Players[1].Value.MiniGameScore)
         {
             winner.text = "DRAW!";
             winner.gameObject.SetActive(true);

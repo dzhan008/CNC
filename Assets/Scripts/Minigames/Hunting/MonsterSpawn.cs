@@ -29,7 +29,7 @@ public class MonsterSpawn : MonoBehaviour {
 			Vector3 NewMonsterPosition = NewMonster.transform.position;
 			NewMonster.SetActive (true);
 			NewMonster.transform.position = new Vector3 (Random.Range (MSpawn1.transform.position.x, MSpawn2.transform.position.x), MSpawn1.transform.position.y, NewMonsterPosition.z);
-			CountDown = 3f;
+			CountDown = Random.Range(2f, 3f);
 		}
 			
 	}
