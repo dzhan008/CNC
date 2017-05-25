@@ -54,7 +54,7 @@ public class StackOverflowedMinigame : Minigame {
     void Start ()
     {
         // CREATE INSTRUCTION STATE---------------------------------TODO: Start timer in on start
-        //AudioManager.Instance.PlaySong("Stack Overflowed");
+        AudioManager.Instance.PlaySong("Stack Overflowed");
         
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
@@ -93,7 +93,7 @@ public class StackOverflowedMinigame : Minigame {
 
         PlayerOne.layer = LayerMask.NameToLayer("Player");
         PlayerTwo.layer = LayerMask.NameToLayer("Player");
-
+        Physics2D.IgnoreCollision(PlayerOne.GetComponent<Collider2D>(), PlayerTwo.GetComponent<Collider2D>());  
     }
 
     public override void OnStart()
@@ -237,7 +237,7 @@ public class StackOverflowedMinigame : Minigame {
             {
                 Debug.Log("I SHOULD BE IN");
                 //update score
-                int player_score = player.GetComponent<PlayerScript>().BooksCarried + (int)(player.GetComponent<PlayerScript>().BooksCarried * 0.3);
+                int player_score = player.GetComponent<PlayerScript>().BooksCarried;
                 int player_id = player.GetComponent<PlayerScript>().getPlayerID();
 
                 Transform book_holder = player.transform.Find("BookHolder");

@@ -288,13 +288,13 @@ public class DragonMiniGame : Minigame
         {
             Dragon.transform.Translate(0.001f, 0f, 0f);
             winner.transform.Translate(0.01f, 0f, 0f);
-            if (Dragon.transform.position.y != loser.transform.position.y + 2)
+            if (Dragon.transform.position.y != loser.transform.position.y - 1)
             {
-                if (Dragon.transform.position.y < loser.transform.position.y + 2)
+                if (Dragon.transform.position.y < loser.transform.position.y - 1)
                 {
                     Dragon.transform.Translate(0f, 0.001f, 0f);
                 }
-                if (Dragon.transform.position.y > loser.transform.position.y + 2)
+                if (Dragon.transform.position.y > loser.transform.position.y - 1)
                 {
                     Dragon.transform.Translate(0f, -0.001f, 0f);
                 }
