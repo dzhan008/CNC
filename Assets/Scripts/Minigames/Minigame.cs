@@ -8,8 +8,16 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum MiniGamePerspective
+{
+    SideScroller = 1,
+    TopDown
+}
+
 public abstract class Minigame : MonoBehaviour
 {
+    [SerializeField]
+    protected MiniGamePerspective Perspective;
 
     /* Timer Related Variables */
     protected float TimeLeft = 0;
@@ -98,8 +106,16 @@ public abstract class Minigame : MonoBehaviour
 
                                                                                                /* Minigame Functions */
     public abstract void OnStart();
-    public abstract void OnRules();
-    public abstract void OnControls();
+    public void OnRules()
+    {
+        RulesPanel.SetActive(true);
+        ControlsPanel.SetActive(false);
+    }
+    public void OnControls()
+    {
+        RulesPanel.SetActive(false);
+        ControlsPanel.SetActive(true);
+    }
 
                                                                                                 /* Key Actions */
 

@@ -54,11 +54,11 @@ public class StackOverflowedMinigame : Minigame {
     void Start ()
     {
         // CREATE INSTRUCTION STATE---------------------------------TODO: Start timer in on start
-        AudioManager.Instance.SetSong("Stack Overflowed");
+        AudioManager.Instance.PlaySong("Stack Overflowed");
+        
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
         TimeLeft = 30;
-
         //disbale finished text until game is won
         finishedText.enabled = false;
 
@@ -91,9 +91,9 @@ public class StackOverflowedMinigame : Minigame {
         SetControls(PlayerOne);
         SetControls(PlayerTwo);
 
-
-
-   
+        PlayerOne.layer = LayerMask.NameToLayer("Player");
+        PlayerTwo.layer = LayerMask.NameToLayer("Player");
+        Physics2D.IgnoreCollision(PlayerOne.GetComponent<Collider2D>(), PlayerTwo.GetComponent<Collider2D>());  
     }
 
     public override void OnStart()
@@ -104,18 +104,6 @@ public class StackOverflowedMinigame : Minigame {
         InvokeRepeating("spawnBook", 1.0f, 0.5f);
         inInstructions = false;
         GameManager.Instance.GameState = States.InGame;
-    }
-
-    public override void OnRules()
-    {
-        RulesPanel.SetActive(true);
-        ControlsPanel.SetActive(false);
-    }
-
-    public override void OnControls()
-    {
-        RulesPanel.SetActive(false);
-        ControlsPanel.SetActive(true);
     }
 
     //Game is finished complete the game now :D
@@ -249,7 +237,7 @@ public class StackOverflowedMinigame : Minigame {
             {
                 Debug.Log("I SHOULD BE IN");
                 //update score
-                int player_score = player.GetComponent<PlayerScript>().BooksCarried + (int)(player.GetComponent<PlayerScript>().BooksCarried * 0.3);
+                int player_score = player.GetComponent<PlayerScript>().BooksCarried;
                 int player_id = player.GetComponent<PlayerScript>().getPlayerID();
 
                 Transform book_holder = player.transform.Find("BookHolder");

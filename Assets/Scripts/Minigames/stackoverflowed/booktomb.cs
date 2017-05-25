@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BookTomb : MonoBehaviour
+public class booktomb : MonoBehaviour
 {
     [SerializeField]
     private GameObject game;
@@ -16,15 +16,11 @@ public class BookTomb : MonoBehaviour
     //after the first book check to see if the following book belongs to the player if so then put it under the player book
     private void OnTriggerEnter2D(Collider2D c)
     {
-        Debug.Log("Game Object Name: " + c.gameObject.name);
-        Debug.Log("Who's this on my lawn: " + c.gameObject.transform.root.tag);
         //to make sure that we don't get NULL exception error check to see that the parent is not null
         if (c.gameObject.transform.tag != null && GameManager.Instance.GameState == States.InGame)
         {
-            Debug.Log(c.gameObject.transform.tag);
             if (c.gameObject.transform.root.tag == "Player")
             {
-                Debug.Log("I'm in");
                 c.gameObject.transform.root.GetComponent<PlayerScript>().isOnTomb = true;
             }
         }
@@ -33,14 +29,12 @@ public class BookTomb : MonoBehaviour
     //after the first book check to see if the following book belongs to the player if so then put it under the player book
     private void OnTriggerExit2D(Collider2D c)
     {
-        Debug.Log("Who's this off my lawn: " + c.gameObject.transform.root.tag);
         //to make sure that we don't get NULL exception error check to see that the parent is not null
         if (c.gameObject.transform.root.tag != null && GameManager.Instance.GameState == States.InGame)
         {
 
             if (c.gameObject.transform.root.tag == "Player")
             {
-                Debug.Log("I'm out");
                 c.gameObject.transform.root.GetComponent<PlayerScript>().isOnTomb = false;
             }
         }

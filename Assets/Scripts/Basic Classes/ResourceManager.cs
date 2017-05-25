@@ -11,8 +11,7 @@ public class ResourceManager : Singleton<ResourceManager> {
     public Dictionary<string, AudioClip> Audio { get; set; }
 
 
-	// Use this for initialization
-	void Start ()
+    void Awake()
     {
         MiniGames = new Dictionary<string, GameObject>();
         Models = new Dictionary<string, GameObject>();
@@ -21,6 +20,12 @@ public class ResourceManager : Singleton<ResourceManager> {
         InitializeMiniGames();
         InitializeModels();
         InitializeAudio();
+    }
+
+	// Use this for initialization
+	void Start ()
+    {
+
 		
 	}
 	

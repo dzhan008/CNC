@@ -85,9 +85,9 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log("DISPLAYINGPROGRESS");
         /*Change after demo */
+        Destroy(CurrentMiniGame);
         UIManager.Instance.ShowMiniGameScreen();
-        DestroyMiniGame();
-        //StartCoroutine(CoroutineProgress(1));
+        //StartCoroutine(CoroutineProgress(2));
         GameState = States.Results;
     }
 
@@ -113,6 +113,8 @@ public class GameManager : Singleton<GameManager>
     {
         UIManager.Instance.FadeIn();
         yield return new WaitForSeconds(time);
+        DestroyMiniGame();
+        AudioManager.Instance.StopSounds();
         UIManager.Instance.FadeOut();
         UIManager.Instance.ShowProgressScreen();
     }
