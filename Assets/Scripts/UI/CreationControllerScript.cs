@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class CreationControllerScript : MonoBehaviour {
 
-    public Roles Player1;
-    public Roles Player2;
+    public Stats Player1;
+    public Stats Player2;
     public Text Player1Text;
     public Text Player2Text;
     public Text Player1FirstText;
@@ -45,15 +45,23 @@ public class CreationControllerScript : MonoBehaviour {
     private GameObject Player1Model;
     private GameObject Player2Model;
 
+    public Image Player1STRBar;
+    public Image Player1DEXBar;
+    public Image Player1INTBar;
+
+    public Image Player2STRBar;
+    public Image Player2DEXBar;
+    public Image Player2INTBar;
+
     // Use this for initialization
     void Start () {
-        Player1.Strength = 0;
-        Player1.Dexterity = 0;
-        Player1.Intelligence = 0;
+        Player1.Str = 0;
+        Player1.Dex = 0;
+        Player1.Intel = 0;
 
-        Player2.Strength = 0;
-        Player2.Dexterity = 0;
-        Player2.Intelligence = 0;
+        Player2.Str = 0;
+        Player2.Dex = 0;
+        Player2.Intel = 0;
 
         GameState = "Choosing";
         Player1GameState = "Choosing";
@@ -78,6 +86,12 @@ public class CreationControllerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Player1STRBar.fillAmount = (float)Player1.Str / 10;
+        Player1DEXBar.fillAmount = (float)Player1.Dex / 10;
+        Player1INTBar.fillAmount = (float)Player1.Intel / 10;
+        Player2STRBar.fillAmount = (float)Player2.Str / 10;
+        Player2DEXBar.fillAmount = (float)Player2.Dex / 10;
+        Player2INTBar.fillAmount = (float)Player2.Intel / 10;
         UpdateConfirm();
         UpdatePlayerRoles();
         UpdateIndexes();
@@ -179,17 +193,48 @@ public class CreationControllerScript : MonoBehaviour {
     }
     public void UpdatePlayerRoles()
     {
-        if(GameState == "Done")
-        {
-            Player1.Strength = (thePlayerRoles[Player1First].Strength + thePlayerRoles[Player1Second].Strength) / 2;
-            Player1.Dexterity = (thePlayerRoles[Player1First].Dexterity + thePlayerRoles[Player1Second].Dexterity) / 2;
-            Player1.Intelligence = (thePlayerRoles[Player1First].Intelligence + thePlayerRoles[Player1Second].Intelligence) / 2;
-
-            Player2.Strength = (thePlayerRoles[Player2First].Strength + thePlayerRoles[Player2Second].Strength) / 2;
-            Player2.Dexterity = (thePlayerRoles[Player2First].Dexterity + thePlayerRoles[Player2Second].Dexterity) / 2;
-            Player2.Intelligence = (thePlayerRoles[Player2First].Intelligence + thePlayerRoles[Player2Second].Intelligence) / 2;
-        }
         
+
+
+        if(Player1First == -1 && Player1Second == -1)
+        {
+            Player1.Str = 0;
+            Player1.Dex = 0;
+            Player1.Intel = 0;
+        }
+        else if(Player1First != -1 && Player1Second == -1)
+        {
+            Player1.Str = thePlayerRoles[Player1First].Strength;
+            Player1.Dex = thePlayerRoles[Player1First].Dexterity;
+            Player1.Intel = thePlayerRoles[Player1First].Intelligence;
+        }
+        else if(Player1First != -1 && Player1Second != -1)
+        {
+            Player1.Str = (float)(thePlayerRoles[Player1First].Strength + thePlayerRoles[Player1Second].Strength) / 2;
+            Player1.Dex = (float)(thePlayerRoles[Player1First].Dexterity + thePlayerRoles[Player1Second].Dexterity) / 2;
+            Player1.Intel = (float)(thePlayerRoles[Player1First].Intelligence + thePlayerRoles[Player1Second].Intelligence) / 2;
+        }
+
+        if (Player2First == -1 && Player2Second == -1)
+        {
+            Player2.Str = 0;
+            Player2.Dex = 0;
+            Player2.Intel = 0;
+        }
+        else if (Player2First != -1 && Player2Second == -1)
+        {
+            Player2.Str = thePlayerRoles[Player2First].Strength;
+            Player2.Dex = thePlayerRoles[Player2First].Dexterity;
+            Player2.Intel = thePlayerRoles[Player2First].Intelligence;
+        }
+        else if (Player2First != -1 && Player2Second != -1)
+        {
+            Player2.Str = (float)(thePlayerRoles[Player2First].Strength + thePlayerRoles[Player2Second].Strength) / 2;
+            Player2.Dex = (float)(thePlayerRoles[Player2First].Dexterity + thePlayerRoles[Player2Second].Dexterity) / 2;
+            Player2.Intel = (float)(thePlayerRoles[Player2First].Intelligence + thePlayerRoles[Player2Second].Intelligence) / 2;
+        }
+
+
     }
 
     public void UpdateIndexes()
@@ -199,9 +244,14 @@ public class CreationControllerScript : MonoBehaviour {
             ChangePlayer1Index(-1);
             UpdateRoles();
         }
-        if (Input.GetKeyDown("s"))
+        if (Input.GetKeyDown("w"))
         {
             Select(1);
+            UpdateRoles();
+        }
+        if (Input.GetKeyDown("s"))
+        {
+            DeSelect(1);
             UpdateRoles();
         }
         if (Input.GetKeyDown("d"))
@@ -214,9 +264,14 @@ public class CreationControllerScript : MonoBehaviour {
             ChangePlayer2Index(-1);
             UpdateRoles();
         }
-        if (Input.GetKeyDown("k"))
+        if (Input.GetKeyDown("i"))
         {
             Select(2);
+            UpdateRoles();
+        }
+        if (Input.GetKeyDown("k"))
+        {
+            DeSelect(2);
             UpdateRoles();
         }
         if (Input.GetKeyDown("l"))
@@ -301,6 +356,7 @@ public class CreationControllerScript : MonoBehaviour {
                 if(Player1Confirm)
                 {
                     Player1GameState = "Done";
+                    Player1.CurrentRole = thePlayerRoles[Player1Second];
                 }
                 else
                 {
@@ -334,6 +390,7 @@ public class CreationControllerScript : MonoBehaviour {
                 if (Player2Confirm)
                 {
                     Player2GameState = "Done";
+                    Player2.CurrentRole = thePlayerRoles[Player2Second];
                 }
                 else
                 {
@@ -347,6 +404,30 @@ public class CreationControllerScript : MonoBehaviour {
                     Player2No.gameObject.SetActive(false);
                 }
             }
+        }
+    }
+
+    public void DeSelect(int player)
+    {
+        if (player == 1 && Player1GameState != "Done")
+        {
+            Player1First = -1;
+            Player1Second = -1;
+            Player1GameState = "Choosing";
+            Player1Confirm = true;
+            Player1ConfirmText.gameObject.SetActive(false);
+            Player1Yes.gameObject.SetActive(false);
+            Player1No.gameObject.SetActive(false);
+        }
+        else if (player == 2 && Player1GameState != "Done")
+        {
+            Player2First = -1;
+            Player2Second = -1;
+            Player2GameState = "Choosing";
+            Player2Confirm = true;
+            Player2ConfirmText.gameObject.SetActive(false);
+            Player2Yes.gameObject.SetActive(false);
+            Player2No.gameObject.SetActive(false);
         }
     }
 }

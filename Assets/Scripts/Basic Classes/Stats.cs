@@ -15,8 +15,8 @@ public class Stats : MonoBehaviour
     private string RoleName;
 
     //Basic stats
-    private int _Str = 0;
-    public int Str
+    private float _Str = 0;
+    public float Str
     {
         get
         {
@@ -28,8 +28,8 @@ public class Stats : MonoBehaviour
         }
     }
 
-    private int _Dex = 0;
-    public int Dex
+    private float _Dex = 0;
+    public float Dex
     {
         get
         {
@@ -41,8 +41,8 @@ public class Stats : MonoBehaviour
         }
     }
 
-    private int _Intel = 0;
-    public int Intel
+    private float _Intel = 0;
+    public float Intel
     {
         get
         {
