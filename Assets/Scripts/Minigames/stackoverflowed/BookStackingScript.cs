@@ -24,7 +24,6 @@ public class BookStackingScript : MonoBehaviour
     //after the first book check to see if the following book belongs to the player if so then put it under the player book
     private void OnTriggerEnter2D(Collider2D c)
     {
-        Debug.Log(c.gameObject.tag);
         //to make sure that we don't get NULL exception error check to see that the parent is not null
         if (c.gameObject.transform.parent != null && c.gameObject.tag != "BookHolder" )
         {

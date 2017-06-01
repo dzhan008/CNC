@@ -8,8 +8,16 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum MiniGamePerspective
+{
+    SideScroller = 1,
+    TopDown
+}
+
 public abstract class Minigame : MonoBehaviour
 {
+    [SerializeField]
+    protected MiniGamePerspective Perspective;
 
     /* Timer Related Variables */
     protected float TimeLeft = 0;
