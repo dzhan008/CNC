@@ -55,7 +55,6 @@ public class StackOverflowedMinigame : Minigame {
     {
         // CREATE INSTRUCTION STATE---------------------------------TODO: Start timer in on start
         AudioManager.Instance.PlaySong("Stack Overflowed");
-        
         Debug.Log("Minigame Initializing!");
         //Initialize time and set score to 0
         TimeLeft = 30;
@@ -68,6 +67,9 @@ public class StackOverflowedMinigame : Minigame {
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
 
+        PlayerOneStats.SetPerspective(Perspective);
+        PlayerTwoStats.SetPerspective(Perspective);
+
         PlayerOneStats.MiniGameScore = 0;
         PlayerTwoStats.MiniGameScore = 0;
 
@@ -79,9 +81,10 @@ public class StackOverflowedMinigame : Minigame {
 
         PlayerOneBookHolder.transform.parent = PlayerOne.transform;
         PlayerTwoBookHolder.transform.parent = PlayerTwo.transform;
-
+        
         PlayerOne.AddComponent<PlayerScript>();
         PlayerTwo.AddComponent<PlayerScript>();
+
 
         //object pooling stuff
         bookSpawner = this.GetComponent<ObjectPooler>();

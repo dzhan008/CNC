@@ -32,7 +32,6 @@ public abstract class Minigame : MonoBehaviour
     protected GameObject RulesPanel;
     [SerializeField]
     protected GameObject ControlsPanel;
-
     /// <summary>
     /// This is a simple timer that will subtract the time left each second.
     /// If set to one, it'll count down like an actual clock.

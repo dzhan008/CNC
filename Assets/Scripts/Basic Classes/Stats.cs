@@ -9,9 +9,12 @@ using System.Collections;
 
 public class Stats : MonoBehaviour
 {
-
+    [SerializeField]
     public int Id;
-    public Roles CurrentRole;
+    [SerializeField]
+    private Roles CurrentRole;
+    [SerializeField]
+    private GameObject CurrentModel;
     private string RoleName;
 
     //Basic stats
@@ -147,5 +150,34 @@ public class Stats : MonoBehaviour
     public void ResetMiniGameScore()
     {
         MiniGameScore = 0;
+    }
+
+    public void SetModel(GameObject model)
+    {
+        if(CurrentModel != null)
+        {
+            GameObject new_model = Instantiate(model, CurrentModel.transform.position, CurrentModel.transform.rotation);
+            new_model.transform.parent = this.transform;
+            Destroy(CurrentModel);
+            CurrentModel = model;
+        }
+        else
+        {
+            CurrentModel = model;
+        }
+
+    }
+
+    public void SetPerspective(MiniGamePerspective perspective)
+    {
+        if(perspective == MiniGamePerspective.SideScroller)
+        {
+            Debug.Log("Setting Model!");
+            SetModel(CurrentRole.SideScrollerModel);
+        }
+        else if(perspective == MiniGamePerspective.TopDown)
+        {
+            SetModel(CurrentRole.TopDownModel);
+        }
     }
 }
