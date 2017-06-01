@@ -8,6 +8,7 @@ public class MonsterSpawn : MonoBehaviour {
 	private GameObject Generator;
 	private HuntingObjectPooler Pooler;
 	public float CountDown;
+    public HuntingMinigame huntG;
 
 	// Use this for initialization
 	void Start () 
@@ -23,7 +24,7 @@ public class MonsterSpawn : MonoBehaviour {
 	void Update () 
 	{
 		CountDown -= Time.deltaTime;
-		if (CountDown < 0) 
+		if (huntG.gameStart == true && CountDown < 0) 
 		{
 			GameObject NewMonster = Pooler.GetPooledObject ();
 			Vector3 NewMonsterPosition = NewMonster.transform.position;

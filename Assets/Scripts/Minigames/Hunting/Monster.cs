@@ -23,7 +23,7 @@ public class Monster : MonoBehaviour {
     MonsterType type;
 
     // Use this for initialization
-    void Start()
+    void OnEnable()
     {
         DestructPoint = GameObject.Find("MonsterPass");
         rand = Random.Range(0, 3);

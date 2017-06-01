@@ -15,7 +15,7 @@ public class HuntingMinigame : Minigame {
     private HuntingObjectPooler Pooler1;
 	public Text scoreP1;
 	public Text scoreP2;
-	float timeL = 30.00f;
+	float timeL = 45.00f;
 	public Text timeT;
     public Text winner;
     float Fire1 = 1f;
@@ -24,6 +24,7 @@ public class HuntingMinigame : Minigame {
     float Fire2Max;
     public GameObject Bull;
     public GameObject Bull1;
+    public bool gameStart = false;
     // Use this for initialization
     void Start () 
 	{
@@ -33,19 +34,11 @@ public class HuntingMinigame : Minigame {
 		Player2Stats = GameManager.Instance.Players [2].Value;
 		SetControls (Player1);
 		SetControls (Player2);
-		Generator = GameObject.Find ("BulletGenerator");
-        Generator1 = GameObject.Find("BulletGenerator (1)");
-        Pooler = Generator.GetComponent <HuntingObjectPooler> ();
-        Pooler1 = Generator1.GetComponent<HuntingObjectPooler>();
         Fire1 = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
         Fire2 = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
         Fire1Max = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
         Fire2Max = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
-        Debug.Log(Player1.GetComponent<Stats>().Dex);
-        Debug.Log(1f - ((Player1.GetComponent<Stats>().Dex) * .05f));
         Bull.GetComponent<Bullet>().speed = 1f - ((Player1.GetComponent<Stats>().Intel) * .1f);
-        Debug.Log(Player1.GetComponent<Stats>().Intel);
-        Debug.Log(1f - ((Player1.GetComponent<Stats>().Intel) * .1f));
         Bull1.GetComponent<Bullet1>().speed = 1f - ((Player2.GetComponent<Stats>().Intel) * .1f);
         if (Player1.GetComponent<Stats>().Str >= 1 || Player1.GetComponent<Stats>().Str <= 3)
         {
@@ -88,7 +81,6 @@ public class HuntingMinigame : Minigame {
         }
 
         //TODO: Move this to the instructions screen!
-        OnStart();
     }
 
     // Update is called once per frame
@@ -100,35 +92,30 @@ public class HuntingMinigame : Minigame {
 
     void Update () 
 	{
-		
-		timeL -= Time.deltaTime;
-		if ( timeL <= 0 )
-		{
-            timeL = 0;
-            MyGameEnd();
-            MyCoroutine();
-
-
+		if (gameStart == true)
+        {
+            timeL -= Time.deltaTime;
+            if (timeL <= 0)
+            {
+                timeL = 0;
+                MyGameEnd();
+                MyCoroutine();
+            }
+            timeT.text = "Time: " + (int)timeL;
+            Fire1 += Time.deltaTime;
+            Fire2 += Time.deltaTime;
         }
-		timeT.text = "Time: " + (int) timeL;
-        Fire1 += Time.deltaTime;
-        Fire2 += Time.deltaTime;
-
-    }
-
-    public override void OnRules()
-    {
-
-    }
-
-    public override void OnControls()
-    {
-
     }
 
     public override void OnStart()
     {
         GameManager.Instance.GameState = States.InGame;
+        InstructionPanel.SetActive(false);
+        Generator = GameObject.Find("BulletGenerator");
+        Generator1 = GameObject.Find("BulletGenerator (1)");
+        Pooler = Generator.GetComponent<HuntingObjectPooler>();
+        Pooler1 = Generator1.GetComponent<HuntingObjectPooler>();
+        gameStart = true;
     }
 
 
