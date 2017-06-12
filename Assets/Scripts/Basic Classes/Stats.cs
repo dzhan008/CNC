@@ -12,7 +12,7 @@ public class Stats : MonoBehaviour
     [SerializeField]
     public int Id;
     [SerializeField]
-    private Roles CurrentRole;
+    public Roles CurrentRole;
     [SerializeField]
     private GameObject CurrentModel;
     private string RoleName;

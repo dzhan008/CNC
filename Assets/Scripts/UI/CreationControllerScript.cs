@@ -148,6 +148,8 @@ public class CreationControllerScript : MonoBehaviour {
         {
             Player1Model.transform.parent = Player1ModelHolder.transform.root;
             Player2Model.transform.parent = Player2ModelHolder.transform.root;
+            Player1.SetModel(Player1Model);
+            Player2.SetModel(Player2Model);
             Player1ModelHolder.SetActive(false);
             Player2ModelHolder.SetActive(false);
             CharacterCanvas.SetActive(false);
