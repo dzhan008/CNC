@@ -15,6 +15,6 @@ public class Roles : ScriptableObject
     public int Dexterity;
     public int Intelligence;
     public GameObject SideScrollerModel;
-    public GameObject TopDownModel;
+    public GameObject TopDownHuntingModel;
     public GameObject TopDownHorseModel;
 }

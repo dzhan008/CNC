@@ -155,6 +155,9 @@ public class DragonMiniGame : Minigame
         PlayerOneStats = GameManager.Instance.Players[1].Value;
         PlayerTwoStats = GameManager.Instance.Players[2].Value;
 
+        PlayerOneStats.SetPerspective(Perspective);
+        PlayerTwoStats.SetPerspective(Perspective);
+
         //Initialize time
         TimeLeft = 5;
         //Set player's positions/controls

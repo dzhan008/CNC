@@ -152,6 +152,10 @@ public class Stats : MonoBehaviour
         MiniGameScore = 0;
     }
 
+    /// <summary>
+    /// Sets the model of the player. Used mostly when you want to change the physical model between perspectives.
+    /// </summary>
+    /// <param name="model"></param>
     public void SetModel(GameObject model)
     {
         if(CurrentModel != null)
@@ -168,6 +172,10 @@ public class Stats : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sets the perspective of the model for the type of minigame that is coming up. May vary between models
+    /// </summary>
+    /// <param name="perspective"></param>
     public void SetPerspective(MiniGamePerspective perspective)
     {
         if(perspective == MiniGamePerspective.SideScroller)
@@ -175,9 +183,13 @@ public class Stats : MonoBehaviour
             Debug.Log("Setting Model!");
             SetModel(CurrentRole.SideScrollerModel);
         }
-        else if(perspective == MiniGamePerspective.TopDown)
+        else if(perspective == MiniGamePerspective.TopDownHunting)
         {
-            SetModel(CurrentRole.TopDownModel);
+            SetModel(CurrentRole.TopDownHuntingModel);
+        }
+        else if(perspective == MiniGamePerspective.TopDownHorse)
+        {
+            SetModel(CurrentRole.TopDownHorseModel);
         }
     }
 }

@@ -11,7 +11,8 @@ using System.Collections.Generic;
 public enum MiniGamePerspective
 {
     SideScroller = 1,
-    TopDown
+    TopDownHunting,
+    TopDownHorse
 }
 
 public abstract class Minigame : MonoBehaviour
