@@ -4,14 +4,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 [Serializable]
-public class PlayerStat: MonoBehaviour {
+public class PlayerStat : MonoBehaviour
+{
     public Dictionary<string, float> PSkills { get; set; }
     //For Cock Block
     [SerializeField]
     private CockBlockSpawn CockBlockSpawner;
-	//For Bar
+    //For Bar
     [SerializeField]
-	private BarScript SprintBar;
+    private BarScript SprintBar;
     [SerializeField]
     private BarScript ObstacleBar;
 
@@ -26,14 +27,14 @@ public class PlayerStat: MonoBehaviour {
     {
         get
         {
-			return sprintCurrentVal;
+            return sprintCurrentVal;
         }
 
         set
         {
 
-			sprintCurrentVal = Mathf.Clamp(value, 0, SprintMaxVal); //lower v, upper M
-			SprintBar.Value = sprintCurrentVal;
+            sprintCurrentVal = Mathf.Clamp(value, 0, SprintMaxVal); //lower v, upper M
+            SprintBar.Value = sprintCurrentVal;
         }
     }
 
@@ -41,13 +42,13 @@ public class PlayerStat: MonoBehaviour {
     {
         get
         {
-			return sprintMaxVal;
+            return sprintMaxVal;
         }
 
         set
         {//set the max value of the bar
-			this.sprintMaxVal = value;
-			SprintBar.MaxValue = sprintMaxVal;
+            this.sprintMaxVal = value;
+            SprintBar.MaxValue = sprintMaxVal;
 
         }
     }
@@ -87,48 +88,48 @@ public class PlayerStat: MonoBehaviour {
     /// Description: Calculates the duration of sprint
     /// </summary>
     float sprintDurationCalc(Stats Player)
-	{
-        int playerDex = Player.Dex;
-        if (playerDex > 7) return 3;
-        else if (playerDex > 4) return 2.5f;
-		return 2;
-	}
+    {
+        float playerDex = Player.Dex;
+        if (playerDex > 7) return 4f;
+        else if (playerDex > 4) return 3.25f;
+        return 2.5f;
+    }
     float speedReductionCalc(Stats Player)
     {
         //Assuming scale 1-10
-        int playerStr = Player.Str;
-        if (playerStr > 7) return 0.024f;
-        else if (playerStr > 4) return 0.026f;
-        return 0.028f;
+        float playerStr = Player.Str;
+        if (playerStr > 7) return 0.01f;
+        else if (playerStr > 4) return 0.02f;
+        return 0.025f;
     }
     float slowDurationCalc(Stats Player)
     {
         return 2;
     }
 
-	/// <summary>
-	/// Description: Calculates the cooldown of chicken charges
-	/// </summary>
-	float chickenChargeRateCalc(Stats Player)
-	{
-        int playerIntel = Player.Intel;
-        if (playerIntel > 7) return 0.4f;
-        else if (playerIntel > 4) return 0.32f;
-		return 0.2f;
-	}
+    /// <summary>
+    /// Description: Calculates the cooldown of chicken charges
+    /// </summary>
+    float chickenChargeRateCalc(Stats Player)
+    {
+        float playerIntel = Player.Intel;
+        if (playerIntel > 7) return 0.8f;
+        else if (playerIntel > 4) return 0.42f;
+        return 0.3f;
+    }
 
-	/// <summary>
-	/// Description: Calculates the bonus jump height
-	/// </summary>
-	float jumpHeightCalc(Stats Player)
-	{
-		return 530;
-	}
+    /// <summary>
+    /// Description: Calculates the bonus jump height
+    /// </summary>
+    float jumpHeightCalc(Stats Player)
+    {
+        return 530;
+    }
 
-	float baseSpeedCalc(Stats Player)
-	{
-		return 5.1f;
-	}
+    float baseSpeedCalc(Stats Player)
+    {
+        return 5.2f;
+    }
 
     public void spawnCockBlockObstacle()
     {

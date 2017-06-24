@@ -67,16 +67,6 @@ public class TestMiniGame : Minigame {
         
     }
 
-    public override void OnControls()
-    {
-        
-    }
-
-    public override void OnRules()
-    {
-        
-    }
-
     public override void UpTapAction(GameObject player)
     {
         Debug.Log("Tapped the up key!");
