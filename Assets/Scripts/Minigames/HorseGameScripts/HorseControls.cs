@@ -172,12 +172,6 @@ public class HorseControls : Minigame
             //Debug.Log("Released the right key!");
         }
     }
-    public override void OnControls()
-    {
-    }
-    public override void OnRules()
-    {
-    }
     public override void OnStart()
     {
     }
