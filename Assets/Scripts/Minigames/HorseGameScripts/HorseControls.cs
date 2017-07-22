@@ -89,9 +89,9 @@ public class HorseControls : Minigame
     public override void UpHeldAction(GameObject player)
     {
         float MaxSpeed = GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Str * 2;
-        Vector2 MaxVelocity = player.transform.right * MaxSpeed;
+        Vector2 MaxVelocity = player.transform.up * MaxSpeed;
         //Debug.Log("Player Veloc " + MaxVelocity.magnitude);
-        Vector2 Acceleration = player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex;
+        Vector2 Acceleration = player.transform.up * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex;
         //Debug.Log("Player Accel " + Acceleration.magnitude);
         if (RaceStart && !RaceEnd)
         {
