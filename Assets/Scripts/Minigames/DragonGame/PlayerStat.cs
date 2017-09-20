@@ -89,7 +89,7 @@ public class PlayerStat : MonoBehaviour
     /// </summary>
     float sprintDurationCalc(Stats Player)
     {
-        int playerDex = Player.Dex;
+        float playerDex = Player.Dex;
         if (playerDex > 7) return 4f;
         else if (playerDex > 4) return 3.25f;
         return 2.5f;
@@ -97,7 +97,7 @@ public class PlayerStat : MonoBehaviour
     float speedReductionCalc(Stats Player)
     {
         //Assuming scale 1-10
-        int playerStr = Player.Str;
+        float playerStr = Player.Str;
         if (playerStr > 7) return 0.01f;
         else if (playerStr > 4) return 0.02f;
         return 0.025f;
@@ -112,7 +112,7 @@ public class PlayerStat : MonoBehaviour
     /// </summary>
     float chickenChargeRateCalc(Stats Player)
     {
-        int playerIntel = Player.Intel;
+        float playerIntel = Player.Intel;
         if (playerIntel > 7) return 0.8f;
         else if (playerIntel > 4) return 0.42f;
         return 0.3f;

@@ -9,14 +9,17 @@ using System.Collections;
 
 public class Stats : MonoBehaviour
 {
-
+    [SerializeField]
     public int Id;
+    [SerializeField]
     public Roles CurrentRole;
+    [SerializeField]
+    private GameObject CurrentModel;
     private string RoleName;
 
     //Basic stats
-    private int _Str = 0;
-    public int Str
+    private float _Str = 0;
+    public float Str
     {
         get
         {
@@ -28,8 +31,8 @@ public class Stats : MonoBehaviour
         }
     }
 
-    private int _Dex = 0;
-    public int Dex
+    private float _Dex = 0;
+    public float Dex
     {
         get
         {
@@ -41,8 +44,8 @@ public class Stats : MonoBehaviour
         }
     }
 
-    private int _Intel = 0;
-    public int Intel
+    private float _Intel = 0;
+    public float Intel
     {
         get
         {
@@ -147,5 +150,46 @@ public class Stats : MonoBehaviour
     public void ResetMiniGameScore()
     {
         MiniGameScore = 0;
+    }
+
+    /// <summary>
+    /// Sets the model of the player. Used mostly when you want to change the physical model between perspectives.
+    /// </summary>
+    /// <param name="model"></param>
+    public void SetModel(GameObject model)
+    {
+        if(CurrentModel != null)
+        {
+            GameObject new_model = Instantiate(model, CurrentModel.transform.position, CurrentModel.transform.rotation);
+            new_model.transform.parent = this.transform;
+            Destroy(CurrentModel);
+            CurrentModel = model;
+        }
+        else
+        {
+            CurrentModel = model;
+        }
+
+    }
+
+    /// <summary>
+    /// Sets the perspective of the model for the type of minigame that is coming up. May vary between models
+    /// </summary>
+    /// <param name="perspective"></param>
+    public void SetPerspective(MiniGamePerspective perspective)
+    {
+        if(perspective == MiniGamePerspective.SideScroller)
+        {
+            Debug.Log("Setting Model!");
+            SetModel(CurrentRole.SideScrollerModel);
+        }
+        else if(perspective == MiniGamePerspective.TopDownHunting)
+        {
+            SetModel(CurrentRole.TopDownHuntingModel);
+        }
+        else if(perspective == MiniGamePerspective.TopDownHorse)
+        {
+            SetModel(CurrentRole.TopDownHorseModel);
+        }
     }
 }
