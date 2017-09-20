@@ -46,7 +46,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private bool _isOnTomb = false;
+    private bool _isOnTomb = true;
     public bool isOnTomb
     {
         get
