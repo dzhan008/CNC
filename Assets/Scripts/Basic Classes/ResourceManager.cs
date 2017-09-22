@@ -39,6 +39,7 @@ public class ResourceManager : Singleton<ResourceManager> {
         MiniGames.Add("Swift Smiths", (GameObject)Resources.Load("Prefabs/Minigames/Swift Smiths/Swift Smiths"));
         MiniGames.Add("Stack Overflowed", (GameObject)Resources.Load("Prefabs/Minigames/Stack Overflowed/Stack Overflowed"));
         MiniGames.Add("Hungry Hungry Dragon", (GameObject)Resources.Load("Prefabs/Minigames/HHD/HHD"));
+        MiniGames.Add("Hunting", (GameObject)Resources.Load("Prefabs/Minigames/Hunting/HuntingMinigame"));
     }
 
     public void InitializeModels()
@@ -53,6 +54,7 @@ public class ResourceManager : Singleton<ResourceManager> {
     {
         Audio.Add("Stack Overflowed", (AudioClip)Resources.Load("Music/Book Mini Game"));
         Audio.Add("Hungry Hungry Dragon", (AudioClip)Resources.Load("Music/Dragon Chase"));
+        Audio.Add("Hunting", (AudioClip)Resources.Load("Music/Goblin Strike 2"));
         Audio.Add("Title", (AudioClip)Resources.Load("Music/Title Theme_Complete"));
         Audio.Add("Victory", (AudioClip)Resources.Load("Music/Title Theme_Complete"));
     }

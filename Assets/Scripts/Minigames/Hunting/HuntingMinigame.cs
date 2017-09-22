@@ -5,14 +5,16 @@ using System;
 
 public class HuntingMinigame : Minigame {
 
-	private GameObject Player1;
-	private GameObject Player2;
-	private Stats Player1Stats;
-	private Stats Player2Stats;
+	private GameObject PlayerOne;
+	private GameObject PlayerTwo;
+	private Stats PlayerOneStats;
+	private Stats PlayerTwoStats;
 	private GameObject Generator;
     private GameObject Generator1;
     private HuntingObjectPooler Pooler;
     private HuntingObjectPooler Pooler1;
+    public Transform PlayerOneSpawn;
+    public Transform PlayerTwoSpawn;
 	public Text scoreP1;
 	public Text scoreP2;
 	float timeL = 45.00f;
@@ -28,65 +30,81 @@ public class HuntingMinigame : Minigame {
     // Use this for initialization
     void Start () 
 	{
-		Player1 = GameManager.Instance.Players [1].Key;
-		Player2 = GameManager.Instance.Players [2].Key;
-		Player1Stats = GameManager.Instance.Players [1].Value;
-		Player2Stats = GameManager.Instance.Players [2].Value;
-		SetControls (Player1);
-		SetControls (Player2);
-        Fire1 = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
-        Fire2 = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
-        Fire1Max = 1f - ((Player1.GetComponent<Stats>().Dex) * .05f);
-        Fire2Max = 1f - ((Player2.GetComponent<Stats>().Dex) * .05f);
-        Bull.GetComponent<Bullet>().speed = 1f - ((Player1.GetComponent<Stats>().Intel) * .1f);
-        Bull1.GetComponent<Bullet1>().speed = 1f - ((Player2.GetComponent<Stats>().Intel) * .1f);
-        if (Player1.GetComponent<Stats>().Str >= 1 || Player1.GetComponent<Stats>().Str <= 3)
+        AudioManager.Instance.PlaySong("Hunting");
+        PlayerOne = GameManager.Instance.Players [1].Key;
+		PlayerTwo = GameManager.Instance.Players [2].Key;
+		PlayerOneStats = GameManager.Instance.Players [1].Value;
+		PlayerTwoStats = GameManager.Instance.Players [2].Value;
+		SetControls (PlayerOne);
+		SetControls (PlayerTwo);
+
+        PlayerOneStats.SetPerspective(Perspective);
+        PlayerTwoStats.SetPerspective(Perspective);
+
+        PlayerOne.transform.position = PlayerOneSpawn.position;
+        PlayerTwo.transform.position = PlayerTwoSpawn.position;
+
+        SetPlayerStats();
+
+        //TODO: Move this to the instructions screen!
+    }
+
+    private void SetPlayerStats()
+    {
+        //Dex Check (Fire Rate)
+        Fire1 = 1f - ((PlayerOne.GetComponent<Stats>().Dex) * .05f);
+        Fire2 = 1f - ((PlayerTwo.GetComponent<Stats>().Dex) * .05f);
+        Fire1Max = 1f - ((PlayerOne.GetComponent<Stats>().Dex) * .05f);
+        Fire2Max = 1f - ((PlayerTwo.GetComponent<Stats>().Dex) * .05f);
+
+        //Int Check (Arrow Speed)
+        Bull.GetComponent<Bullet>().speed = 1f - ((PlayerOne.GetComponent<Stats>().Intel) * 0.1f);
+        Bull1.GetComponent<Bullet1>().speed = 1f - ((PlayerTwo.GetComponent<Stats>().Intel) * 0.1f);
+        Debug.Log(Bull.GetComponent<Bullet>().speed);
+        //Player One Str Check (Arrow Damage)
+        if (PlayerOne.GetComponent<Stats>().Str >= 10)
+        {
+            Bull.GetComponent<Bullet>().damage = 250;
+        }
+        else if (PlayerOne.GetComponent<Stats>().Str > 6 || PlayerOne.GetComponent<Stats>().Str <= 9)
+        {
+            Bull.GetComponent<Bullet>().damage = 167;
+        }
+        else if (PlayerOne.GetComponent<Stats>().Str > 3 || PlayerOne.GetComponent<Stats>().Str <= 6)
+        {
+            Bull.GetComponent<Bullet>().damage = 125;
+        }
+        else if (PlayerOne.GetComponent<Stats>().Str >= 1 || PlayerOne.GetComponent<Stats>().Str <= 3)
         {
             Bull.GetComponent<Bullet>().damage = 100;
         }
 
-        else if (Player1.GetComponent<Stats>().Str > 3 || Player1.GetComponent<Stats>().Str <= 6)
-        {
-            Bull.GetComponent<Bullet>().damage = 125;
-        }
-
-        else if (Player1.GetComponent<Stats>().Str > 6 || Player1.GetComponent<Stats>().Str <= 9)
-        {
-            Bull.GetComponent<Bullet>().damage = 167;
-        }
-
-        else if (Player1.GetComponent<Stats>().Str >= 10)
-        {
-            Bull.GetComponent<Bullet>().damage = 250;
-        }
-
-        if (Player2.GetComponent<Stats>().Str >= 1 || Player2.GetComponent<Stats>().Str <= 3)
-        {
-            Bull1.GetComponent<Bullet1>().damage = 100;
-        }
-
-        else if (Player2.GetComponent<Stats>().Str > 3 || Player2.GetComponent<Stats>().Str <= 6)
-        {
-            Bull1.GetComponent<Bullet1>().damage = 125;
-        }
-
-        else if (Player2.GetComponent<Stats>().Str > 6 || Player2.GetComponent<Stats>().Str <= 9)
-        {
-            Bull1.GetComponent<Bullet1>().damage = 167;
-        }
-
-        else if (Player2.GetComponent<Stats>().Str >= 10)
+        //Player Two Str Check
+        if (PlayerTwo.GetComponent<Stats>().Str >= 10)
         {
             Bull1.GetComponent<Bullet1>().damage = 250;
         }
-
-        //TODO: Move this to the instructions screen!
+        else if (PlayerTwo.GetComponent<Stats>().Str > 6 || PlayerTwo.GetComponent<Stats>().Str <= 9)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 167;
+        }
+        else if (PlayerTwo.GetComponent<Stats>().Str > 3 || PlayerTwo.GetComponent<Stats>().Str <= 6)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 125;
+        }
+        else if (PlayerTwo.GetComponent<Stats>().Str >= 1 || PlayerTwo.GetComponent<Stats>().Str <= 3)
+        {
+            Bull1.GetComponent<Bullet1>().damage = 100;
+        }
     }
 
     // Update is called once per frame
     IEnumerator MyCoroutine()
     {
         yield return new WaitForSeconds(5);
+        Destroy(GameObject.Find("BulletOneContainer"));
+        Destroy(GameObject.Find("BulletContainer"));
+        Destroy(GameObject.Find("MonsterContainer"));
         GameEnd();
     }
 
@@ -99,7 +117,7 @@ public class HuntingMinigame : Minigame {
             {
                 timeL = 0;
                 MyGameEnd();
-                MyCoroutine();
+                StartCoroutine(MyCoroutine());
             }
             timeT.text = "Time: " + (int)timeL;
             Fire1 += Time.deltaTime;
@@ -130,25 +148,38 @@ public class HuntingMinigame : Minigame {
 
 	public override void UpTapAction(GameObject player)
 	{
-		Transform BulletGenePoint = player.transform.Find ("BulletGenPoint").transform;
-        if(player == Player1 && Fire1 > Fire1Max)
+        if(player == PlayerOne && Fire1 > Fire1Max)
         {
-            //Debug.Log("pkcfdk");
-            GameObject NewBullet = Pooler.GetPooledObject();
-            NewBullet.SetActive(true);
-            NewBullet.transform.position = BulletGenePoint.position;
-            Fire1 = 0f;
+            PlayerOne.GetComponentInChildren<Animator>().SetTrigger("Fire");
+            FireArrow(player);
         }
-        if (player == Player2 && Fire2 > Fire2Max)
+        if (player == PlayerTwo && Fire2 > Fire2Max)
         {
-            //Debug.Log("player2");
-            GameObject NewBullet = Pooler1.GetPooledObject();
-            Debug.Log(NewBullet);
-            NewBullet.SetActive(true);
-            NewBullet.transform.position = BulletGenePoint.position;
-            Fire2 = 0f;
+            PlayerTwo.GetComponentInChildren<Animator>().SetTrigger("Fire");
+            FireArrow(player);
         }
 
+    }
+
+    public void FireArrow(GameObject player)
+    {
+        Debug.Log(PlayerOne.GetComponent<Stats>().CurrentModel);
+        if (player == PlayerOne)
+        {
+            Transform BulletGenPoint = PlayerOne.GetComponent<Stats>().CurrentModel.transform.Find("BulletGenPoint").transform;
+            GameObject NewBullet = Pooler.GetPooledObject();
+            NewBullet.SetActive(true);
+            NewBullet.transform.position = BulletGenPoint.position;
+            Fire1 = 0f;
+        }
+        else if(player == PlayerTwo)
+        {
+            Transform BulletGenPoint = PlayerTwo.GetComponent<Stats>().CurrentModel.transform.Find("BulletGenPoint").transform;
+            GameObject NewBullet = Pooler1.GetPooledObject();
+            NewBullet.SetActive(true);
+            NewBullet.transform.position = BulletGenPoint.position;
+            Fire2 = 0f;
+        }
     }
 
 	public override void LeftTapAction(GameObject player)
@@ -210,7 +241,10 @@ public class HuntingMinigame : Minigame {
 
 	public void MyGameEnd ()
 	{
-		if (GameManager.Instance.Players[2].Value.MiniGameScore < GameManager.Instance.Players[1].Value.MiniGameScore)
+        gameStart = false;
+        GameManager.Instance.GameState = States.Results;
+
+        if (GameManager.Instance.Players[2].Value.MiniGameScore < GameManager.Instance.Players[1].Value.MiniGameScore)
         {
             winner.text = "Player 1 Wins!";
             winner.gameObject.SetActive(true);
@@ -227,9 +261,9 @@ public class HuntingMinigame : Minigame {
             winner.text = "DRAW!";
             winner.gameObject.SetActive(true);
         }
-        foreach (GameObject monObj in GameObject.FindGameObjectsWithTag("Goblin"))
-        {
-            monObj.SetActive(false);
-        }
+
+        PlayerOne.transform.localScale = new Vector3(1f, 1f, 1f);
+        PlayerTwo.transform.localScale = new Vector3(1f, 1f, 1f);
+
     }
 }

@@ -6,6 +6,7 @@ public class HuntingObjectPooler : MonoBehaviour {
 
     // Setting variables
     public GameObject pooledObject;
+    public GameObject container;
     public int pooledAmount;
 
     List<GameObject> pooledObjects;
@@ -13,10 +14,13 @@ public class HuntingObjectPooler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         pooledObjects = new List<GameObject>();
+        container = new GameObject();
+        container.name = pooledObject.name + "Container";
 
         for (int i = 0; i < pooledAmount; i++)
         {
             GameObject obj = (GameObject)Instantiate(pooledObject);
+            obj.transform.SetParent(container.transform);
             obj.SetActive(false);
             pooledObjects.Add(obj);
         }
@@ -37,6 +41,7 @@ public class HuntingObjectPooler : MonoBehaviour {
             }
         }
         GameObject obj = (GameObject)Instantiate(pooledObject);
+        obj.transform.SetParent(container.transform);
         obj.SetActive(false);
         pooledObjects.Add(obj);
         return obj;

@@ -13,9 +13,22 @@ public class Stats : MonoBehaviour
     public int Id;
     [SerializeField]
     public Roles CurrentRole;
-    [SerializeField]
-    private GameObject CurrentModel;
     private string RoleName;
+
+    [SerializeField]
+    private GameObject currentModel;
+    public GameObject CurrentModel
+    {
+        get
+        {
+            return currentModel;
+        }
+
+        set
+        {
+            currentModel = value;
+        }
+    }
 
     //Basic stats
     private float _Str = 0;
@@ -83,8 +96,8 @@ public class Stats : MonoBehaviour
         }
     }
 
-	// Use this for initialization
-	void Awake ()
+    // Use this for initialization
+    void Awake ()
     {
         SetStats(CurrentRole);
 	}
@@ -163,7 +176,7 @@ public class Stats : MonoBehaviour
             GameObject new_model = Instantiate(model, CurrentModel.transform.position, CurrentModel.transform.rotation);
             new_model.transform.parent = this.transform;
             Destroy(CurrentModel);
-            CurrentModel = model;
+            CurrentModel = new_model;
         }
         else
         {

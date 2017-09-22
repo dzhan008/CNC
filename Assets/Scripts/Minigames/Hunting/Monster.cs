@@ -65,7 +65,7 @@ public class Monster : MonoBehaviour {
             {
                 health = health - other.gameObject.GetComponent<Bullet>().damage;
             }
-            else if (other.gameObject.name == "Bullet 1(Clone)")
+            else if (other.gameObject.name == "BulletOne(Clone)")
             {
                 health = health - other.gameObject.GetComponent<Bullet1>().damage;
             }
@@ -87,54 +87,42 @@ public class Monster : MonoBehaviour {
                     health = 500;
                 }
                 
-                GameObject Hunting = GameObject.Find("HuntingMinigame");
+                GameObject Hunting = GameObject.Find("HuntingMinigame(Clone)");
                 //Debug.Log (other.gameObject.name + "==" + "Bullet(Clone)");
                 if (other.gameObject.name == "Bullet(Clone)") {
                     if (type == MonsterType.Tank)
                     {
-                        Debug.Log("score: " + GameManager.Instance.Players[1].Value.MiniGameScore);
                         GameManager.Instance.Players[1].Value.MiniGameScore += 20;
                         Hunting.GetComponent<HuntingMinigame>().SetScoreP1();
-                        Debug.Log("Kill by Player 1");
                     }
                     else if (type == MonsterType.Twig)
                     {
-                        Debug.Log("score: " + GameManager.Instance.Players[1].Value.MiniGameScore);
                         GameManager.Instance.Players[1].Value.MiniGameScore += 5;
                         Hunting.GetComponent<HuntingMinigame>().SetScoreP1();
-                        Debug.Log("Kill by Player 1");
                     }
 
                     else if (type == MonsterType.Normal)
                     {
-                        Debug.Log("score: " + GameManager.Instance.Players[1].Value.MiniGameScore);
                         GameManager.Instance.Players[1].Value.MiniGameScore += 10;
                         Hunting.GetComponent<HuntingMinigame>().SetScoreP1();
-                        Debug.Log("Kill by Player 1");
                     }
                 }
-                else if (other.gameObject.name == "Bullet 1(Clone)") {
+                else if (other.gameObject.name == "BulletOne(Clone)") {
                     if (type == MonsterType.Tank)
                     {
-                        Debug.Log("score: " + GameManager.Instance.Players[2].Value.MiniGameScore);
                         GameManager.Instance.Players[2].Value.MiniGameScore += 20;
                         Hunting.GetComponent<HuntingMinigame>().SetScoreP2();
-                        Debug.Log("Kill by Player 2");
                     }
                     else if (type == MonsterType.Twig)
                     {
-                        Debug.Log("score: " + GameManager.Instance.Players[2].Value.MiniGameScore);
                         GameManager.Instance.Players[2].Value.MiniGameScore += 5;
                         Hunting.GetComponent<HuntingMinigame>().SetScoreP2();
-                        Debug.Log("Kill by Player 2");
                     }
 
                     else if (type == MonsterType.Normal)
                     {
-                        Debug.Log("score: " + GameManager.Instance.Players[2].Value.MiniGameScore);
                         GameManager.Instance.Players[2].Value.MiniGameScore += 10;
                         Hunting.GetComponent<HuntingMinigame>().SetScoreP2();
-                        Debug.Log("Kill by Player 2");
                     }
                 }
                 //				Debug.Log ("Hit");
@@ -148,7 +136,6 @@ public class Monster : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Random monster movement:" + rand);
         //count = count - Time.deltaTime;
         if (this.gameObject.transform.position.y < DestructPoint.transform.position.y)
         {
