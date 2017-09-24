@@ -46,7 +46,7 @@ public class HorseControls : Minigame
         P1Speed = GameManager.Instance.Players[1].Value.Dex;
         P2Speed = GameManager.Instance.Players[2].Value.Dex;
         map = GameObject.FindGameObjectWithTag("Map");
-        start = map.gameObject.transform.FindChild("StartLine");
+        start = map.gameObject.transform.Find("StartLine");
         start1 = GameObject.Find("Player1Start");
         start2 = GameObject.Find("Player2Start");
         PlayerOne.transform.position = start1.transform.position;
@@ -123,10 +123,10 @@ public class HorseControls : Minigame
     public override void CenterHeldAction(GameObject player)
     {
         float MaxSpeed = GameManager.Instance.Players[2].Value.Dex;
-        Vector2 Acceleration = -player.transform.right;
+        Vector2 Acceleration = -player.transform.up;
         if (RaceStart && !RaceEnd)
         {
-            player.GetComponent<Rigidbody2D>().AddForce(-player.transform.right * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
+            player.GetComponent<Rigidbody2D>().AddForce(-player.transform.up * GameManager.Instance.Players[player.GetComponent<Stats>().Id].Value.Dex);
             player.GetComponent<Rigidbody2D>().velocity += Acceleration * Time.fixedDeltaTime;
             //Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
         }

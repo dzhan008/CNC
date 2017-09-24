@@ -31,8 +31,8 @@ public class Weapon : MonoBehaviour {
 	void Start () {
         Parent = GameObject.Find("Swift Smiths");
         HitPoint = GameObject.Find("HitPoint");
-        TopSpawn = gameObject.transform.FindChild("Top").transform;
-        BotSpawn = gameObject.transform.FindChild("Bottom").transform;
+        TopSpawn = gameObject.transform.Find("Top").transform;
+        BotSpawn = gameObject.transform.Find("Bottom").transform;
 
         float length = gameObject.GetComponent<SpriteRenderer>().bounds.min.y;
         float max_length = gameObject.GetComponent<SpriteRenderer>().bounds.max.y;
