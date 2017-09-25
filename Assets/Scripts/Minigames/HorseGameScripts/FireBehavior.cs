@@ -47,7 +47,7 @@ public class FireBehavior : MonoBehaviour
 	}
     void OnCollisonEnter2D(Collision2D col)
     {
-        if(col.gameObject.tag == "Player")
+        if(col.gameObject.name == Target.name)
         {
             Debug.Log("Hit");
             Destroy(this.gameObject);
@@ -56,7 +56,7 @@ public class FireBehavior : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.name == Target.name)
         {
             Debug.Log("Hit");
             Destroy(this.gameObject);
