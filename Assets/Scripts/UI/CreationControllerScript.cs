@@ -24,6 +24,9 @@ public class CreationControllerScript : MonoBehaviour {
     private string Player1GameState;
     private string Player2GameState;
 
+    private int Player1ClassesPicked;
+    private int Player2ClassesPicked;
+
     private int Player1First;
     private int Player1Second;
     private int Player2First;
@@ -67,6 +70,9 @@ public class CreationControllerScript : MonoBehaviour {
         Player1GameState = "Choosing";
         Player2GameState = "Choosing";
 
+        Player1ClassesPicked = 1;
+        Player2ClassesPicked = 1;
+
         Player1First = -1;
         Player1Second = -1;
         Player2First = -1;
@@ -82,19 +88,32 @@ public class CreationControllerScript : MonoBehaviour {
 
         Player1Model = Instantiate(PlayerModels[Player1Index], Player1ModelHolder.transform.position, Player1ModelHolder.transform.rotation);
         Player2Model = Instantiate(PlayerModels[Player2Index], Player2ModelHolder.transform.position, Player2ModelHolder.transform.rotation);
+
+        UpdateStatuses();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Player1STRBar.fillAmount = (float)Player1.Str / 10;
-        Player1DEXBar.fillAmount = (float)Player1.Dex / 10;
-        Player1INTBar.fillAmount = (float)Player1.Intel / 10;
-        Player2STRBar.fillAmount = (float)Player2.Str / 10;
-        Player2DEXBar.fillAmount = (float)Player2.Dex / 10;
-        Player2INTBar.fillAmount = (float)Player2.Intel / 10;
         UpdateConfirm();
-        UpdatePlayerRoles();
         UpdateIndexes();
+    }
+
+    public void UpdateStatuses()
+    {
+        if(Player1GameState != "Chosen" && Player1GameState != "Done")
+        {
+            Player1STRBar.fillAmount = (thePlayerRoles[Player1Index].Strength + (float)Player1.Str) / (Player1ClassesPicked * 10);
+            Player1DEXBar.fillAmount = (thePlayerRoles[Player1Index].Dexterity + (float)Player1.Dex) / (Player1ClassesPicked * 10);
+            Player1INTBar.fillAmount = (thePlayerRoles[Player1Index].Intelligence + (float)Player1.Intel) / (Player1ClassesPicked * 10);
+        }
+
+        if(Player2GameState != "Chosen" && Player2GameState != "Done")
+        {
+            Player2STRBar.fillAmount = (thePlayerRoles[Player2Index].Strength + (float)Player2.Str) / (Player2ClassesPicked * 10);
+            Player2DEXBar.fillAmount = (thePlayerRoles[Player2Index].Dexterity + (float)Player2.Dex) / (Player2ClassesPicked * 10);
+            Player2INTBar.fillAmount = (thePlayerRoles[Player2Index].Intelligence + (float)Player2.Intel) / (Player2ClassesPicked * 10);
+        }
+
     }
 
     public void UpdateRoles()
@@ -195,8 +214,6 @@ public class CreationControllerScript : MonoBehaviour {
     }
     public void UpdatePlayerRoles()
     {
-        
-
 
         if(Player1First == -1 && Player1Second == -1)
         {
@@ -235,8 +252,6 @@ public class CreationControllerScript : MonoBehaviour {
             Player2.Dex = (float)(thePlayerRoles[Player2First].Dexterity + thePlayerRoles[Player2Second].Dexterity) / 2;
             Player2.Intel = (float)(thePlayerRoles[Player2First].Intelligence + thePlayerRoles[Player2Second].Intelligence) / 2;
         }
-
-
     }
 
     public void UpdateIndexes()
@@ -244,41 +259,53 @@ public class CreationControllerScript : MonoBehaviour {
         if(Input.GetKeyDown("a"))
         {
             ChangePlayer1Index(-1);
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("w"))
         {
             Select(1);
+            UpdatePlayerRoles();
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("s"))
         {
             DeSelect(1);
+            UpdatePlayerRoles();
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("d"))
         {
             ChangePlayer1Index(1);
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("j"))
         {
             ChangePlayer2Index(-1);
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("i"))
         {
             Select(2);
+            UpdatePlayerRoles();
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("k"))
         {
             DeSelect(2);
+            UpdatePlayerRoles();
+            UpdateStatuses();
             UpdateRoles();
         }
         if (Input.GetKeyDown("l"))
         {
             ChangePlayer2Index(1);
+            UpdateStatuses();
             UpdateRoles();
         }
     }
@@ -345,6 +372,7 @@ public class CreationControllerScript : MonoBehaviour {
             {
                 if (Player1First == -1)
                 {
+                    Player1ClassesPicked = 2;
                     Player1First = Player1Index;
                 }
                 else if (Player1Second == -1)
@@ -362,6 +390,7 @@ public class CreationControllerScript : MonoBehaviour {
                 }
                 else
                 {
+                    Player1ClassesPicked = 1;
                     Player1First = -1;
                     Player1Second = -1;
                     Player1Confirm = true;
@@ -379,6 +408,7 @@ public class CreationControllerScript : MonoBehaviour {
             {
                 if (Player2First == -1)
                 {
+                    Player2ClassesPicked = 2;
                     Player2First = Player2Index;
                 }
                 else if (Player2Second == -1)
@@ -396,6 +426,7 @@ public class CreationControllerScript : MonoBehaviour {
                 }
                 else
                 {
+                    Player2ClassesPicked = 1;
                     Player2First = -1;
                     Player2Second = -1;
                     Player2Confirm = true;
@@ -413,6 +444,7 @@ public class CreationControllerScript : MonoBehaviour {
     {
         if (player == 1 && Player1GameState != "Done")
         {
+            Player1ClassesPicked = 1;
             Player1First = -1;
             Player1Second = -1;
             Player1GameState = "Choosing";
@@ -421,8 +453,9 @@ public class CreationControllerScript : MonoBehaviour {
             Player1Yes.gameObject.SetActive(false);
             Player1No.gameObject.SetActive(false);
         }
-        else if (player == 2 && Player1GameState != "Done")
+        else if (player == 2 && Player2GameState != "Done")
         {
+            Player2ClassesPicked = 1;
             Player2First = -1;
             Player2Second = -1;
             Player2GameState = "Choosing";

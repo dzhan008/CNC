@@ -34,7 +34,7 @@ public class Monster : MonoBehaviour {
             type = MonsterType.Twig;
             health = 300;
             WalkSpeed = WalkSpeed * (2f);
-            transform.localScale = new Vector3(2, 5, 1);
+            transform.localScale = new Vector3(2, 2, 1);
         }
 
         else if (rand1 <= .5f)

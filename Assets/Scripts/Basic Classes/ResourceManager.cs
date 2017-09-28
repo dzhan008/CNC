@@ -54,7 +54,7 @@ public class ResourceManager : Singleton<ResourceManager> {
     {
         Audio.Add("Stack Overflowed", (AudioClip)Resources.Load("Music/Book Mini Game"));
         Audio.Add("Hungry Hungry Dragon", (AudioClip)Resources.Load("Music/Dragon Chase"));
-        Audio.Add("Hunting", (AudioClip)Resources.Load("Music/Goblin Strike 2"));
+        Audio.Add("Hunting", (AudioClip)Resources.Load("Music/Goblin Strike"));
         Audio.Add("Title", (AudioClip)Resources.Load("Music/Title Theme_Complete"));
         Audio.Add("Victory", (AudioClip)Resources.Load("Music/Title Theme_Complete"));
     }

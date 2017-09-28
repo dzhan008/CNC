@@ -52,15 +52,18 @@ public class HuntingMinigame : Minigame {
     private void SetPlayerStats()
     {
         //Dex Check (Fire Rate)
-        Fire1 = 1f - ((PlayerOne.GetComponent<Stats>().Dex) * .05f);
-        Fire2 = 1f - ((PlayerTwo.GetComponent<Stats>().Dex) * .05f);
-        Fire1Max = 1f - ((PlayerOne.GetComponent<Stats>().Dex) * .05f);
-        Fire2Max = 1f - ((PlayerTwo.GetComponent<Stats>().Dex) * .05f);
+        Fire1 = 0;
+        Fire2 = 0;
+
+        Fire1Max = 1f - ((PlayerOne.GetComponent<Stats>().Dex) * .07f);
+        Fire2Max = 1f - ((PlayerTwo.GetComponent<Stats>().Dex) * .07f);
 
         //Int Check (Arrow Speed)
-        Bull.GetComponent<Bullet>().speed = 1f - ((PlayerOne.GetComponent<Stats>().Intel) * 0.1f);
-        Bull1.GetComponent<Bullet1>().speed = 1f - ((PlayerTwo.GetComponent<Stats>().Intel) * 0.1f);
-        Debug.Log(Bull.GetComponent<Bullet>().speed);
+        Bull.GetComponent<Bullet>().speed = ((PlayerOne.GetComponent<Stats>().Intel) * 0.15f);
+        Bull1.GetComponent<Bullet1>().speed = ((PlayerTwo.GetComponent<Stats>().Intel) * 0.15f);
+
+        Debug.Log(Fire1Max);
+        Debug.Log(Fire2Max);
         //Player One Str Check (Arrow Damage)
         if (PlayerOne.GetComponent<Stats>().Str >= 10)
         {
@@ -163,7 +166,6 @@ public class HuntingMinigame : Minigame {
 
     public void FireArrow(GameObject player)
     {
-        Debug.Log(PlayerOne.GetComponent<Stats>().CurrentModel);
         if (player == PlayerOne)
         {
             Transform BulletGenPoint = PlayerOne.GetComponent<Stats>().CurrentModel.transform.Find("BulletGenPoint").transform;
