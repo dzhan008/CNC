@@ -34,7 +34,6 @@ public class GameManager : Singleton<GameManager>
         Players = new Dictionary<int, KeyValuePair<GameObject, Stats>>();
         PlayerIDs = new List<int>();
         GameObject[] tempPlayers = GameObject.FindGameObjectsWithTag("Player");
-
         for (int i = 0; i < tempPlayers.Length; i++)
         {
             Players.Add(tempPlayers[i].GetComponent<Stats>().Id, new KeyValuePair<GameObject, Stats>(tempPlayers[i], tempPlayers[i].GetComponent<Stats>()));

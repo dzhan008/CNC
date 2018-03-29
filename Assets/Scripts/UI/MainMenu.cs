@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour {
     [SerializeField]
     private GameObject Menu;
     [SerializeField]
-    private GameObject Settings;
+    private GameObject Credits;
     [SerializeField]
     private GameObject CharacterSelectCanvas;
 
@@ -30,15 +30,15 @@ public class MainMenu : MonoBehaviour {
         //StartCoroutine(Play(2));
     }
 
-    public void onSettings()
+    public void onCredits()
     {
         Menu.SetActive(false);
-        Settings.SetActive(true);
+        Credits.SetActive(true);
     }
 
     public void onBack()
     {
-        Settings.SetActive(false);
+        Credits.SetActive(false);
         Menu.SetActive(true);
     }
     

@@ -136,7 +136,7 @@ public class DragonMiniGame : Minigame
         GameManager.Instance.GameState = States.InGame;
         PlayerOne.GetComponentInChildren<Animator>().SetFloat("Running", 1);
         PlayerTwo.GetComponentInChildren<Animator>().SetFloat("Running", 1);
-        Dragon.GetComponent<Animator>().SetFloat("Running", 1);
+        Dragon.GetComponent<Animator>().SetBool("Running", true);
     }
     void Start()
     {
@@ -286,7 +286,7 @@ public class DragonMiniGame : Minigame
     IEnumerator EndCinematic(GameObject winner, GameObject loser)
     {
         GameManager.Instance.GameState = States.Results;
-        Dragon.GetComponent<Animator>().SetFloat("Running", 0);
+        Dragon.GetComponent<Animator>().SetBool("Running", false);
         while (Dragon.transform.position.x < loser.transform.position.x - 1)
         {
             Dragon.transform.Translate(0.001f, 0f, 0f);

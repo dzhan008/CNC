@@ -32,7 +32,8 @@ public class UIManager : Singleton<UIManager> {
 
     public float FadeTime
     {
-        get; set; }
+        get; set;
+    }
 
     // Use this for initialization
     void Start ()
@@ -90,7 +91,6 @@ public class UIManager : Singleton<UIManager> {
 
     public void OnSelectGame(string name)
     {
-
         StartCoroutine(SelectGame(2, name));
     }
 
