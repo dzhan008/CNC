@@ -9,10 +9,10 @@ public class HuntingMinigame : Minigame {
 	private GameObject PlayerTwo;
 	private Stats PlayerOneStats;
 	private Stats PlayerTwoStats;
-	private GameObject Generator;
-    private GameObject Generator1;
     private HuntingObjectPooler Pooler;
     private HuntingObjectPooler Pooler1;
+    public GameObject Generator;
+    public GameObject Generator1;
     public Transform PlayerOneSpawn;
     public Transform PlayerTwoSpawn;
 	public Text scoreP1;
@@ -132,8 +132,6 @@ public class HuntingMinigame : Minigame {
     {
         GameManager.Instance.GameState = States.InGame;
         InstructionPanel.SetActive(false);
-        Generator = GameObject.Find("BulletGenerator");
-        Generator1 = GameObject.Find("BulletGenerator (1)");
         Pooler = Generator.GetComponent<HuntingObjectPooler>();
         Pooler1 = Generator1.GetComponent<HuntingObjectPooler>();
         gameStart = true;

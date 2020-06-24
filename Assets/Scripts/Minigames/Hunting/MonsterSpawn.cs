@@ -3,21 +3,19 @@ using System.Collections;
 
 public class MonsterSpawn : MonoBehaviour {
 
-	private GameObject MSpawn1;
-	private GameObject MSpawn2;
 	private GameObject Generator;
 	private HuntingObjectPooler Pooler;
 	public float CountDown;
     public HuntingMinigame huntG;
+	public GameObject MSpawn1;
+	public GameObject MSpawn2;
 
 	// Use this for initialization
 	void Start () 
 	{
 		CountDown = 3f;
-		MSpawn1 = GameObject.Find ("MSpawn1");
-		MSpawn2 = GameObject.Find ("MSpawn2");
 		Generator = GameObject.Find ("MonsterGenerator");
-		Pooler = Generator.GetComponent <HuntingObjectPooler> ();
+		Pooler = this.GetComponent <HuntingObjectPooler> ();
 	}
 	
 	// Update is called once per frame
